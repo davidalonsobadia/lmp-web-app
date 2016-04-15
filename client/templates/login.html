@@ -1,0 +1,32 @@
+
+<template name="login">
+	<div class="container sign-in-container">
+		<div class="row">
+		    <div class="col-md-6 col-md-offset-3">
+		      	<img src="/eurecat1.gif" alt="Eurecat Logo" width="450" height="150" class="img-responsive center-block">
+		        <form method="post" class="form-horizontal form-signin login">
+			        <h2 class="text-center">Sign in</h2>
+			        <hr/>
+		          	<div class="form-group">
+			            <label class="col-sm-2 control-label">Email</label>
+			            <div class="col-md-8">
+			            	<input type="email" name="email" class="form-control" placeholder="someone@example.com">
+					    </div>
+		          	</div>
+			        <div class="form-group">
+			            <label class="col-sm-2 control-label">Password</label>
+			            <div class="col-md-8">
+			            	<input type="password" name="password" class="form-control" placeholder="**************">
+			            </div>
+		          	</div>
+			        <div class="form-group">
+			            <div class="col-sm-offset-2 col-md-6">
+			            	<input type="submit" class="btn btn-danger btn-md pull" value="Sign in">
+			            </div>
+			            <a href="{{pathFor route='register'}}">Register now</a>
+		          	</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</template>

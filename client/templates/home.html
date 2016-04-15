@@ -1,0 +1,90 @@
+<template name="home">
+	<div class="container">
+		<!-- TODO: CHECK THIS LATER ON -->
+		{{> navbar}}
+
+		<div class="col-md-12">
+			{{> logo1}}
+			<br />
+
+			<div class="row thumbnail-top">
+				<div class="col-sm-4 col-md-3">
+					<!-- <a href="{{pathFor route='myAccount'}}" class="deco-none"> -->
+					<a href="#" class="deco-none">
+						<div class="thumbnail">
+							<img src="/user2.png" alt="user">
+							<div class="caption">
+								<h3 class="text-center">My Profile</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-sm-4 col-md-3">
+					<a href="{{pathFor route='dataspheres'}}" class="deco-none">
+						<div class="thumbnail">
+							<img src="/datasphere.png" alt="spheres">
+							<div class="caption">
+								<h3 class="text-center">My Spheres</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-sm-4 col-md-3">
+					<a href="{{pathFor route='providers'}}" class="deco-none">
+						<div class="thumbnail">
+							<img src="/network1.png" alt="providers">
+							<div class="caption">
+								<h3 class="text-center">My Providers</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-sm-4 col-md-3">
+					<a href="{{pathFor route='consumers'}}" class="deco-none">
+						<div class="thumbnail">
+							<img src="/people1.png" alt="consumers">
+							<div class="caption">
+								<h3 class="text-center">My Consumers</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4 col-md-3">
+					<!-- <a href="{{pathFor route='entities'}}" class="deco-none"> -->
+					<a href="#" class="deco-none">
+						<div class="thumbnail">
+							<img src="/buildings1.png" alt="entities">
+							<div class="caption">
+								<h3 class="text-center">My Entities</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-sm-4 col-md-3">
+					<!-- <a href="{{pathFor route='statistics'}}" class="deco-none"> -->
+					<a href="#" class="deco-none">
+						<div class="thumbnail">
+							<img src="/statistics1.png" alt="statitics">
+							<div class="caption">
+								<h3 class="text-center">My Statistics</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-sm-4 col-md-3">
+					<!-- <a href="{{pathFor route='settings'}}" class="deco-none"> -->
+					<a href="#" class="deco-none">
+						<div class="thumbnail">
+							<img src="/settings1.gif" alt="settings">
+							<div class="caption">
+								<h3 class="text-center">Settings</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>

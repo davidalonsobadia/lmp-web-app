@@ -1,0 +1,30 @@
+db.Consumers.insert(
+	{
+		name: "Rastreator.com"
+	}
+);
+db.Consumers.insert(
+	{
+		name: "UPC"
+	}
+);
+db.Consumers.insert(
+	{
+		name: "UB"
+	}
+);
+db.Consumers.insert(
+	{
+		name: "TIC Salut"
+	}
+);
+db.Consumers.insert(
+	{
+		name: "HotelesBaratos.com"
+	}
+);
+db.Consumers.insert(
+	{
+		name: "Amazon.es"
+	}
+);

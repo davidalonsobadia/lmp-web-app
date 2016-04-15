@@ -1,0 +1,70 @@
+<template name="consumers">
+	<div class="container">
+		{{> navbar}}
+
+		{{> JumbotronTitle title="My Consumers"}}
+
+		{{> consumersByUser}}
+	</div>
+</template>
+
+
+<template name="consumersByUser">
+	{{#if Consumers.length}}
+		<ul class="list-group">
+			{{#each Consumers}}
+				<li class="list-group-item">
+					<label>{{name}}</label>
+				</li>
+			{{/each}}
+		</ul>
+	{{/if}}
+</template>
+
+<!-- <template name="consumersTable">
+	{{#if Consumers.count}}
+		<table class="table">
+			<thead>
+				<tr>
+					<td>
+						Consumers ID
+					</td>
+					<td>
+						Name
+					</td>
+					<td>
+						Description
+					</td>
+					<td>
+						Disabled
+					</td>
+					<td>
+						Actions
+					</td>
+				</tr>
+			</thead>
+			{{#each Spheres}}
+			<tbody>
+				<tr>
+					<td>
+						{{_id}}
+					</td>
+					<td>
+						{{name}}
+					</td>
+					<td>
+						{{description}}
+					</td>
+					<td>
+						<input type="checkbox" {{checkedConsumers}}>
+					</td>
+					<td>
+						<input type="button" class="btn btn-success" value="Edit"/>
+						<input type="button" class="btn btn-danger" value="Delete"/>
+					</td>
+				</tr>
+			</tbody>
+			{{/each}}
+		</table>
+	{{/if}}
+</template> -->

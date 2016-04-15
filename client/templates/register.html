@@ -1,0 +1,58 @@
+<template name="register">
+  <div class="container sign-in-container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <img src="/eurecat2.gif" alt="Eurecat Logo" width="450" height="150" class="img-responsive center-block">
+        <form method="post" class="form-horizontal form-signin register">
+          <h2 class="text-center">Register</h2>
+          <hr/>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label">First Name:</label>
+            <div class="col-md-8">
+              <input type="text" name="firstName">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label">Last Name:</label>
+            <div class="col-md-8">
+              <input type="text" name="lastName">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label">Email:</label>
+            <div class="col-md-8">
+              <input type="email" name="email">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label">Password:</label>
+            <div class="col-md-8">
+              <input type="password" name="password">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label">Repeat Password:</label>
+            <div class="col-md-8">
+              <input type="password" name="password-confirm">
+            </div>
+          </div>
+
+          <div class="col-md-offset-4">
+            <div class="form-group">
+              <input type="submit" value="Register" class="btn btn-default">
+            </div>
+          </div>
+        </form>
+
+          <ul>
+            <li><a href="{{pathFor route='login'}}">Back to Login</a></li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</template>

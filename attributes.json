@@ -1,0 +1,126 @@
+db.Attributes.insert({
+		name: "Allergic conditions",
+		subcategory: "Health conditions",
+		serviceProvider: "TIC-Salut"
+	}
+);
+db.Attributes.insert({
+		name: "Chronic conditions",
+		subcategory: "Health conditions",
+		serviceProvider: "TIC-Salut"
+	}
+);
+db.Attributes.insert({
+		name: "Mental health",
+		subcategory: "Health conditions",
+		serviceProvider: "TIC-Salut"
+	}
+);
+db.Attributes.insert({
+		name: "Cholesterol level",
+		subcategory: "Risk factors",
+		serviceProvider: "TIC-Salut"
+	}
+);
+db.Attributes.insert({
+		name: "Mental health",
+		subcategory: "Risk factors",
+		serviceProvider: "TIC-Salut"
+	}
+);
+db.Attributes.insert({
+		name: "Tobacco smoking",
+		subcategory: "Risk factors",
+		serviceProvider: "TIC-Salut"
+	}
+);
+db.Attributes.insert({
+		name: "Physical conditions",
+		subcategory: "Risk factors",
+		serviceProvider: "TIC-Salut"
+	}
+);
+db.Attributes.insert({
+		name: "Social Security Number",
+		subcategory: "Administration info",
+		serviceProvider: "Gobierno de Espanya"
+	}
+);
+db.Attributes.insert({
+		name: "Unemployment beneift status",
+		subcategory: "Employment details",
+		serviceProvider: "Gobierno de Espanya"
+	}
+);
+db.Attributes.insert({
+		name: "Employment history",
+		subcategory: "Employment details",
+		serviceProvider: "Gobierno de Espanya"
+	}
+);
+db.Attributes.insert({
+		name: "Account Numbers",
+		subcategory: "Bank details",
+		serviceProvider: "La Caixa"
+	}
+);
+db.Attributes.insert({
+		name: "Account balances",
+		subcategory: "Bank details"
+		serviceProvider: "Finctonic"
+	}
+);
+db.Attributes.insert({
+		name: "Property Details",
+		subcategory: "Properties",
+		serviceProvider: "La Caixa"
+	}
+);
+db.Attributes.insert({
+		name: "Property taxes",
+		subcategory: "Properties",
+		serviceProvider: "Gobierno de Espanya"
+	}
+);
+db.Attributes.insert({
+		name: "Mortages",
+		subcategory: "Properties",
+		serviceProvider: "La Caixa"
+	}
+);
+db.Attributes.insert({
+		name: "Educational institutions",
+		subcategory: "Education",
+		serviceProvider: "Linkedin"
+	}
+);
+db.Attributes.insert({
+		name: "Education level",
+		subcategory: "Education",
+		serviceProvider: "Linkedin"
+	}
+);
+db.Attributes.insert({
+		name: "Thesis",
+		subcategory: "Education",
+		serviceProvider: "Linkedin"
+	}
+);
+db.Attributes.insert({
+		name: "Articles",
+		subcategory: "Research",
+		serviceProvider: "Linkedin"
+	}
+);
+db.Attributes.insert({
+		name: "Books",
+		subcategory: "Research",
+		serviceProvider: "Linkedin"
+	}
+);
+db.Attributes.insert({
+		name: "Conferences",
+		subcategory: "Research",
+		serviceProvider: "Linkedin"
+	}
+);

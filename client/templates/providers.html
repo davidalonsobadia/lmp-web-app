@@ -1,0 +1,51 @@
+<template name="providers">
+	<div class="container">
+		{{> navbar}}
+
+		{{> JumbotronTitle title="My Providers"}}
+
+		{{> providersTable}}
+	</div>
+</template>
+
+<template name="providersTable">
+	{{#if Providers.length}}
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<td>
+						Name
+					</td>
+					<td>
+						Description
+					</td>
+					<td>
+						Disabled
+					</td>
+					<td>
+						Actions
+					</td>
+				</tr>
+			</thead>
+			{{#each Providers}}
+			<tbody>
+				<tr>
+					<td>
+						{{name}}
+					</td>
+					<td>
+						{{description}}
+					</td>
+					<td>
+						<input type="checkbox" {{checkedProviders}}>
+					</td>
+					<td>
+						<!-- <input type="button" class="btn btn-success edit-provider" value="Edit"/> -->
+						<input type="button" name="delete-button" class="btn btn-danger delete-provider" id="{{_links.self.href}}" value="Delete"/>
+					</td>
+				</tr>
+			</tbody>
+			{{/each}}
+		</table>
+	{{/if}}
+</template>

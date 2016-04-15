@@ -1,0 +1,20 @@
+db.AttributesDefinition.insert( {
+		category: "Health",
+		subcategories: ["Health conditions", "Risk factors"]
+	}
+);
+db.AttributesDefinition.insert( {
+		category: "e-Governance",
+		subcategories: ["Administration info", "Employment details"]
+	}
+);
+db.AttributesDefinition.insert( {
+		category: "Finance",
+		subcategories: ["Bank details", "Properties"]
+	}
+);
+db.AttributesDefinition.insert( {
+		category: "Academic",
+		subcategories: ["Education", "Research"]
+	}
+);

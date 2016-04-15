@@ -1,0 +1,101 @@
+<template name="sphere">
+	<div class="container">
+		<form class="form-horizontal">
+			{{> navbar}}
+
+			{{> sphere_basicinfo}}
+
+			{{> sphere_category}}
+
+			{{> buttons}}
+		</form>
+	</div>
+</template>
+
+<template name="sphere_basicinfo">
+	<div class="form-set">
+		<div class="form-group">
+			<label class="control-label col-md-2">Label: </label>
+			<div class="col-md-8">
+					<input class="form-control" type="text" name="label" value='{{SphereDetails.name}}' placeholder='Label'>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">Description: </label>
+			<div class="col-md-8">
+				<input class="form-control" type="text" name="description" value='{{SphereDetails.description}}' placeholder='Description'>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-md-2">Type: </label>
+			<div class="col-md-8">
+				<input class="form-control" type="text" name="type" value='{{SphereDetails.type}}' placeholder='Type'>
+			</div>
+		</div>
+	</div>
+	{{> multiSelectConsumers}}
+</template>
+
+<template name="multiSelectConsumers">
+	<div class="form-set">
+		<div class="form-group">
+			<div class="col-md-3 col-md-offset-2">
+				<div class="text-center"><h4>Available Consumers</h4></div>
+			    <select name="from" id="multiselect" class="form-control" size="8" multiple="multiple">
+			    	{{#each arrayDifference consumersArray consumersInSphereArray}}
+			      		<option value="{{name}}" id="{{_links.self.href}}">{{name}}</option>
+			      	{{/each}}
+			    </select>
+			</div>
+			<div class="col-md-2 select-box-buttons">
+			    <button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+			    <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+			    <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+			    <button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+			</div>
+			<div class="col-md-3">
+			  	<div class="text-center"><h4>Selected Consumers</h4></div>
+			    <select name="to" id="multiselect_to" class="form-control" size="8" multiple="multiple">
+			    	{{#each consumersInSphereArray}}
+						<option value="{{name}}" id="{{_links.self.href}}">{{name}}</option>
+					{{/each}}
+			    </select>
+			</div>
+		</div>
+
+	</div>
+</template>
+
+<template name="sphere_category">
+	{{#each Categories}}
+	<div class="row">
+		<div class="jumbotron">
+			<h2>{{categoryName}}</h2>
+		</div>
+	</div>
+	{{> sphere_subcategories this}}
+
+	{{/each}}
+</template>
+
+<template name="sphere_subcategories">
+	<div class="form-set">
+		<div class="row">
+			{{#each Subcategories}}
+			<div class="col-md-5">
+				<h3>{{subcategoryName}}</h3>
+				{{> sphere_attributes this}}
+			</div>
+			{{/each}}
+		</div>
+	</div>
+</template>
+
+<template name="sphere_attributes">
+	{{#each attributes}}
+		<div class="checkbox">
+			<label><input type="checkbox" {{checkedAttributeSphere}} name="attr" id="{{link}}" value="{{name}}">{{name}}</label>
+		</div>		
+	{{/each}}
+</template>
