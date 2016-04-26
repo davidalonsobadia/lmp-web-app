@@ -2,14 +2,15 @@
 * CONSTANTS
 */
 
-/*localhost = 'http://localhost:8080';*/
-localhost = 'https://bd-vm-d-wso2as:9443/LmpApi'
+/*host = 'http://localhost:8080';*/
+host = 'https://bd-vm-d-wso2as:9443/LmpApi'
 slash = '/';
 people = 'people';
 person = 'person';
 consumers = 'consumers';
 spheres = 'spheres';
 providers = 'providers';
+attrs = 'attributes';
 search = 'search';
 findByIdentifier = 'findByIdentifier?identifier=';
 findByEmail = 'findFirstByEmail?email=';

@@ -1,23 +1,27 @@
 Template.consumersByUser.helpers({
   'Consumers' : function(){
-    //return Providers.find();
-    var user = Session.get('user');
-    var consumersUrl = user._links.consumers.href;
-    return ReactiveMethod.call('getConsumersbyPerson', consumersUrl);
+    return ConsumersByUser.find();
   }
 });
 
-Template.consumers.events({
+Template.my_consumers.onRendered(function(){
+  this.autorun(function(){
+    var user = Session.get('user');
+    var consumersUrl = user._links.consumers.href;
+    console.log('onRedered');
+    Meteor.subscribe('getConsumersByUser', consumersUrl);
+  });
+});
+
+Template.my_consumers.events({
   'click #newObject' : function(event){
     event.preventDefault();
-    Router.go('newConsumer');
+    Router.go('new_consumer');
   },
   'click .delete-consumer' : function(event){
     event.preventDefault();
-
     var user = Session.get('user');
     var urlPersonConsumer = user._links.consumers.href;
-
     consumerIdToDelete = event.currentTarget.id;
 
     var consumersUrl = $("[name=delete-button]").map(
@@ -26,19 +30,17 @@ Template.consumers.events({
     })
     .get();
 
-    for(p in consumersUrl){
-      if(consumersUrl[p] == consumerIdToDelete){
+    for(p in consumersUrl) {
+      if(consumersUrl[p] == consumerIdToDelete) {
         consumersUrl.splice(p, 1);
       }
     }
-
     Meteor.call('joinPersonAndConsumer', urlPersonConsumer, consumersUrl);
-
     window.location.reload(true);
   }
 });
 
-Template.consumer.events({
+Template.new_consumer.events({
   'click .save-changes': function(event){
     event.preventDefault();
     var consumers = $("[name=consumer]").map(
@@ -50,21 +52,28 @@ Template.consumer.events({
     .get();
 
     var urlPerson = Session.get('user')._links.consumers.href;
-    Meteor.call('joinPersonAndConsumer', urlPerson, consumers);
 
-    Router.go('consumers');
+    Meteor.call('joinPersonAndConsumer', urlPerson, consumers, function(error, response){
+      if (!error){
+        //success
+        Router.go('my_consumers');
+
+      } else {
+        console.log(error);
+        Router.go('my_consumers');
+      }
+    });
+    
   },
 
   'click .cancel' : function(event) {
     event.preventDefault();
-    Router.go('consumers');
+    Router.go('my_consumers');
   }
 });
 
 Template.consumersList.helpers({
   'Consumers' : function(){
-    //return ReactiveMethod.call('getConsumers');
-    console.log(Consumers.find());
     return Consumers.find();
   },
   'checkedConsumers': function(){
@@ -74,7 +83,11 @@ Template.consumersList.helpers({
     // 1.5 get all the providers so far activated by the user
     var user = Session.get('user');
     var consumersUrl = user._links.consumers.href;
-    var consumers = ReactiveMethod.call('getConsumersbyPerson', consumersUrl);
+    //var consumers = ReactiveMethod.call('getConsumersbyPerson', consumersUrl);
+
+    var consumers = ConsumersByUser.find().fetch();
+
+    //TODO: CHANGE HERE THE METEOR CALL
 
     // 2. check if the provider identifier is on the person providers list.
     for( p in consumers){

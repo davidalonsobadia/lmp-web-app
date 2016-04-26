@@ -1,31 +1,8 @@
-
-
-
-
 Meteor.methods({
-
-/*  'getUserId' : function(){
-    return Meteor.userId();
-  },*/
+  
   'upsertSphere' : function(sphereObject, httpCommand){
-/*    Spheres.upsert({
-      //Query
-      _id: sphereObject.sphereId
-    }, {
-      //Modifier
-      $set: {
-        userId :            Meteor.userId(),
-        label :             sphereObject.label,
-        description :       sphereObject.description,
-        consumers :         sphereObject.consumers,
-        createdAt :         sphereObject.createdAt,
-        checkedAttributes:  sphereObject.checkedAttributes,
-        enabled:            sphereObject.enabled
-      }
-    });*/
-
     if(httpCommand == 'POST'){
-      var url = localhost + slash + spheres;
+      var url = host + slash + spheres;
       var response = HTTP.post(url, {
         data: {
           identifier:         sphereObject.identifier,
@@ -37,7 +14,6 @@ Meteor.methods({
         }
       });
       return response;
-
     } else {
       var response = HTTP.put(sphereObject.url, {
         data: {
@@ -50,9 +26,7 @@ Meteor.methods({
         }
       });
       return response;
-
     }
-
   },
 
   'joinSphereAndConsumer': function(sphereConsumerUrl, consumersUrl){
@@ -70,9 +44,6 @@ Meteor.methods({
   },
 
   'joinSphereAndAttributes': function(sphereAttributesUrl, attributesUrl){
-
-    console.log(attributesUrl);
-    console.log(sphereAttributesUrl);
     var urlAttributesString = '';
     for (url in attributesUrl){
       urlAttributesString += attributesUrl[url] + '\n'
@@ -88,65 +59,7 @@ Meteor.methods({
   },
 
   'upsertProvider' : function(providerObject){
-/*    Providers.upsert({
-      _id: providerObject.providerId
-    }, {
-      $set: {
-        userId:             Meteor.userId(),   
-        name:               providerObject.name,
-        description:        providerObject.description,
-        url:                providerObject.url,
-        attributes:         providerObject.attributes,
-        createdAt:          providerObject.createdAt,
-        checkedAttributes:  providerObject.checkedAttributes,
-        enabled:            providerObject.enabled
-      }
-    });*/
-
-/*    var url = localhost + slash + providers;
-    var response = HTTP.post(url, {
-      data: {
-        identifier:         providerObject.identifier,
-        name:               providerObject.name,
-        description:        providerObject.description,
-        url:                providerObject.url,
-        isEnabled:          providerObject.isEnabled,
-        isDeleted:          providerObject.isDeleted
-      }
-    });
-
-    var urlNewProvider = response.headers.location;
-
-    var urlAssociation = urlNewProvider + slash + person;
-    console.log('urlAssociation: ' + urlAssociation);
-    console.log('urlPerson: ' + urlPerson)
-
-    var response2 = HTTP.put(urlAssociation, {
-      headers: {
-        "Content-Type":       "text/uri-list"
-      },
-      content: urlPerson
-    });
-    return response;*/
-
-/*    var url = localhost + slash + providers;
-    var response = HTTP.post(url, {
-      data: {
-        identifier:         providerObject.identifier,
-        name:               providerObject.name,
-        description:        providerObject.description,
-        url:                providerObject.url,
-        enabled:            providerObject.isEnabled,
-        deleted:            providerObject.isDeleted,
-        person:             urlPerson 
-      }
-    });*/
-
-// TODO: SE TENDRÁ UNA LISTA DE PROVEEDORES. CUANDO ESTA LISTA ESTÉ LISTA, SE ELEGIRÁ UN PROVEEDOR
-// Y ESE QUEDARÁ VINCULADO AL USUARIO QUE HA HECHO ESA ACCIÓN. LA ACCIÓN QUEDARÁ ASOCIADA CON EL MÉTODO PUT
-// SIGUIENDO ESTA RESPUESTA: http://stackoverflow.com/questions/17981252/how-to-update-reference-object-in-spring-data-rest?rq=1
-
-    var url = localhost + slash + providers;
+    var url = host + slash + providers;
     var response = HTTP.post(url, {
       data: {
         identifier:         providerObject.identifier,
@@ -161,12 +74,10 @@ Meteor.methods({
   },
 
   'joinPersonAndProvider': function(urlProviderPerson, urlProviders){
-
     var urlProvidersString = '';
     for (url in urlProviders){
       urlProvidersString += urlProviders[url] + '\n'
     }
-
     return HTTP.put(urlProviderPerson, {
       headers: {
         "Content-Type":       "text/uri-list"
@@ -176,12 +87,13 @@ Meteor.methods({
   },
 
   'joinPersonAndConsumer': function(urlConsumerPerson, urlConsumers){
-
     var urlConsumersString = '';
     for (url in urlConsumers){
       urlConsumersString += urlConsumers[url] + '\n'
     }
-
+    console.log('joinPersonAndConsumer');
+    console.log(urlConsumersString);
+    console.log('---------------------------------------------------');
     return HTTP.put(urlConsumerPerson, {
       headers: {
         "Content-Type":       "text/uri-list"
@@ -195,7 +107,6 @@ Meteor.methods({
     for ( url in urlSpheres){
       urlSpheresString += urlSpheres[url] + '\n'
     }
-
     return HTTP.put(urlSpherePerson, {
       headers: {
         "Content-Type":       "text/uri-list"
@@ -205,7 +116,7 @@ Meteor.methods({
   },
 
   'upsertConsumer' : function(consumerObject){
-    var url = localhost + slash + consumers;
+    var url = host + slash + consumers;
     var response = HTTP.post(url, {
       data : {
         identifier:   consumerObject.identifier,
@@ -231,12 +142,13 @@ Meteor.methods({
 
   'registerUser' : function(personObject){
     var _id = Meteor.userId();  
-    var url = localhost + slash + people + slash;
+    var url = host + slash + people + slash;
     var response = HTTP.post(url, {
       data: {
         identifier: _id,
         name : personObject.name,
         surname : personObject.surname,
+        //phone:    personObject.phone,
         email : personObject.email,
         password : personObject.password
       }
@@ -251,59 +163,19 @@ Meteor.methods({
   },
 
   'loginWithPassword' : function(loginObject){ 
-    var url = localhost + slash + people + slash + search + slash + findByEmail + loginObject.email;
+    var url = host + slash + people + slash + search + slash + findByEmail + loginObject.email;
     try{
       var response = HTTP.get(url);
       var user = JSON.parse(response.content);
       if ( user == undefined || user == null ){
         throw new Meteor.Error('404', 'User not found', 'User not found in the Database');
       }
-
       return user;
     } catch (error) {
       console.log('Error while authenticating the user... ' + error);
       throw new Meteor.Error('404', 'User not found', 'User not found in the Database');
     }
   },
-
-  'getConsumersbyPerson': function(consumersUrl){
-    try{
-      var response = HTTP.get(consumersUrl);
-      var content = JSON.parse(response.content);
-      var consumersList = content._embedded.consumers;
-      return consumersList;
-    } catch (error){
-      console.log(error);
-    }
-    return [];
-  },
-
-  'getConsumers': function(){
-    var url = localhost + slash + consumers;
-    var consumersList;
-    try{
-      var response = HTTP.get(url);
-      var content = JSON.parse(response.content);
-      consumersList = content._embedded.consumers;
-
-    } catch (error){
-      console.log(error);
-    }
-    return consumersList;
-  },
-
-  'getProvidersbyPerson': function(providersUrl){
-    try{
-      var response = HTTP.get(providersUrl);
-      var content = JSON.parse(response.content);
-      var providersList = content._embedded.providers;
-      return providersList;
-    } catch (error){
-      console.log(error);
-    }
-    return [];
-  },
-
   'getSpheresByPerson': function(spheresUrl){
     try{
       var response = HTTP.get(spheresUrl);
@@ -315,34 +187,6 @@ Meteor.methods({
     }
     return [];
   },
-
-  'getProviders': function(){
-    var url = localhost + slash + providers;
-    var providersList;
-    try{
-      var response = HTTP.get(url);
-      var content = JSON.parse(response.content);
-      providersList = content._embedded.providers;
-
-    } catch (error){
-      console.log(error);
-    }
-    return providersList;
-  },
-
-  'getSpheres': function(){
-    var url = localhost + slash + spheres;
-    try{
-      var response = HTTP.get(url);
-      var content = JSON.parse(response.content);
-      spheresList = content._embedded.spheres;
-      return spheresList;
-    } catch (error){
-      console.log(error);
-    }
-    return '';
-  },
-
   'getSphere': function(sphereUrl){
     try{
       var response = HTTP.get(sphereUrl);
@@ -352,9 +196,9 @@ Meteor.methods({
       console.log(error);
     }
     return '';
-  },
+  }
 
-  'getConsumersInSphere': function(sphereConsumersUrl){
+/*  'getConsumersInSphere': function(sphereConsumersUrl){
     try{
       var response = HTTP.get(sphereConsumersUrl);
       var content = JSON.parse(response.content);
@@ -367,7 +211,7 @@ Meteor.methods({
   },
 
   'getCategoriesByProviders': function(providerNames){
-    var url = localhost + slash + providers + slash + search + slash + findCategoriesByProviderNamesList + providerNames;
+    var url = host + slash + providers + slash + search + slash + findCategoriesByProviderNamesList + providerNames;
     try{
       var response = HTTP.get(url);
       var content = JSON.parse(response.content);
@@ -379,7 +223,7 @@ Meteor.methods({
   },
 
   'getAttributesByProviders': function(providerNames){
-    var url = localhost + slash + providers + slash + search + slash + findAttributesByProviderNamesList + providerNames;
+    var url = host + slash + providers + slash + search + slash + findAttributesByProviderNamesList + providerNames;
     try{
       var response = HTTP.get(url);
       var content = JSON.parse(response.content);
@@ -399,32 +243,345 @@ Meteor.methods({
     } catch (error) {
       console.log(error);
     }
+  },
+
+  'getAttributesByProvider': function(providerAttributesUrl){
+    try{
+      var response = HTTP.get(providerAttributesUrl);
+      var content = JSON.parse(response.content);
+      var attributes = content._embedded.attributes;
+      return attributes;
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+*/
+/*  'getConsumersbyPerson': function(consumersUrl){
+    try{
+      var response = HTTP.get(consumersUrl);
+      var content = JSON.parse(response.content);
+      var consumersList = content._embedded.consumers;
+      return consumersList;
+    } catch (error){
+      console.log(error);
+    }
+    return [];
+  },
 
-
-Meteor.publish('getConsumersPublish', function(){
-
-    var self = this;
-
-    var url = localhost + slash + consumers;
+  'getConsumers': function(){
+    var url = host + slash + consumers;
     var consumersList;
     try{
       var response = HTTP.get(url);
       var content = JSON.parse(response.content);
       consumersList = content._embedded.consumers;
-      for( c in consumersList){
-
-        var consumer = {
-          name: consumersList[c].name,
-          description : consumersList[c].description
-        };
-        self.added('consumers', Random.id(), consumer);
-      }
-      self.ready();
     } catch (error){
       console.log(error);
     }
+    return consumersList;
+  },
+
+  'getProvidersbyPerson': function(providersUrl){
+    try{
+      var response = HTTP.get(providersUrl);
+      var content = JSON.parse(response.content);
+      var providersList = content._embedded.providers;
+      return providersList;
+    } catch (error){
+      console.log(error);
+    }
+    return [];
+  },
+*/
+/*  'getProviders': function(){
+    var url = host + slash + providers;
+    var providersList;
+    try{
+      var response = HTTP.get(url);
+      var content = JSON.parse(response.content);
+      providersList = content._embedded.providers;
+
+    } catch (error){
+      console.log(error);
+    }
+    return providersList;
+  },
+*/
+});
+
+Meteor.publish('getConsumers', function(){
+  var self = this;
+  var url = host + slash + consumers;
+  try{
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var consumersList = content._embedded.consumers;
+    for( c in consumersList){
+      var consumer = {
+        name: consumersList[c].name,
+        description : consumersList[c].description,
+        link: consumersList[c]._links.consumer.href
+      }
+      self.added('consumers', Random.id(), consumer);
+    }
+    self.ready();
+  } catch (error){
+    console.log('Error in getConsumers');
+    console.log(error);
+  }
+});
+
+Meteor.publish('getSpheres', function(){
+  var self = this;
+  var url = host + slash + spheres;
+  try{
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    spheresList = content._embedded.spheres;
+    for (s in spheresList){
+      var sphere = {
+        name:           spheresList[c].name,
+        description:    spheresList[c].description,
+        type:           spheresList[c].type
+      }
+      self.added('spheres', Random.id(), sphere);
+    }
+    self.ready();
+  } catch (error){
+    console.log('Error in getSpheres');
+    console.log(error);
+  }
+});
+
+Meteor.publish('getProviders', function(){
+  var self = this;
+  var url = host + slash + providers;
+  try{
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var providersList = content._embedded.providers;
+
+    for (p in providersList){
+
+      var provider = {
+        name:         providersList[p].name,
+        description:  providersList[p].description,
+        type:         providersList[p].type,
+        url:          providersList[p].url,
+        enabled:      providersList[p].enabled,
+        deleted:      providersList[p].deleted,
+        link:         providersList[p]._links.provider.href
+      }
+      self.added('providers', Random.id(), provider);
+    }
+    self.ready();
+  } catch (error){
+    console.log('Error in getProviders');
+    console.log(error);
+  }
+});
+
+Meteor.publish('getProvidersByUser', function(providersUrl){
+  var self = this;
+  if(providersUrl != null) {
+    try{
+      var response = HTTP.get(providersUrl);
+      var content = JSON.parse(response.content);
+      var providersList = content._embedded.providers;
+
+      for ( p in providersList){
+        var provider = {
+          name:             providersList[p].name,
+          description:      providersList[p].description,
+          type:             providersList[p].type,
+          url:              providersList[p].url,
+          enabled:          providersList[p].enabled,
+          deleted:          providersList[p].deleted,
+          link:             providersList[p]._links.provider.href,
+          attributesLink:   providersList[p]._links.attributes.href
+        }
+        self.added('providersByUser', Random.id(), provider); 
+      }
+    } catch (error){
+      console.log('Error in getProvidersByUser');
+      console.log(error);
+    }
+  }
+  self.ready();
+});
+
+Meteor.publish('getConsumersInSphere', function(sphereConsumersUrl){
+  var self = this;
+  if(sphereConsumersUrl != null){
+    try{
+      var response = HTTP.get(sphereConsumersUrl);
+      var content = JSON.parse(response.content);
+      var consumers = content._embedded.consumers;
+      for (c in consumers){
+        var consumer = {
+          name:     consumers[c].name,
+          link:     consumers[c]._links.self.href
+        }
+        self.added('consumersInSphere', Random.id(), consumer);
+      }
+    } catch(error) {
+      console.log('Error in getConsumersInSphere');
+      console.log(error);
+    }
+  }
+  self.ready();
+});
+
+Meteor.publish('getCategoriesByProviders', function(providerNames){
+  var self = this;
+  var url = host + slash + providers + slash + search + slash + findCategoriesByProviderNamesList + providerNames;
+  try{
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var attributeCategories = content._embedded.attributeCategories;
+    for (a in attributeCategories){
+      var attribute = {
+        name: attributeCategories[a].name
+      }
+      self.added('categoriesByProviders', Random.id(), attribute);
+    }
+    self.ready();
+  } catch (error) {
+    console.log('Error in getCategoriesByProviders');
+    console.log(error);
+  }
+});
+
+Meteor.publish('getAttributes', function(){
+  var self = this;
+  var url = host + slash + attrs;
+  try{
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var attributes = content._embedded.attributes;
+    for (a in attributes){
+      var attribute = {
+        name:           attributes[a].name,
+        category:       attributes[a].subcategory.category.name,
+        subcategory:    attributes[a].subcategory.name,
+        providerLink:   attributes[a]._links.provider.href
+      }
+      self.added('attributes', Random.id(), attribute);
+    }
+  } catch (error) {
+    console.log('Error in getAttributes');
+    console.log(error);
+  }
+  self.ready();
+});
+
+Meteor.publish('getAttributesBySphere', function(sphereAttributesUrl){
+
+  var self = this;
+  if (sphereAttributesUrl != null){
+    try{
+      var response = HTTP.get(sphereAttributesUrl);
+      var content = JSON.parse(response.content);
+      var attributes = content._embedded.attributes;
+      for (a in attributes){
+        var attribute = {
+          name: attributes[a].name,
+          attributesLink: attributes[a]._links.self.href
+        }
+        self.added('attributesBySphere', Random.id(), attribute);
+      }
+    } catch (error) {
+      console.log('Error in getAttributesBySphere');
+      console.log(error);
+    }
+  }
+  self.ready();
+
+});
+
+Meteor.publish('getSpheresByUser', function(spheresUrl){
+  var self = this;
+  console.log('getSpheresByUser');
+  console.log(spheresUrl);
+  console.log('---------------------------------------------------');
+
+  try{
+    var response = HTTP.get(spheresUrl);
+    var content = JSON.parse(response.content);
+    var spheresList = content._embedded.spheres;
+    for (s in spheresList){
+      var sphere = {
+        name:           spheresList[s].name,
+        description:    spheresList[s].description,
+        type:           spheresList[s].type,
+        link:           spheresList[s]._links.self.href
+      }
+      self.added('spheresByUser', Random.id(), sphere);
+    }
+  } catch (error){
+    console.log('Error in getSpheresByUser')
+    console.log(error);
+  }
+  self.ready();
+});
+
+Meteor.publish('getAttributesByProviders', function(providerLinks){
+  var self = this;
+  console.log('getAttributesByProviders');
+  console.log(providerLinks);
+  console.log('---------------------------------------------------');
+
+  if (providerLinks.length > 0){
+    try{
+      for (p in providerLinks){
+        var response = HTTP.get(providerLinks[p]);
+        var content = JSON.parse(response.content);
+        var attributes = content._embedded.attributes;
+        for (a in attributes){
+          var attribute = {
+            name:           attributes[a].name,
+            category:       attributes[a].subcategory.category.name,
+            subcategory:    attributes[a].subcategory.name,
+            providerLink:   attributes[a]._links.provider.href,
+            enabled:        attributes[a].enabled,
+            link:           attributes[a]._links.self.href
+          }
+          self.added('attributesByProviders', Random.id(), attribute);
+        }
+      }
+    } catch (error){
+      console.log('error in getAttributesByProviders');
+      console.log(error);   
+    }
+  }
+  self.ready();
+});
+
+Meteor.publish('getConsumersByUser', function(consumersUrl){
+
+  var self = this;
+  console.log('getConsumersByUser');
+  console.log(consumersUrl);
+  console.log('---------------------------------------------------');
+  if (consumersUrl != null){
+    try{
+      var response = HTTP.get(consumersUrl);
+      var content = JSON.parse(response.content);
+      var consumers = content._embedded.consumers;
+      for (c in consumers){
+        var consumer = {
+          name:         consumers[c].name,
+          link:         consumers[c]._links.self.href,
+          description : consumers[c].description
+        }
+        self.added('consumersByUser', Random.id(), consumer);
+      }
+    } catch (error){
+      console.log('Error in getConsumersByUser');
+      console.log(error);
+    }
+  }
+  self.ready();
 });
 
 /*Meteor.publish('getProviders', function(){
@@ -446,7 +603,7 @@ Meteor.publish('getSphereById', function(sphereId){
 /*  var self = this;
   var userId = this.userId;
   try {
-    var url = localhost + slash + people + slash + search + slash + findByIdentifier + userId;
+    var url = host + slash + people + slash + search + slash + findByIdentifier + userId;
     console.log(url);*/
 
 /*    var options = {
@@ -476,7 +633,7 @@ Meteor.publish('getSphereById', function(sphereId){
     console.log(error);
   }*/
 
-/*  var url = localhost + slash + consumers;
+/*  var url = host + slash + consumers;
   HTTP.call('GET', url, {}, function(error, response){
     if(error){
       console.log(error);
@@ -502,4 +659,23 @@ Meteor.publish('getProviderById', function(providerId){
 
 Meteor.publish('getAttributesFromProvider', function(providerName){
   return Attributes.find({serviceProvider: providerName});
+});*/
+
+/*Meteor.publish('getAttributesByProviders', function(providerNames){
+  var self = this;
+  var url = host + slash + providers + slash + search + slash + findAttributesByProviderNamesList + providerNames;
+  try{
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var attributes = content._embedded.attributes;
+    for (a in attributes){
+      var attribute = {
+        name: attributes[a].name
+      }
+      self.added('attributesByProviders', Random.id(), attribute);
+    }
+    self.ready();
+  } catch (error) {
+    console.log(error);
+  }
 });*/

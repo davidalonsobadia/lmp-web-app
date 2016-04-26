@@ -1,7 +1,7 @@
-Template.providers.events({
+Template.my_providers.events({
   'click #newObject' : function(event){
     event.preventDefault();
-    Router.go('newProvider');
+    Router.go('new_provider');
   },
   'click .delete-provider' : function(event){
     event.preventDefault();
@@ -23,22 +23,25 @@ Template.providers.events({
     }
 
     Meteor.call('joinPersonAndProvider', urlPersonProvider, providersUrl);
-
     window.location.reload(true);
   }
 });
 
-
 Template.providersTable.helpers({
   'Providers' : function(){
-    var user = Session.get('user');
-    var providersUrl = user._links.providers.href;
-    return ReactiveMethod.call('getProvidersbyPerson', providersUrl);
+    return ProvidersByUser.find();
   }
 });
 
+Template.my_providers.onRendered(function(){
+  this.autorun(function(){
+    var user = Session.get('user');
+    var providersUrl = user._links.providers.href;
+   return Meteor.subscribe('getProvidersByUser', providersUrl);
+  });
+});
 
-Template.provider.events({
+Template.new_provider.events({
   'click .save-changes': function(event){
     event.preventDefault();
     var providers = $("[name=provider]").map(
@@ -48,22 +51,20 @@ Template.provider.events({
         }
       })
     .get();
-
     var urlPerson = Session.get('user')._links.providers.href;
     Meteor.call('joinPersonAndProvider', urlPerson, providers);
-
-    Router.go('providers');
+    Router.go('my_providers');
   },
 
   'click .cancel' : function(event) {
     event.preventDefault();
-    Router.go('providers');
+    Router.go('my_providers');
   }
 });
 
 Template.providersList.helpers({
   'Providers' : function(){
-    return ReactiveMethod.call('getProviders');
+    return Providers.find();
   },
 
   'checkedProviders': function(){
@@ -73,7 +74,8 @@ Template.providersList.helpers({
     // 1.5 get all the providers so far activated by the user
     var user = Session.get('user');
     var providersUrl = user._links.providers.href;
-    var providers = ReactiveMethod.call('getProvidersbyPerson', providersUrl);
+    //var providers = ReactiveMethod.call('getProvidersbyPerson', providersUrl);
+    var providers = ProvidersByUser.find().fetch();
 
     // 2. check if the provider identifier is on the person providers list.
     for( p in providers){
@@ -83,7 +85,6 @@ Template.providersList.helpers({
       }
     }
     return '';
-
   }
 });
 
