@@ -12,7 +12,7 @@
 			<div id="navbar-to-collapse" class="navbar-collapse">
         <ul class="nav navbar-nav">
           <li>
-            <a href="#" class="deco-none"><strong class="eurecat-color">Eurecat</strong></a>
+            <a href="{{pathFor route='home'}}" class="deco-none"><strong class="eurecat-color">Eurecat</strong></a>
           </li>
         </ul>
 				<ul class="nav navbar-nav navbar-padding breadcrumb">
@@ -20,7 +20,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="#" class="deco-none"><strong>Welcome {{currentUser.profile.firstName}}</strong></a>
+            <a href="#" class="deco-none"><strong>Welcome {{firstName}}</strong></a>
           </li>
         	<li>
         		<a href="#" class="logout deco-none"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
@@ -54,7 +54,13 @@
     <h1>{{title}}</h1>
       {{#unless compare title "Providers"}}
         {{#unless compare title "Consumers"}}
-          <input type='button' class="btn btn-primary" value="Add New &gt;&gt;" id="newObject" />
+          {{#unless compare title "My Profile"}}
+            {{#unless compare title "New Entity"}}
+              {{#unless compare title "Entity Profile"}}
+                <input type='button' class="btn btn-primary" value="Add New &gt;&gt;" id="newObject" />
+              {{/unless}}
+            {{/unless}}
+          {{/unless}}
         {{/unless}}
       {{/unless}}
   </div>
@@ -65,10 +71,10 @@
   <div class="form-set">
     <div class="row">
       <div class="col-md-2 col-md-offset-3">
-      <input type="button" class="btn btn-success save-changes" value="Save changes" />
+        <input type="submit" class="btn btn-success save-changes" value="Save changes" />
       </div>
       <div class="col-md-5">
-      <input type="button" class="btn btn-danger cancel" value="Cancel" />
+        <input type="button" class="btn btn-danger cancel" value="Cancel" />
       </div>
     </div>
   </div>

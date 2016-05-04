@@ -1,10 +1,46 @@
 Template.new_sphere.onRendered(function(){   
   $('#multiselect').multiselect();
+
+  $('.newsphere').validate({
+    rules: {
+      name: {
+        required: true
+      },
+
+      description: {
+        required: true,
+        minlength: 5
+      }
+    },
+    messages: {
+      name: {
+        required: 'Please type down a Sphere name.'
+      },
+      description: {
+        required: 'Please type down a description.',
+        minlength: 'The description must be longer than 5 characters.'
+      }
+    }
+
+  });
 });
 
 Template.sphere_basicinfo.helpers({
   'SphereDetails' : function(){
     return Session.get('sphere');
+  },
+
+  'isDataExtracted' : function(option){
+    var sphere = Session.get('sphere');
+    var isDataExtracted = false;
+    if (sphere != null){
+      isDataExtracted = sphere.dataextracted;
+    }
+
+    if( (isDataExtracted && option == 'write' ) || ( !isDataExtracted && option == 'read') ){
+      return 'checked';
+    }
+    return '';
   }
 });
 
@@ -26,9 +62,9 @@ Template.sphere_category.helpers({
     for(a in attributesByProviders){
 
       var attribute = attributesByProviders[a];
-
       var category = attribute.category;
       var subcategory = attribute.subcategory;
+
 
       var attributeObject = {
         name:       attribute.name,
@@ -123,35 +159,8 @@ function compare(a,b) {
   else 
     return 0;
 }
-/*
-Template.sphere_subcategories.helpers({
-  'Subcategories': function(){
-    var subcategories = [];
-    for (objectCategory in this){
-      var category = this[objectCategory];
-
-      for (subcategory in category){
-        var dictSubcategory = {};
-        dictSubcategory[subcategory] = category[subcategory];
-        subcategories.push(dictSubcategory);
-      }
-    }
-    return subcategories;
-  },
-
-  'subcategoryName': function(){
-    for (title in this){
-      return title;
-    }
-  }
-});*/
 
 Template.sphere_attributes.helpers({
-/*  'attributes' : function(){
-    for (a in this){
-      return this[a];
-    }
-  },*/
   'checkedAttributeSphere' : function(){
     var sphere = Session.get('sphere');
     if (sphere != null){
@@ -171,7 +180,7 @@ Template.sphere_attributes.helpers({
 });
 
 Template.new_sphere.events({
-  'click .save-changes' : function(event){
+  'submit form' : function(event){
     event.preventDefault();
     var valuesFrom = $("[name=from] option").map(
       function() { 
@@ -190,15 +199,19 @@ Template.new_sphere.events({
       })
     .get();
 
+    var dataExtracted = $('[name=isDataExtracted]:checked').val();
+    var isDataExtracted = dataExtracted == 'true' ? true : false ;
+
     var sphereObject = {
       identifier : 'xxxx',
-      name : $('[name=label]').val(),
+      name : $('[name=name]').val(),
       description : $('[name=description]').val(),
       type: $('[name=type]').val(),
       consumers : valuesTo,
       attributes: attrs,
       isEnabled: true,
-      isDeleted: false
+      isDeleted: false,
+      isDataExtracted: isDataExtracted
     };
 
     var httpCommand = 'POST';

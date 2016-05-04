@@ -12,14 +12,14 @@
 
 
 <template name="consumersList">
-	{{#if Consumers.count}}	
+	{{#if Consumers.length}}	
 		<ul class="list-group">
 
 			<li class="list-group-item">
 				<input type="checkbox" name="select-all" id="select-all" /><strong>Select All</strong>
 			</li>
 
-			{{#each Consumers}}
+			{{#each arrayDifference Consumers ConsumersByUser}}
 				<li class="list-group-item">
 					<div class="checkbox">
 						<label><input type="checkbox" {{checkedConsumers}} name="consumer" id ="{{link}}" value="{{name}}">{{name}}</label>

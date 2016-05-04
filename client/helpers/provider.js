@@ -24,22 +24,52 @@ Template.my_providers.events({
 
     Meteor.call('joinPersonAndProvider', urlPersonProvider, providersUrl);
     window.location.reload(true);
+  },
+
+  'change [type=checkbox]': function(event){
+    event.preventDefault();
+    var enabled = event.currentTarget.checked;
+    var providerUrl = event.currentTarget.id;
+    Meteor.call('updateProviderEnabled', enabled, providerUrl);
   }
 });
 
 Template.providersTable.helpers({
   'Providers' : function(){
     return ProvidersByUser.find();
+  },
+  'ready': function () {
+    return _.all(Template.instance().subscriptions, function (sub) {
+      return sub.ready();
+    });
+  },
+  'checkedObject': function(){
+    var isEnabled = this.enabled;
+    if(isEnabled){
+      return "checked";
+    } else {
+      return "";
+    }
   }
 });
 
+
+
 Template.my_providers.onRendered(function(){
-  this.autorun(function(){
-    var user = Session.get('user');
-    var providersUrl = user._links.providers.href;
-   return Meteor.subscribe('getProvidersByUser', providersUrl);
+  var user = Session.get('user');
+  var providersUrl = user._links.providers.href;
+  this.subscriptions = [
+    Meteor.subscribe('getProvidersByUser', providersUrl)
+    /* ... */
+  ];
+});
+
+Template.my_providers.onDestroyed(function () {
+  _.each(this.subscriptions, function (sub) {
+    sub.stop();
   });
 });
+
 
 Template.new_provider.events({
   'click .save-changes': function(event){
@@ -51,6 +81,12 @@ Template.new_provider.events({
         }
       })
     .get();
+
+    var previousProviders = ProvidersByUser.find().fetch();
+    for ( p in previousProviders){
+      providers.push(previousProviders[p].link);
+    }
+
     var urlPerson = Session.get('user')._links.providers.href;
     Meteor.call('joinPersonAndProvider', urlPerson, providers);
     Router.go('my_providers');
@@ -64,7 +100,11 @@ Template.new_provider.events({
 
 Template.providersList.helpers({
   'Providers' : function(){
-    return Providers.find();
+    return Providers.find().fetch();
+  },
+
+  'ProvidersByUser' : function(){
+    return ProvidersByUser.find().fetch();
   },
 
   'checkedProviders': function(){

@@ -41,13 +41,15 @@ Template.my_spheres.events({
     window.location.reload(true);
   },
 
-  'change [type=checkbox]': function(){
+  'change [type=checkbox]': function(event){
+    event.preventDefault();
     var enabledObject = {
       documentId : this._id,
       isEnabled : !this.enabled
     };
-    // TODO: call
-    Meteor.call('updateSphereEnabled', enabledObject);
+    var enabled = event.currentTarget.checked;
+    var sphereUrl = event.currentTarget.id;
+    Meteor.call('updateSphereEnabled', enabled, sphereUrl);
   }
 });
 
@@ -57,46 +59,10 @@ Template.spheresTable.helpers({
   },
   'checkedObject' : function(){
     var isEnabled = this.enabled;
-    if(!isEnabled){
+    if(isEnabled){
       return "checked";
     } else {
       return "";
     }
   }
-});
-
-
-// Common helpers
-Template.registerHelper('arrayDifference', function(array1, array2){
-  var array1Names = [];
-  var array2Names = [];
-
-  if(array1 != undefined && array1 != null && array1.length > 0){
-    for (i in array1){
-      array1Names.push(array1[i].name);
-    }
-  }
-
-  if(array2 != undefined && array2 != null && array2.length > 0){
-    for (j in array2){
-      array2Names.push(array2[j].name);
-    }   
-  }
-
-  var arrayNamesDiff = $(array1Names).not(array2Names).get();
-  var arrayDiff = [];
-
-  for (objectIndex in array1){
-    var name = array1[objectIndex].name;
-
-    for (arrayNameIndex in arrayNamesDiff){
-
-      if ( name == arrayNamesDiff[arrayNameIndex]){
-        arrayDiff.push(array1[objectIndex]);
-      }
-
-    } 
-  }
-  return arrayDiff;
-
 });

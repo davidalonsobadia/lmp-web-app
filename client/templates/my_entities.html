@@ -1,16 +1,16 @@
-<template name="my_consumers">
-	<div class="container">
+<template name='my_entities'>
+		<div class="container">
 		{{> navbar}}
 
-		{{> JumbotronTitle title="My Consumers"}}
+		{{> JumbotronTitle title="My Entities"}}
 
-		{{> consumersByUser}}
+		{{> entitiesByUser}}
 	</div>
 </template>
 
-<template name="consumersByUser">
+<template name="entitiesByUser">
 	{{#if ready}}
-		{{#if Consumers.count}}
+		{{#if Entities.count}}
 			<table class="table table-bordered table-striped">
 				<thead>
 					<tr>
@@ -24,7 +24,7 @@
 						</td>
 					</tr>
 				</thead>
-				{{#each Consumers}}
+				{{#each Entities}}
 				<tbody>
 					<tr>
 						<td>
@@ -34,7 +34,8 @@
 							{{description}}
 						</td>
 						<td>
-							<input type="button" class="btn btn-danger delete-consumer" name="delete-button" id="{{link}}" value="Delete"/>
+							<input type="button" class="btn btn-success use-entity" name="use-button" id="{{link}}" value="Use this entity"/>
+							<input type="button" class="btn btn-danger delete-entity" name="delete-button" id="{{link}}" value="Delete"/>
 						</td>
 					</tr>
 				</tbody>

@@ -14,19 +14,13 @@
 			<thead>
 				<tr>
 					<td>
-						Sphere ID
-					</td>
-					<td>
-						Label
+						Name
 					</td>
 					<td>
 						Description
 					</td>
 					<td>
-						Consumers
-					</td>
-					<td>
-						Disabled
+						Enabled
 					</td>
 					<td>
 						Actions
@@ -37,19 +31,13 @@
 			<tbody>
 				<tr>
 					<td>
-						{{_id}}
-					</td>
-					<td>
 						{{name}}
 					</td>
 					<td>
 						{{description}}
 					</td>
 					<td>
-						{{consumers}}
-					</td>
-					<td>
-						<input type="checkbox" {{checkedObject}}>
+						<input type="checkbox" id="{{link}}" {{checkedObject}}>
 					</td>
 					<td>
 						<input type="button" class="btn btn-success edit-sphere" id="{{link}}" value="Edit"/>

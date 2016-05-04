@@ -1,6 +1,6 @@
 <template name="new_sphere">
 	<div class="container">
-		<form class="form-horizontal">
+		<form class="form-horizontal newsphere">
 			{{> navbar}}
 
 			{{> sphere_basicinfo}}
@@ -13,13 +13,15 @@
 </template>
 
 <template name="sphere_basicinfo">
+
 	<div class="form-set">
 		<div class="form-group">
-			<label class="control-label col-md-2">Label: </label>
+			<label class="control-label col-md-2">Name: </label>
 			<div class="col-md-8">
-					<input class="form-control" type="text" name="label" value='{{SphereDetails.name}}' placeholder='Label'>
+					<input class="form-control" type="text" name="name" value='{{SphereDetails.name}}'>
 			</div>
 		</div>
+
 		<div class="form-group">
 			<label class="control-label col-md-2">Description: </label>
 			<div class="col-md-8">
@@ -31,6 +33,15 @@
 			<label class="control-label col-md-2">Type: </label>
 			<div class="col-md-8">
 				<input class="form-control" type="text" name="type" value='{{SphereDetails.type}}' placeholder='Type'>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="radio col-md-offset-2">
+				<label><input type="radio" name="isDataExtracted" id="read" {{isDataExtracted "read"}} value="false">Check only whether providers have the attributes.</label>
+			</div>
+			<div class="radio col-md-offset-2">
+				<label><input type="radio" name="isDataExtracted" id="write" {{isDataExtracted "write"}} value="true">Consumers will get attribute's values.</label>
 			</div>
 		</div>
 	</div>

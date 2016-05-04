@@ -1,0 +1,47 @@
+<template name="entity_profile">
+	<div class="container">
+		{{> navbar}}
+
+		{{> JumbotronTitle title="Entity Profile"}}
+
+		{{> entity_form}}
+	</div>
+
+</template>
+
+<template name="entity_form">
+	<form class="form-horizontal form-top entity">
+		<div class="row">
+			<div class="form-group">
+				<label class="col-md-2 control-label">Name:</label>
+				<div class="col-md-4">
+					<input type="text" value="{{name}}" class="form-control" name="name">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group">
+				<label class="col-md-2 control-label">Description:</label>
+				<div class="col-md-4">
+					<input type="text" value="{{description}}" class="form-control" name="description">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group">
+				<label class="col-md-2 control-label">eMail: </label>
+				<div class="col-md-4">
+					<input type="text" value="{{email}}" class="form-control" name="email">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1 col-md-offset-2">
+				<input type="submit" value="Update" class="btn btn-primary update">
+			</div>
+			<div class="col-md-4 col-md-offset-1">
+				<input type="button" value="Cancel" class="btn btn-danger cancel">
+			</div>
+		</div>
+	</form>
+</template>

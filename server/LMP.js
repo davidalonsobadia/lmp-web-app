@@ -1,4 +1,17 @@
+//declare a simple async function
+function delayedMessge(delay, message, callback) {
+  setTimeout(function() {
+    callback(null, message);
+  }, delay);
+}
+
+
 Meteor.methods({
+
+  'delayedEcho': function(message) {
+    var response = Meteor._wrapAsync(delayedMessge(20000, message));
+    return response;
+  },
   
   'upsertSphere' : function(sphereObject, httpCommand){
     if(httpCommand == 'POST'){
@@ -9,8 +22,9 @@ Meteor.methods({
           name:               sphereObject.name,
           description:        sphereObject.description,
           type:               sphereObject.type,
-          isEnabled:          sphereObject.isEnabled,
-          isDeleted:          sphereObject.isDeleted
+          enabled:            sphereObject.isEnabled,
+          deleted:            sphereObject.isDeleted,
+          dataextracted:      sphereObject.isDataExtracted
         }
       });
       return response;
@@ -21,17 +35,62 @@ Meteor.methods({
           name:               sphereObject.name,
           description:        sphereObject.description,
           type:               sphereObject.type,
-          isEnabled:          sphereObject.isEnabled,
-          isDeleted:          sphereObject.isDeleted
+          enabled:            sphereObject.isEnabled,
+          deleted:            sphereObject.isDeleted,
+          dataextracted:      sphereObject.isDataExtracted
         }
       });
       return response;
     }
   },
 
+  'upsertEntity': function(entityObject, userUrl){
+    var url = host + slash + entities;
+
+    var response = HTTP.post(url, {
+      data : {
+        identifier: entityObject.identifier,
+        name: entityObject.name,
+        description: entityObject.description,
+        email: entityObject.email
+      }
+    });
+
+    var entityUrl = response.headers.location;
+    
+    var userCreatorUrl = entityUrl + slash + userCreator;
+    // Put the userCreator in the Entity Object
+    var responseUserCreator = HTTP.put(userCreatorUrl, {
+      headers: {
+        "Content-Type":     "text/uri-list"
+      },
+      content: userUrl
+    });
+
+    var entitiesCreatedByUserUrl = userUrl + slash + entities
+    //Put the EntitiyObject in the User Entity created list
+    var responseUserEntity = HTTP.post(entitiesCreatedByUserUrl, {
+      headers: {
+        "Content-Type":  "text/uri-list"
+      },
+      content: entityUrl
+    });
+    return response;
+  },
+
+  'updateEntity': function(entityObject, entityUrl){
+    var response = HTTP.patch(entityUrl, {
+      data: {
+        name: entityObject.name,
+        description: entityObject.description,
+        email: entityObject.email
+      }
+    });
+  },
+
   'joinSphereAndConsumer': function(sphereConsumerUrl, consumersUrl){
     var urlConsumersString = '';
-    for (url in consumersUrl){
+    for (url in consumersUrl) {
       urlConsumersString += consumersUrl[url] + '\n'
     }
 
@@ -126,18 +185,25 @@ Meteor.methods({
         isDeleted:    consumerObject.isDeleted
       }
     });
-    return response;
+    return response;  
   },
 
-  'updateSphereEnabled' : function(enabledObject){
-    Spheres.update(
-    { 
-      _id: enabledObject.documentId
-    }, {
-      $set: {
-        enabled: enabledObject.isEnabled
+  'updateSphereEnabled' : function(enabled, sphereUrl){
+    var response = HTTP.patch(sphereUrl, {
+      data: {
+        enabled: enabled
       }
-    });       
+    });
+    return response;  
+  },
+
+  'updateProviderEnabled' : function(enabled, providerUrl){
+    var response = HTTP.patch(providerUrl, {
+      data: {
+        enabled: enabled
+      }
+    });
+    return response;  
   },
 
   'registerUser' : function(personObject){
@@ -145,16 +211,17 @@ Meteor.methods({
     var url = host + slash + people + slash;
     var response = HTTP.post(url, {
       data: {
-        identifier: _id,
-        name : personObject.name,
-        surname : personObject.surname,
-        //phone:    personObject.phone,
-        email : personObject.email,
-        password : personObject.password
+        identifier:   _id,
+        name :        personObject.name,
+        surname :     personObject.surname,
+        phone:        personObject.phone,
+        email :       personObject.email,
+        password :    personObject.password
       }
     }, function(error, response){
       if( error ){
-        console.log('Error: ' + error);
+        console.log('Error in registerUser');
+        console.log(error);
       } else {
         console.log('User added correctly!');
         console.log(response);
@@ -176,6 +243,7 @@ Meteor.methods({
       throw new Meteor.Error('404', 'User not found', 'User not found in the Database');
     }
   },
+
   'getSpheresByPerson': function(spheresUrl){
     try{
       var response = HTTP.get(spheresUrl);
@@ -187,6 +255,7 @@ Meteor.methods({
     }
     return [];
   },
+
   'getSphere': function(sphereUrl){
     try{
       var response = HTTP.get(sphereUrl);
@@ -196,6 +265,58 @@ Meteor.methods({
       console.log(error);
     }
     return '';
+  },
+
+  'updateUser': function(user){
+    HTTP.put(user.link, {
+      data: {
+        name:         user.name,
+        surname:      user.surname,
+        phone:        user.phone,
+        email:        user.email,
+        password:     user.password,
+        personal_id:  user.personal_id
+      }
+    });
+  },
+
+  'getConsumersByUser': function(consumersUrl){
+    try{
+      var response = HTTP.get(consumersUrl);
+      var content = JSON.parse(response.content);
+      var consumersList = content._embedded.consumers;
+      return consumersList;
+    } catch (error){
+      console.log(error);
+    }
+    return [];
+  },
+
+  'joinPersonAndEntities': function(urlPersonEntities, entitiesUrl){
+    var urlEntitiesString = '';
+    for ( url in entitiesUrl){
+      urlEntitiesString += entitiesUrl[url] + '\n'
+    }
+    return HTTP.put(urlPersonEntities, {
+      headers: {
+        "Content-Type":       "text/uri-list"
+      },
+      content: urlEntitiesString
+    });
+  },
+
+  'deleteEntity': function(entityUrl){
+    //var response = HTTP.delete(entityUrl);
+    var response = HTTP.call('DELETE', entityUrl, {});
+  },
+
+  'getEntity': function(entityUrl){
+    var response = HTTP.get(entityUrl);
+    var entity = JSON.parse(response.content);
+    if ( entity == undefined || entity == null ){
+        throw new Meteor.Error('404', 'Entity not found', 'Entity not found in the Database');
+    }
+    return entity;
   }
 
 /*  'getConsumersInSphere': function(sphereConsumersUrl){
@@ -362,7 +483,6 @@ Meteor.publish('getProviders', function(){
     var providersList = content._embedded.providers;
 
     for (p in providersList){
-
       var provider = {
         name:         providersList[p].name,
         description:  providersList[p].description,
@@ -382,6 +502,7 @@ Meteor.publish('getProviders', function(){
 });
 
 Meteor.publish('getProvidersByUser', function(providersUrl){
+  console.log('getProvidersByUser');
   var self = this;
   if(providersUrl != null) {
     try{
@@ -407,6 +528,7 @@ Meteor.publish('getProvidersByUser', function(providersUrl){
       console.log(error);
     }
   }
+  console.log('---------------------------------------------------');
   self.ready();
 });
 
@@ -433,6 +555,7 @@ Meteor.publish('getConsumersInSphere', function(sphereConsumersUrl){
 });
 
 Meteor.publish('getCategoriesByProviders', function(providerNames){
+  console.log('getCategoriesByProviders');
   var self = this;
   var url = host + slash + providers + slash + search + slash + findCategoriesByProviderNamesList + providerNames;
   try{
@@ -445,14 +568,16 @@ Meteor.publish('getCategoriesByProviders', function(providerNames){
       }
       self.added('categoriesByProviders', Random.id(), attribute);
     }
-    self.ready();
   } catch (error) {
     console.log('Error in getCategoriesByProviders');
     console.log(error);
   }
+  console.log('---------------------------------------------------');
+  self.ready();
 });
 
 Meteor.publish('getAttributes', function(){
+  console.log('getAttributes');
   var self = this;
   var url = host + slash + attrs;
   try{
@@ -472,11 +597,12 @@ Meteor.publish('getAttributes', function(){
     console.log('Error in getAttributes');
     console.log(error);
   }
+  console.log('---------------------------------------------------');
   self.ready();
 });
 
 Meteor.publish('getAttributesBySphere', function(sphereAttributesUrl){
-
+  console.log('getAttributesBySphere');
   var self = this;
   if (sphereAttributesUrl != null){
     try{
@@ -495,16 +621,14 @@ Meteor.publish('getAttributesBySphere', function(sphereAttributesUrl){
       console.log(error);
     }
   }
+  console.log('---------------------------------------------------');
   self.ready();
-
 });
 
 Meteor.publish('getSpheresByUser', function(spheresUrl){
   var self = this;
   console.log('getSpheresByUser');
   console.log(spheresUrl);
-  console.log('---------------------------------------------------');
-
   try{
     var response = HTTP.get(spheresUrl);
     var content = JSON.parse(response.content);
@@ -514,7 +638,9 @@ Meteor.publish('getSpheresByUser', function(spheresUrl){
         name:           spheresList[s].name,
         description:    spheresList[s].description,
         type:           spheresList[s].type,
-        link:           spheresList[s]._links.self.href
+        link:           spheresList[s]._links.self.href,
+        enabled:        spheresList[s].enabled,
+        dataextracted:  spheresList[s].dataextracted
       }
       self.added('spheresByUser', Random.id(), sphere);
     }
@@ -522,6 +648,7 @@ Meteor.publish('getSpheresByUser', function(spheresUrl){
     console.log('Error in getSpheresByUser')
     console.log(error);
   }
+  console.log('---------------------------------------------------');
   self.ready();
 });
 
@@ -529,8 +656,6 @@ Meteor.publish('getAttributesByProviders', function(providerLinks){
   var self = this;
   console.log('getAttributesByProviders');
   console.log(providerLinks);
-  console.log('---------------------------------------------------');
-
   if (providerLinks.length > 0){
     try{
       for (p in providerLinks){
@@ -554,32 +679,78 @@ Meteor.publish('getAttributesByProviders', function(providerLinks){
       console.log(error);   
     }
   }
+  console.log('---------------------------------------------------');
   self.ready();
 });
 
 Meteor.publish('getConsumersByUser', function(consumersUrl){
-
-  var self = this;
   console.log('getConsumersByUser');
   console.log(consumersUrl);
-  console.log('---------------------------------------------------');
+  var self = this;
   if (consumersUrl != null){
     try{
       var response = HTTP.get(consumersUrl);
       var content = JSON.parse(response.content);
       var consumers = content._embedded.consumers;
-      for (c in consumers){
-        var consumer = {
-          name:         consumers[c].name,
-          link:         consumers[c]._links.self.href,
-          description : consumers[c].description
+
+      _.each(consumers, function(consumer){
+        var consumerObject = {
+          name:         consumer.name,
+          link:         consumer._links.self.href,
+          description : consumer.description
         }
-        self.added('consumersByUser', Random.id(), consumer);
-      }
+        self.added('consumersByUser', Random.id(), consumerObject);
+      });
+
     } catch (error){
       console.log('Error in getConsumersByUser');
       console.log(error);
     }
+  }
+  console.log('---------------------------------------------------');
+  self.ready();
+});
+
+Meteor.publish('getRegisteredEmails', function(){
+  console.log('getRegisteredEmails');
+  var self = this;
+  try {
+    var url = host + slash + people;
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var users = content._embedded.people;
+
+    _.each(users, function(user){
+      var email = { email: user.email};
+      self.added('registeredEmails', Random.id(), email);
+    });
+  } catch (error){
+    console.log('Error in getRegisteredEmails');
+    console.log(error);
+  }
+  self.ready();
+
+});
+
+Meteor.publish('getEntitiesByUser', function(entitiesUrl){
+  console.log('getEntitiesByUser');
+  var self = this;
+  try{
+    var response = HTTP.get(entitiesUrl);
+    var content = JSON.parse(response.content);
+    var entities = content._embedded.entities;
+
+    _.each(entities, function(entity){
+      var entityObject = {
+        name: entity.name,
+        description: entity.description,
+        link: entity._links.self.href
+      }
+      self.added('entitiesByUser', Random.id(), entityObject);
+    });
+  } catch (error) {
+    console.log('Error in getEntitiesByUser');
+    console.log(error);
   }
   self.ready();
 });

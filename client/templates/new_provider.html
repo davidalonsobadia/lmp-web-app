@@ -17,14 +17,14 @@
 </template>
 
 <template name="providersList">
-	{{#if Providers.count}}
+
+	{{#if Providers.length}}
 		<ul class="list-group">
 
 			<li class="list-group-item">
 				<input type="checkbox" name="select-all" id="select-all" /><strong>Select All</strong>
 			</li>
-
-			{{#each Providers}}
+			{{#each arrayDifference Providers ProvidersByUser}}
 				<li class="list-group-item">
 					<div class="checkbox">
 						<label><input type="checkbox" {{checkedProviders}} name="provider" id ="{{link}}" value="{{name}}">{{name}}</label>

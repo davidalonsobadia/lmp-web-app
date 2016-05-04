@@ -1,17 +1,32 @@
 Template.consumersByUser.helpers({
   'Consumers' : function(){
     return ConsumersByUser.find();
+  },
+  'ready': function () {
+    return _.all(Template.instance().subscriptions, function (sub) {
+      return sub.ready();
+    });
   }
 });
 
+
+
 Template.my_consumers.onRendered(function(){
-  this.autorun(function(){
-    var user = Session.get('user');
-    var consumersUrl = user._links.consumers.href;
-    console.log('onRedered');
-    Meteor.subscribe('getConsumersByUser', consumersUrl);
+  var user = Session.get('user');
+  var consumersUrl = user._links.consumers.href;
+  this.subscriptions = [
+    Meteor.subscribe('getConsumersByUser', consumersUrl)
+    /* ... */
+  ];
+});
+
+Template.my_consumers.onDestroyed(function () {
+  _.each(this.subscriptions, function (sub) {
+    sub.stop();
   });
 });
+
+
 
 Template.my_consumers.events({
   'click #newObject' : function(event){
@@ -53,11 +68,14 @@ Template.new_consumer.events({
 
     var urlPerson = Session.get('user')._links.consumers.href;
 
+    var previousConsumers = ConsumersByUser.find().fetch();
+    for ( p in previousConsumers){
+      consumers.push(previousConsumers[p].link);
+    }
+
     Meteor.call('joinPersonAndConsumer', urlPerson, consumers, function(error, response){
       if (!error){
-        //success
         Router.go('my_consumers');
-
       } else {
         console.log(error);
         Router.go('my_consumers');
@@ -74,8 +92,13 @@ Template.new_consumer.events({
 
 Template.consumersList.helpers({
   'Consumers' : function(){
-    return Consumers.find();
+    return Consumers.find().fetch();
   },
+
+  'ConsumersByUser' : function(){
+    return ConsumersByUser.find().fetch();
+  },
+
   'checkedConsumers': function(){
     // 1. get the provider identifier (here we will use name)
     var name = this.name;
