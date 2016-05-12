@@ -1,26 +1,26 @@
-<template name='my_entities'>
+<template name='people'>
 		<div class="container">
 		{{> navbar}}
 
-		{{> JumbotronTitle title="My Entities"}}
+		{{> JumbotronTitle title="People"}}
 
-		{{> entitiesByUser}}
+		{{> people_table}}
 	</div>
 </template>
 
-<template name="entitiesByUser">
-	{{> EntitiesAssociatedTemplate}}
+<template name="people_table">
+	{{> UsersAssociatedTemplate}}
 
-	{{> AdminEntitiesTemplate}}
+	{{> AdminUsersTemplate}}
 
-	{{> EntitiesRequestedFromEntitiesTemplate}}
+	{{> UsersRequestedFromEntitiesTemplate}}
 
-	{{> EntitiesRequestedFromUsersTemplate}}
+	{{> UsersRequestedFromUsersTemplate}}
 </template>
 
-<template name="EntitiesAssociatedTemplate">
+<template name="UsersAssociatedTemplate">
 	{{#if ready}}
-		{{#if EntitiesAssociated.length}}
+		{{#if UsersAssociated.length}}
 			<table class="table table-bordered table-striped">
 				<thead>
 					<tr>
@@ -28,7 +28,7 @@
 							Name
 						</td>
 						<td>
-							Description
+							Surname
 						</td>
 						<td>
 							Subscribed
@@ -40,20 +40,20 @@
 						</td>
 					</tr>
 				</thead>
-				{{#each EntitiesAssociated}}
+				{{#each UsersAssociated}}
 				<tbody>
 					<tr>
 						<td>
 							{{name}}
 						</td>
 						<td>
-							{{description}}
+							{{surname}}
 						</td>
 						<td>
 							Subscribed!
 						</td>
 						<td>
-							<input type="button" class="btn btn-danger dissassociate" name="{{email}}" id="{{link}}" value="Dissassociate"/>
+							<input type="button" class="btn btn-danger dissassociate-user" name="{{email}}" id="{{link}}" value="Dissassociate this user"/>
 						</td>
 						<td>
 						</td>
@@ -67,9 +67,9 @@
 	{{/if}}
 </template>
 
-<template name="AdminEntitiesTemplate">
+<template name="AdminUsersTemplate">
 	{{#if ready}}
-		{{#if AdminEntities.length}}
+		{{#if AdminUsers.length}}
 			<table class="table table-bordered table-striped">
 				<thead>
 					<tr>
@@ -77,81 +77,27 @@
 							Name
 						</td>
 						<td>
-							Description
+							Surname
 						</td>
 						<td>
 							Subscribed
 						</td>
 						<td>
-							Dissassociate
-						</td>
-						<td>
+							
 						</td>
 					</tr>
 				</thead>
-				{{#each AdminEntities}}
+				{{#each AdminUsers}}
 				<tbody>
 					<tr>
 						<td>
 							{{name}}
 						</td>
 						<td>
-							{{description}}
+							{{surname}}
 						</td>
 						<td>
-							Subscribed!
-						</td>
-						<td>
-						</td>
-						<td>
-							<input type="button" class="btn btn-success use-entity" name="use-button" id="{{link}}" value="Use this entity"/>
-						</td>
-					</tr>
-				</tbody>
-				{{/each}}
-			</table>
-		{{/if}}
-	{{else}}
-	    {{> loading}}
-	{{/if}}
-</template>
-
-<template name="EntitiesRequestedFromEntitiesTemplate">
-	{{#if ready}}
-		{{#if EntitiesRequestedFromEntities.length}}
-			<table class="table table-bordered table-striped">
-				<thead>
-					<tr>
-						<td>
-							Name
-						</td>
-						<td>
-							Description
-						</td>
-						<td>
-							Subscribed
-						</td>
-						<td>
-							Dissassociate
-						</td>
-						<td>
-						</td>
-					</tr>
-				</thead>
-				{{#each EntitiesRequestedFromEntities}}
-				<tbody>
-					<tr>
-						<td>
-							{{name}}
-						</td>
-						<td>
-							{{description}}
-						</td>
-						<td>
-							You have to approval the association
-						</td>
-						<td>
-							<input type="button" class="btn btn-success associate-entity" name="{{email}}" id="{{link}}" value="Associate"/>
+							Admin user!
 						</td>
 						<td>
 						</td>
@@ -165,9 +111,9 @@
 	{{/if}}
 </template>
 
-<template name="EntitiesRequestedFromUsersTemplate">
+<template name="UsersRequestedFromEntitiesTemplate">
 	{{#if ready}}
-		{{#if EntitiesRequestedFromUsers.length}}
+		{{#if UsersRequestedFromEntities.length}}
 			<table class="table table-bordered table-striped">
 				<thead>
 					<tr>
@@ -175,7 +121,7 @@
 							Name
 						</td>
 						<td>
-							Description
+							Surname
 						</td>
 						<td>
 							Subscribed
@@ -187,20 +133,70 @@
 						</td>
 					</tr>
 				</thead>
-				{{#each EntitiesRequestedFromUsers}}
+				{{#each UsersRequestedFromEntities}}
 				<tbody>
 					<tr>
 						<td>
 							{{name}}
 						</td>
 						<td>
-							{{description}}
+							{{surname}}
 						</td>
 						<td>
-							The Entity has to approve the association
+							The User has to approve the association
 						</td>
 						<td>
-							<input type="button" class="btn btn-danger cancel-association-entity" name="{{email}}" id="{{link}}" value="Cancel Association Request"/>
+							<input type="button" class="btn btn-danger cancel-association-user" name="{{email}}" id="{{link}}" value="Cancel Association Request"/>
+						</td>
+						<td>
+						</td>
+					</tr>
+				</tbody>
+				{{/each}}
+			</table>
+		{{/if}}
+	{{else}}
+	    {{> loading}}
+	{{/if}}
+</template>
+
+<template name="UsersRequestedFromUsersTemplate">
+	{{#if ready}}
+		{{#if UsersRequestedFromUsers.length}}
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<td>
+							Name
+						</td>
+						<td>
+							Surname
+						</td>
+						<td>
+							Subscribed
+						</td>
+						<td>
+							Dissassociate
+						</td>
+						<td>
+						</td>
+					</tr>
+				</thead>
+				{{#each UsersRequestedFromUsers}}
+				<tbody>
+					<tr>
+						<td>
+							{{name}}
+						</td>
+						<td>
+							{{surname}}
+						</td>
+						<td>
+							You have to Approve this user association...
+						</td>
+						<td>
+							<input type="button" class="btn btn-success associate-user" name="{{email}}" id="{{link}}" value="Associate"/>
+							<input type="button" class="btn btn-danger cancel-association-user" name="{{email}}" id="{{link}}" value="Cancel Association Request"/>
 						</td>
 						<td>
 						</td>

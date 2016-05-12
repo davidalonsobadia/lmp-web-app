@@ -55,25 +55,22 @@ Meteor.methods({
         email: entityObject.email
       }
     });
+    var location = response.headers.location;
+    return location;
+  },
 
-    var entityUrl = response.headers.location;
-    
-    var userCreatorUrl = entityUrl + slash + userCreator;
-    // Put the userCreator in the Entity Object
-    var responseUserCreator = HTTP.put(userCreatorUrl, {
-      headers: {
-        "Content-Type":     "text/uri-list"
-      },
-      content: userUrl
-    });
+  'updateEntityRequests': function(userUrl, entityUrls){
+    console.log('in updateEntityRequests');
 
-    var entitiesCreatedByUserUrl = userUrl + slash + entities
-    //Put the EntitiyObject in the User Entity created list
-    var responseUserEntity = HTTP.post(entitiesCreatedByUserUrl, {
+    var entityUrlString = _.map(entityUrls, function(url){
+      return url + '\n';
+    }).join('').trim();
+
+    var response = HTTP.put(userUrl, {
       headers: {
         "Content-Type":  "text/uri-list"
       },
-      content: entityUrl
+      content: entityUrlString
     });
     return response;
   },
@@ -305,8 +302,23 @@ Meteor.methods({
     });
   },
 
+  'getAndDeletePersonOrganizationRelationshipsByEntityEmail': function(entityEmail){
+    var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+      findPersonOrganizationRelationshipsByEntityEmail + questionMark +
+      'email=' + entityEmail;
+
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var associations = content._embedded.personOrganizationRelationships;
+
+    _.each(associations, function(association){
+      var associationLink = association._links.self.href;
+      HTTP.call('DELETE', associationLink, {});
+    });
+    return content;
+  },
+
   'deleteEntity': function(entityUrl){
-    //var response = HTTP.delete(entityUrl);
     var response = HTTP.call('DELETE', entityUrl, {});
   },
 
@@ -317,117 +329,45 @@ Meteor.methods({
         throw new Meteor.Error('404', 'Entity not found', 'Entity not found in the Database');
     }
     return entity;
+  },
+
+  'getPersonOrganizationRelationshipByEntityEmailAndPersonEmail': function(userEmail, entityEmail){
+    var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+      findPersonOrganizationRelationshipByEntityEmailAndPersonEmail + questionMark +
+      'entityEmail=' + entityEmail + ampersand + 'personEmail=' + userEmail; 
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var associationLink = content._links.self.href;
+    return associationLink;
+  },
+
+  'changePersonOrganizationState': function(associationLink, state){
+    HTTP.patch(associationLink, {
+      data: {
+        state: state
+      }
+    });
+  },
+
+  'deletePersonOrganizationRelationship': function(associationLink){
+    console.log('deleting personOrganizationRelationship...');
+    var response = HTTP.call('delete', associationLink, {}); 
+  },
+
+  'insertPersonOrganizationRelationship': function(userUrl, entityUrl, state){
+    console.log('insertPersonOrganizationRelationship');
+
+    var personOrganizationRelationshipsUrl = host + slash + personOrganizationRelationships
+
+    var response = HTTP.post(personOrganizationRelationshipsUrl, {
+      data: {
+        state: state,
+        organization: entityUrl,
+        person: userUrl
+      }
+    });
+    return response;
   }
-
-/*  'getConsumersInSphere': function(sphereConsumersUrl){
-    try{
-      var response = HTTP.get(sphereConsumersUrl);
-      var content = JSON.parse(response.content);
-      var consumers = content._embedded.consumers;
-      return consumers;
-    } catch(error) {
-      console.log(error);
-    }
-    return [];
-  },
-
-  'getCategoriesByProviders': function(providerNames){
-    var url = host + slash + providers + slash + search + slash + findCategoriesByProviderNamesList + providerNames;
-    try{
-      var response = HTTP.get(url);
-      var content = JSON.parse(response.content);
-      var attributeCategories = content._embedded.attributeCategories;
-      return attributeCategories;
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
-  'getAttributesByProviders': function(providerNames){
-    var url = host + slash + providers + slash + search + slash + findAttributesByProviderNamesList + providerNames;
-    try{
-      var response = HTTP.get(url);
-      var content = JSON.parse(response.content);
-      var attributes = content._embedded.attributes;
-      return attributes;
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
-  'getAttributesBySphere': function(sphereAttributesUrl){
-    try{
-      var response = HTTP.get(sphereAttributesUrl);
-      var content = JSON.parse(response.content);
-      var attributes = content._embedded.attributes;
-      return attributes;
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
-  'getAttributesByProvider': function(providerAttributesUrl){
-    try{
-      var response = HTTP.get(providerAttributesUrl);
-      var content = JSON.parse(response.content);
-      var attributes = content._embedded.attributes;
-      return attributes;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-*/
-/*  'getConsumersbyPerson': function(consumersUrl){
-    try{
-      var response = HTTP.get(consumersUrl);
-      var content = JSON.parse(response.content);
-      var consumersList = content._embedded.consumers;
-      return consumersList;
-    } catch (error){
-      console.log(error);
-    }
-    return [];
-  },
-
-  'getConsumers': function(){
-    var url = host + slash + consumers;
-    var consumersList;
-    try{
-      var response = HTTP.get(url);
-      var content = JSON.parse(response.content);
-      consumersList = content._embedded.consumers;
-    } catch (error){
-      console.log(error);
-    }
-    return consumersList;
-  },
-
-  'getProvidersbyPerson': function(providersUrl){
-    try{
-      var response = HTTP.get(providersUrl);
-      var content = JSON.parse(response.content);
-      var providersList = content._embedded.providers;
-      return providersList;
-    } catch (error){
-      console.log(error);
-    }
-    return [];
-  },
-*/
-/*  'getProviders': function(){
-    var url = host + slash + providers;
-    var providersList;
-    try{
-      var response = HTTP.get(url);
-      var content = JSON.parse(response.content);
-      providersList = content._embedded.providers;
-
-    } catch (error){
-      console.log(error);
-    }
-    return providersList;
-  },
-*/
 });
 
 Meteor.publish('getConsumers', function(){
@@ -732,24 +672,338 @@ Meteor.publish('getRegisteredEmails', function(){
 
 });
 
-Meteor.publish('getEntitiesByUser', function(entitiesUrl){
-  console.log('getEntitiesByUser');
+Meteor.publish('getEntities', function(){
+  console.log('getEntities');
   var self = this;
   try{
-    var response = HTTP.get(entitiesUrl);
+    var url = host + slash + entities;
+    var response = HTTP.get(url);
     var content = JSON.parse(response.content);
-    var entities = content._embedded.entities;
+    var entitiesAPI = content._embedded.entities;
 
-    _.each(entities, function(entity){
+    _.each(entitiesAPI, function(entity){
       var entityObject = {
         name: entity.name,
         description: entity.description,
+        email: entity.email,
         link: entity._links.self.href
       }
-      self.added('entitiesByUser', Random.id(), entityObject);
+      self.added('entities', Random.id(), entityObject);
+    });
+
+  } catch (error) {
+    console.log('Error in getEntities');
+    console.log(error);
+  }
+  self.ready();
+});
+
+
+// FOR USERS SCREENS
+Meteor.publish('getEntitiesRequestedFromEntities', function(userEmail){
+  console.log('getEntitiesRequestedFromEntities');
+
+  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+          findOrganizationsByPersonMailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + REQUESTED_FROM_ENTITY; 
+
+  var self = this;
+  try {
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var entitiesAPI = content._embedded.entities;
+
+    _.each(entitiesAPI, function(entity){
+        var entityObject = {
+          name: entity.name,
+          description: entity.description,
+          email: entity.email,
+          link: entity._links.self.href
+        }
+        self.added('entitiesRequestedFromEntities', Random.id(), entityObject);
     });
   } catch (error) {
-    console.log('Error in getEntitiesByUser');
+    console.log('Error in getEntitiesRequestedFromEntities');
+    console.log(error);
+  }
+  self.ready();
+});
+
+Meteor.publish('getEntitiesRequestedFromUsers', function(userEmail){
+  console.log('getEntitiesRequestedFromUsers');
+  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+          findOrganizationsByPersonMailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + REQUESTED_FROM_USER; 
+
+  var self = this;
+  try {
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var entitiesAPI = content._embedded.entities;
+
+    _.each(entitiesAPI, function(entity){
+        var entityObject = {
+          name: entity.name,
+          description: entity.description,
+          email: entity.email,
+          link: entity._links.self.href
+        }
+        self.added('entitiesRequestedFromUsers', Random.id(), entityObject);
+    });
+  } catch (error) {
+    console.log('Error in getEntitiesRequestedFromUsers');
+    console.log(error);
+  }
+  self.ready();
+});
+
+Meteor.publish('getAdminEntities', function(userEmail){
+  console.log('getAdminEntities');
+  var self = this;
+
+  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+    findOrganizationsByPersonMailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + ADMINISTRATOR; 
+
+  try {
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var entitiesAPI = content._embedded.entities;
+
+    _.each(entitiesAPI, function(entity){
+        var entityObject = {
+          name: entity.name,
+          description: entity.description,
+          email: entity.email,
+          link: entity._links.self.href
+        }
+        self.added('adminEntities', Random.id(), entityObject);
+    });
+  } catch (error) {
+    console.log('Error in getAdminEntities');
+    console.log(error);
+  }
+  self.ready();
+});
+
+Meteor.publish('getEntitiesAssociated', function(userEmail){
+  console.log('getEntitiesAssociated');
+  var self = this;
+
+  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+    findOrganizationsByPersonMailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + ASSOCIATED; 
+
+  try {
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var entitiesAPI = content._embedded.entities;
+
+    _.each(entitiesAPI, function(entity){
+        var entityObject = {
+          name: entity.name,
+          description: entity.description,
+          email: entity.email,
+          link: entity._links.self.href
+        }
+        self.added('entitiesAssociated', Random.id(), entityObject);
+    });
+  } catch (error) {
+    console.log('Error in getEntitiesAssociated');
+    console.log(error);
+  }
+  self.ready();
+});
+
+
+
+
+// Published called from entities screens
+Meteor.publish('getUsersRequestedFromEntities', function(entityEmail){
+  console.log('getUsersRequestedFromEntities');
+  var self = this;
+
+ var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+    findPeopleByEntityMailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + REQUESTED_FROM_ENTITY; 
+
+  try {
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var peopleAPI = content._embedded.people;
+
+    _.each(peopleAPI, function(person){
+        var personObject = {
+          name: person.name,
+          surname: person.surname,
+          email: person.email,
+          link: person._links.self.href
+        }
+        self.added('usersRequestedFromEntities', Random.id(), personObject);
+    });
+  } catch (error) {
+    console.log('Error in getUsersRequestedFromEntities');
+    console.log(error);
+  }
+  self.ready();
+});
+
+Meteor.publish('getUsersRequestedFromUsers', function(entityEmail){
+  console.log('getUsersRequestedFromUsers');
+  var self = this;
+
+ var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+    findPeopleByEntityMailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + REQUESTED_FROM_USER; 
+
+  try {
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var peopleAPI = content._embedded.people;
+
+    _.each(peopleAPI, function(person){
+        var personObject = {
+          name: person.name,
+          surname: person.surname,
+          email: person.email,
+          link: person._links.self.href
+        }
+        self.added('usersRequestedFromUsers', Random.id(), personObject);
+    });
+  } catch (error) {
+    console.log('Error in getUsersRequestedFromUsers');
+    console.log(error);
+  }
+  self.ready();
+});
+
+Meteor.publish('getAdminUsers', function(entityEmail){
+  console.log('getAdminUsers');
+  var self = this;
+
+  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+    findPeopleByEntityMailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + ADMINISTRATOR; 
+
+  try {
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var peopleAPI = content._embedded.people;
+
+    _.each(peopleAPI, function(person){
+        var personObject = {
+          name: person.name,
+          surname: person.surname,
+          email: person.email,
+          link: person._links.self.href
+        }
+        self.added('adminUsers', Random.id(), personObject);
+    });
+  } catch (error) {
+    console.log('Error in getAdminUsers');
+    console.log(error);
+  }
+  self.ready();
+});
+
+Meteor.publish('getUsersAssociated', function(entityEmail){
+  console.log('getUsersAssociated');
+  var self = this;
+
+  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+    findPeopleByEntityMailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + ASSOCIATED;
+
+  try {
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var peopleAPI = content._embedded.people;
+
+    _.each(peopleAPI, function(person){
+        var personObject = {
+          name: person.name,
+          description: person.description,
+          email: person.email,
+          link: person._links.self.href
+        }
+        self.added('usersAssociated', Random.id(), personObject);
+    });
+  } catch (error) {
+    console.log('Error in getUsersAssociated');
+    console.log(error);
+  }
+  self.ready();
+});
+
+Meteor.publish('getEntitiesWithRelationship', function(userEmail){
+  console.log('getEntitiesWithRelationship');
+  var self = this;
+
+  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+    findOrganizationsByPersonEmail + questionMark + 'email=' + userEmail;
+
+  try {
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var entitiesAPI = content._embedded.entities;
+
+    _.each(entitiesAPI, function(entity){
+        var entityObject = {
+          name: entity.name,
+          description: entity.description,
+          email: entity.email,
+          link: entity._links.self.href
+        }
+        self.added('entitiesWithRelationship', Random.id(), entityObject);
+    });
+  } catch (error) {
+    console.log('Error in getEntitiesWithRelationship');
+    console.log(error);
+  }
+  self.ready();
+});
+
+
+Meteor.publish('getPeople', function(){
+  console.log('getPeople');
+  var self = this;
+  try{
+    var url = host + slash + people;
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var peopleAPI = content._embedded.people;
+
+    _.each(peopleAPI, function(person){
+      var personObject = {
+        name: person.name,
+        email: person.email,
+        link: person._links.self.href
+      }
+      self.added('people', Random.id(), personObject);
+    });
+
+  } catch (error) {
+    console.log('Error in getPeople');
+    console.log(error);
+  }
+  self.ready();
+});
+
+Meteor.publish('getPeopleWithRelationship', function(entityEmail){
+  console.log('getPeopleWithRelationship');
+  var self = this;
+
+  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+    findPeopleByEntityEmail + questionMark + 'email=' + entityEmail;
+
+  try {
+    var response = HTTP.get(url);
+    var content = JSON.parse(response.content);
+    var peopleAPI = content._embedded.people;
+
+    _.each(peopleAPI, function(person){
+        var personObject = {
+          name: person.name,
+          description: person.description,
+          email: person.email,
+          link: person._links.self.href
+        }
+        self.added('peopleWithRelationship', Random.id(), personObject);
+    });
+  } catch (error) {
+    console.log('Error in getPeopleWithRelationship');
     console.log(error);
   }
   self.ready();

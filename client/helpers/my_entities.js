@@ -1,8 +1,12 @@
 Template.my_entities.onRendered(function(){
 	var user = Session.get('user');
-	var entitiesLink = user._links.entities.href;
+	var userEmail = user.email;
+
 	this.subscriptions = [
-		Meteor.subscribe('getEntitiesByUser', entitiesLink)
+		Meteor.subscribe('getEntitiesRequestedFromEntities', userEmail),
+		Meteor.subscribe('getEntitiesRequestedFromUsers', userEmail),
+		Meteor.subscribe('getAdminEntities', userEmail),
+		Meteor.subscribe('getEntitiesAssociated', userEmail)
 		];
 });
 
@@ -13,9 +17,10 @@ Template.my_entities.onDestroyed(function () {
 });
 
 
-Template.entitiesByUser.helpers({
-	'Entities': function(){
-		return EntitiesByUser.find();
+Template.EntitiesRequestedFromEntitiesTemplate.helpers({
+	'EntitiesRequestedFromEntities': function(){
+		var entitiesRequestedFromEntities = EntitiesRequestedFromEntities.find().fetch();
+		return entitiesRequestedFromEntities;
 	},
 	'ready': function () {
 	    return _.all(Template.instance().subscriptions, function (sub) {
@@ -24,40 +29,67 @@ Template.entitiesByUser.helpers({
 	}
 });
 
+Template.EntitiesRequestedFromUsersTemplate.helpers({
+	'EntitiesRequestedFromUsers': function(){
+		var entitiesRequestedFromUsers = EntitiesRequestedFromUsers.find().fetch();
+		return entitiesRequestedFromUsers;
+	},
+	'ready': function () {
+	    return _.all(Template.instance().subscriptions, function (sub) {
+	      return sub.ready();
+	    });
+	}
+});
+
+Template.AdminEntitiesTemplate.helpers({
+	'AdminEntities': function(){
+		var adminEntities = AdminEntities.find().fetch();
+		return adminEntities;
+	},
+	'ready': function () {
+	    return _.all(Template.instance().subscriptions, function (sub) {
+	      return sub.ready();
+	    });
+	}
+});
+
+Template.EntitiesAssociatedTemplate.helpers({
+	'EntitiesAssociated': function(){
+		var entitiesAssociated = EntitiesAssociated.find().fetch();
+		return entitiesAssociated;
+	},
+	'ready': function () {
+	    return _.all(Template.instance().subscriptions, function (sub) {
+	      return sub.ready();
+	    });
+	}
+});
+
+
 Template.my_entities.events({
 	'click #newObject' : function(event){
 	    event.preventDefault();
 	    Router.go('new_entity');
 	},
-
-	'click .delete-entity' : function(event){
+	'click .dissassociate': function(event){
 		event.preventDefault();
-		var user = Session.get('user');
-	    var urlPersonEntities = user._links.entities.href;
-    	entityIdToDelete = event.currentTarget.id;
-
-	    var entitiesUrl = $("[name=delete-button]").map(
-	      function(){
-	        return $(this).attr('id');
-	    })
-	    .get();
-
-	    for(e in entitiesUrl) {
-	      if(entitiesUrl[e] == entityIdToDelete) {
-	        entitiesUrl.splice(e, 1);
-	      }
-	    }
-
-	    Meteor.call('joinPersonAndEntities', urlPersonEntities, entitiesUrl);
-
-	    Meteor.call('deleteEntity', entityIdToDelete);
-
-	    window.location.reload(true);
+		var entityId = event.currentTarget.id;
+		var entityEmail = event.currentTarget.name;
+		var userEmail = Session.get('user').email;
+		Meteor.call('getPersonOrganizationRelationshipByEntityEmailAndPersonEmail', userEmail, entityEmail, function(error, response){
+			if(!error){
+				console.log(response);
+				Meteor.call('deletePersonOrganizationRelationship', response);
+			} else {
+				console.log('error in getPersonOrganizationRelationshipByEntityEmailAndPersonEmail');
+				console.log(error);
+			}
+			window.location.reload(true);
+		});
 	},
 
 	'click .use-entity' : function(event){
 		event.preventDefault();
-
 		var entityUrl = event.currentTarget.id;
 		Meteor.call('getEntity', entityUrl, function(error, response){
 			if(!error){
@@ -67,9 +99,38 @@ Template.my_entities.events({
 				console.log(error);
 			}
 		});
-
-		//Session.set('')
-
 		Router.go('home');
+	},
+
+	'click .associate-entity' : function(event){
+		event.preventDefault();
+		var entityEmail = event.currentTarget.name;
+		var userEmail = Session.get('user').email;
+
+		Meteor.call('getPersonOrganizationRelationshipByEntityEmailAndPersonEmail', userEmail, entityEmail, function(error, response){
+			if(!error){
+				Meteor.call('changePersonOrganizationState', response, 'ASSOCIATED');
+			} else {
+				console.log('error in getPersonOrganizationRelationshipByEntityEmailAndPersonEmail');
+				console.log(error);
+			}
+			window.location.reload(true);
+		});
+	},
+
+	'click .cancel-association-entity' : function(event){
+		event.preventDefault();
+		var entityEmail = event.currentTarget.name;
+		var userEmail = Session.get('user').email;
+
+		Meteor.call('getPersonOrganizationRelationshipByEntityEmailAndPersonEmail', userEmail, entityEmail, function(error, response){
+			if(!error){
+				Meteor.call('deletePersonOrganizationRelationship', response);
+			} else {
+				console.log('error in getPersonOrganizationRelationshipByEntityEmailAndPersonEmail');
+				console.log(error);
+			}
+			window.location.reload(true);
+		});
 	}
 });

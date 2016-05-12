@@ -3,37 +3,88 @@
 		{{> navbar}}
 
 		{{> JumbotronTitle title="New Entity"}}
-		<form class="form-horizontal form-top entity-form">
-			{{> new_entity_form}}
 
-			{{> buttons}}
-		</form>
+		<div class="row">
+			<div class="col-md-6" >
+				{{> check_entity}}
+			</div>
+			<div class="col-md-6" style="border-left: 3px solid #C0C0C0; margin-top: 30px; padding-left: 50px;">
+				{{> new_entity_form}}
+			</div>
+		</div>
+			
 	</div>
 </template>
 
-<template name="new_entity_form">
+<template name="check_entity">
+	<form class="form-horizontal form-top check-entity-form" style="margin-top: 50px; padding-left:20px;">
+		<h2>Existing Entity</h2>
+		<br />
 		<div class="row">
 			<div class="form-group">
-				<label class="col-md-2 control-label">Name:</label>
-				<div class="col-md-4">
+				<label class="col-md-offset-1 col-md-3 control-label">Entity email:</label>
+				<div class="col-md-6">
+					<input type="text" class="form-control" name="entityEmail">
+				</div>
+			</div>
+		</div>
+
+		<div class="alert alert-success">
+			<button type="button" class="close" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		    </button>
+		    <strong>Entity found!</strong>  An access request was sent to the Entity Administrator.
+		</div>
+
+		<div class="alert alert-warning">
+		   	<button type="button" class="close" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		    </button>
+		    <strong>Oh wait!</strong>  This entity has already some association with you. Please check your entities management dashboard or wait for an answer from the entity itself.
+		</div>
+
+		<div class="row">
+			<div class="col-md-offset-7">
+				<input type="submit" class="btn btn-danger" value="Send request">
+			</div>
+		</div>
+	</form>
+</template>
+
+<template name="new_entity_form">
+	<form class="form-horizontal new-entity-form">
+		<h2>New Entity</h2>
+		<br />
+		<div class="row">
+			<div class="form-group">
+				<label class="col-md-3 control-label">Name:</label>
+				<div class="col-md-6">
 					<input type="text" class="form-control" name="name">
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="form-group">
-				<label class="col-md-2 control-label">email:</label>
-				<div class="col-md-4">
+				<label class="col-md-3 control-label">email:</label>
+				<div class="col-md-6">
 					<input type="text" class="form-control" name="email">
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="form-group">
-				<label class="col-md-2 control-label">Description: </label>
-				<div class="col-md-4">
+				<label class="col-md-3 control-label">Description: </label>
+				<div class="col-md-6">
 					<input type="text" class="form-control" name="description">
 				</div>
 			</div>
 		</div>
+		<div class="form-set">
+			<div class="row">
+				<div class="col-md-2 col-md-offset-6">
+					<input type="submit" class="btn btn-success save-changes" value="Save changes" />
+				</div>
+			</div>
+		</div>
+	</form>
 </template>

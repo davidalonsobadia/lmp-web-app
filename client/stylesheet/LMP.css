@@ -88,3 +88,30 @@ input.error{
 .form-top{
     margin-top: 45px;
 }
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.close {
+    color: #000
+}
+
+a.close:hover {
+    color: black !important;
+}
+
+.alert{
+    display: none;
+}
+
+.alert-warning {
+    background-color: rgb(252, 248, 227);
+    border-bottom-color: rgb(250, 242, 204);
+    border-left-color: rgb(250, 242, 204);
+    border-right-color: rgb(250, 242, 204);
+    border-top-color: rgb(250, 242, 204);
+    color: rgb(138, 109, 59);
+}

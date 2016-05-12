@@ -1,0 +1,48 @@
+<template name="new_person">
+	<div class="container">
+		{{> navbar}}
+
+		{{> JumbotronTitle title="New Person"}}
+
+		<div class="col-md-6" >
+			{{> check_person}}
+		</div>
+
+			
+	</div>
+</template>
+
+<template name="check_person">
+	<form class="form-horizontal form-top check-person-form" style="margin-top: 50px; padding-left:20px;">
+		<h2>User</h2>
+		<br />
+		<div class="row">
+			<div class="form-group">
+				<label class="col-md-offset-1 col-md-3 control-label">User email:</label>
+				<div class="col-md-6">
+					<input type="text" class="form-control" name="userEmail">
+				</div>
+			</div>
+		</div>
+
+		<div class="alert alert-success">
+			<button type="button" class="close" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		    </button>
+		    <strong>User found!</strong>  An access request was sent to the User.
+		</div>
+
+		<div class="alert alert-warning">
+		   	<button type="button" class="close" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		    </button>
+		    <strong>Oh wait!</strong>  This user has already some association with this entity. Please check your people management dashboard or wait for an answer from the user itself.
+		</div>
+
+		<div class="row">
+			<div class="col-md-offset-7">
+				<input type="submit" class="btn btn-danger" value="Send request">
+			</div>
+		</div>
+	</form>
+</template>

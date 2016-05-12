@@ -50,7 +50,21 @@ Template.entity_form.events({
 	'click .cancel': function(event){
 		event.preventDefault();
 		Router.go('/home');
+	},
+
+	'click .delete-entity' : function(event){
+		event.preventDefault();
+		console.log('in click .delete-entity');
+		var entity = Session.get('user');
+
+		var entityLink = entity._links.self.href;
+
+		Meteor.call('getAndDeletePersonOrganizationRelationshipsByEntityEmail', entity.email, function(error, response){
+			if(!error){
+				Meteor.call('deleteEntity', entityLink);
+			}
+		})
+		Session.setPersistent('user', Session.get('person'));
+		Router.go('home');
 	}
-
-
 });
