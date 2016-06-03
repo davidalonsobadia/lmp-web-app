@@ -9,37 +9,44 @@
 </template>
 
 <template name="entitiesByUser">
-	{{> EntitiesAssociatedTemplate}}
 
-	{{> AdminEntitiesTemplate}}
+	{{#if Entities.length}}
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<td>
+						Name
+					</td>
+					<td>
+						Description
+					</td>
+					<td>
+						Subscribed
+					</td>
+					<td>
+						Actions
+					</td>
+					<td>
+					</td>
+				</tr>
+			</thead>
 
-	{{> EntitiesRequestedFromEntitiesTemplate}}
+			{{> EntitiesAssociatedTemplate}}
 
-	{{> EntitiesRequestedFromUsersTemplate}}
+			{{> AdminEntitiesTemplate}}
+
+			{{> EntitiesRequestedFromEntitiesTemplate}}
+
+			{{> EntitiesRequestedFromUsersTemplate}}
+
+		</table>
+	{{/if}}
 </template>
 
 <template name="EntitiesAssociatedTemplate">
 	{{#if ready}}
 		{{#if EntitiesAssociated.length}}
-			<table class="table table-bordered table-striped">
-				<thead>
-					<tr>
-						<td>
-							Name
-						</td>
-						<td>
-							Description
-						</td>
-						<td>
-							Subscribed
-						</td>
-						<td>
-							Dissassociate
-						</td>
-						<td>
-						</td>
-					</tr>
-				</thead>
+
 				{{#each EntitiesAssociated}}
 				<tbody>
 					<tr>
@@ -60,7 +67,6 @@
 					</tr>
 				</tbody>
 				{{/each}}
-			</table>
 		{{/if}}
 	{{else}}
 	    {{> loading}}
@@ -70,25 +76,7 @@
 <template name="AdminEntitiesTemplate">
 	{{#if ready}}
 		{{#if AdminEntities.length}}
-			<table class="table table-bordered table-striped">
-				<thead>
-					<tr>
-						<td>
-							Name
-						</td>
-						<td>
-							Description
-						</td>
-						<td>
-							Subscribed
-						</td>
-						<td>
-							Dissassociate
-						</td>
-						<td>
-						</td>
-					</tr>
-				</thead>
+
 				{{#each AdminEntities}}
 				<tbody>
 					<tr>
@@ -99,17 +87,16 @@
 							{{description}}
 						</td>
 						<td>
-							Subscribed!
-						</td>
-						<td>
+							You have admin rights
 						</td>
 						<td>
 							<input type="button" class="btn btn-success use-entity" name="use-button" id="{{link}}" value="Use this entity"/>
 						</td>
+						<td>
+						</td>
 					</tr>
 				</tbody>
 				{{/each}}
-			</table>
 		{{/if}}
 	{{else}}
 	    {{> loading}}
@@ -119,25 +106,7 @@
 <template name="EntitiesRequestedFromEntitiesTemplate">
 	{{#if ready}}
 		{{#if EntitiesRequestedFromEntities.length}}
-			<table class="table table-bordered table-striped">
-				<thead>
-					<tr>
-						<td>
-							Name
-						</td>
-						<td>
-							Description
-						</td>
-						<td>
-							Subscribed
-						</td>
-						<td>
-							Dissassociate
-						</td>
-						<td>
-						</td>
-					</tr>
-				</thead>
+
 				{{#each EntitiesRequestedFromEntities}}
 				<tbody>
 					<tr>
@@ -158,7 +127,7 @@
 					</tr>
 				</tbody>
 				{{/each}}
-			</table>
+
 		{{/if}}
 	{{else}}
 	    {{> loading}}
@@ -168,25 +137,7 @@
 <template name="EntitiesRequestedFromUsersTemplate">
 	{{#if ready}}
 		{{#if EntitiesRequestedFromUsers.length}}
-			<table class="table table-bordered table-striped">
-				<thead>
-					<tr>
-						<td>
-							Name
-						</td>
-						<td>
-							Description
-						</td>
-						<td>
-							Subscribed
-						</td>
-						<td>
-							Dissassociate
-						</td>
-						<td>
-						</td>
-					</tr>
-				</thead>
+
 				{{#each EntitiesRequestedFromUsers}}
 				<tbody>
 					<tr>
@@ -207,7 +158,7 @@
 					</tr>
 				</tbody>
 				{{/each}}
-			</table>
+
 		{{/if}}
 	{{else}}
 	    {{> loading}}

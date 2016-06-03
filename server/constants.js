@@ -41,6 +41,8 @@ questionMark = '?'
 
 ampersand = '&'
 
+basic_auth = 'web@hotmail.com:EurecatLMP2016!'
+
 REQUESTED_FROM_ENTITY = 'REQUESTED_FROM_ENTITY';
 REQUESTED_FROM_USER = 'REQUESTED_FROM_USER';
 ASSOCIATED = 'ASSOCIATED';
@@ -49,3 +51,5 @@ ADMINISTRATOR = 'ADMINISTRATOR';
 
 // Environment variables
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+http_options = { auth: basic_auth };

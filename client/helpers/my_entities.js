@@ -6,7 +6,7 @@ Template.my_entities.onRendered(function(){
 		Meteor.subscribe('getEntitiesRequestedFromEntities', userEmail),
 		Meteor.subscribe('getEntitiesRequestedFromUsers', userEmail),
 		Meteor.subscribe('getAdminEntities', userEmail),
-		Meteor.subscribe('getEntitiesAssociated', userEmail)
+		Meteor.subscribe('getEntitiesAssociated', userEmail),
 		];
 });
 
@@ -16,6 +16,18 @@ Template.my_entities.onDestroyed(function () {
   });
 });
 
+Template.entitiesByUser.helpers({
+	'Entities' : function(){
+		var entitiesRequestedFromEntities = EntitiesRequestedFromEntities.find().fetch();
+		var entitiesRequestedFromUsers = EntitiesRequestedFromUsers.find().fetch();
+		var adminEntities = AdminEntities.find().fetch();
+		var entitiesAssociated = EntitiesAssociated.find().fetch();
+
+		var entities = entitiesRequestedFromEntities.concat(entitiesRequestedFromUsers)
+			.concat(adminEntities).concat(entitiesAssociated);
+		return entities;
+	}
+});
 
 Template.EntitiesRequestedFromEntitiesTemplate.helpers({
 	'EntitiesRequestedFromEntities': function(){

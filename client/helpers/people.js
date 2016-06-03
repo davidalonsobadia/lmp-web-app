@@ -6,7 +6,8 @@ Template.people.onRendered(function(){
 		Meteor.subscribe('getUsersRequestedFromEntities', entityEmail),
 		Meteor.subscribe('getUsersRequestedFromUsers', entityEmail),
 		Meteor.subscribe('getAdminUsers', entityEmail),
-		Meteor.subscribe('getUsersAssociated', entityEmail)
+		Meteor.subscribe('getUsersAssociated', entityEmail),
+		Meteor.subscribe('getPeople')
 		];
 });
 
@@ -14,6 +15,18 @@ Template.people.onDestroyed(function () {
   _.each(this.subscriptions, function (sub) {
     sub.stop();
   });
+});
+
+Template.people_table.helpers({
+	'People': function(){
+		var usersRequestedFromEntities = UsersRequestedFromEntities.find().fetch();
+		var usersRequestedFromUsers = UsersRequestedFromUsers.find().fetch();
+		var adminUsers = AdminUsers.find().fetch();
+		var usersAssociated = UsersAssociated.find().fetch();
+		var people = usersRequestedFromEntities.concat(usersRequestedFromUsers)
+			.concat(adminUsers).concat(usersAssociated);
+		return people;
+	}
 });
 
 Template.UsersRequestedFromEntitiesTemplate.helpers({

@@ -58,6 +58,7 @@ Template.profile.events({
 		      	Meteor.call('loginWithPassword', loginObject, function(error, response){
 		        	if(! error){
 						Session.setPersistent('user', response);
+						Session.setPersistent('person', response);
 					} else {
 						console.log('error in updateUser - loginWithPassword');
 						console.log(error);
