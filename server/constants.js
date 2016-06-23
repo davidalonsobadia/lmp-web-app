@@ -11,14 +11,20 @@ consumers = 'consumers';
 spheres = 'spheres';
 providers = 'providers';
 entities = 'entities';
+providerTokens = 'providerTokens';
 
-entitiesToVerify = 'entitiesToVerify';
+/*entitiesToVerify = 'entitiesToVerify';
 adminEntities = 'adminEntities';
 verifiedEntities = 'verifiedEntities';
 
 verifiedUsers = 'verifiedUsers';
 usersToVerify = 'usersToVerify';
-adminUsers = 'adminUsers';
+adminUsers = 'adminUsers';*/
+
+emailParameter = "email=";
+providerNameParameter = 'providerName=';
+providerParameter = 'provider=';
+userParameter = 'user='
 
 attrs = 'attributes';
 search = 'search';
@@ -27,6 +33,8 @@ findByIdentifier = 'findByIdentifier?identifier=';
 findByEmail = 'findFirstByEmail?email=';
 findCategoriesByProviderNamesList = 'findCategoriesByProviderNamesList?providerNames='
 findAttributesByProviderNamesList = 'findAttributesByProviderNamesList?providerNames='
+findByproviderNameAndUserEmail = 'findByproviderNameAndUserEmail'
+
 
 findOrganizationsByPersonMailAndState = 'findOrganizationsByPersonMailAndState'
 findPeopleByEntityMailAndState = 'findPeopleByEntityMailAndState'
@@ -36,6 +44,8 @@ findOrganizationsByPersonEmail = 'findOrganizationsByPersonEmail'
 findPeopleByEntityEmail = 'findPeopleByEntityEmail'
 
 personOrganizationRelationships = 'personOrganizationRelationships'
+
+createNewToken = 'createNewToken'
 
 questionMark = '?'
 

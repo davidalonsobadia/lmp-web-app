@@ -165,7 +165,6 @@ Template.sphere_attributes.helpers({
     var sphere = Session.get('sphere');
     if (sphere != null){
       var attributesUrl = sphere._links.attributes.href;
-      //var attributes = ReactiveMethod.call('getAttributesBySphere', attributesUrl);
       var attributes = AttributesBySphere.find().fetch();
 
       for (i in attributes){

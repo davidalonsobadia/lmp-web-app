@@ -6,6 +6,7 @@ function delayedMessge(delay, message, callback) {
 }
 
 
+
 Meteor.methods({
  
   'upsertSphere' : function(sphereObject, httpCommand){
@@ -142,12 +143,19 @@ Meteor.methods({
     console.log(urlProvidersString)
     return HTTP.put(urlProviderPerson, {
       headers: {
-        "Content-Type":       "text/uri-list",
+        "Content-Type":       " text/uri-list",
         "auth": "web@hotmail.com:EurecatLMP2016!"
       },
       content: urlProvidersString,
       auth: basic_auth
     });
+  },
+
+  'deletePersonAndProviderRelation': function(providerId, userId){
+    console.log('deletePersonAndProviderRelation');
+    var url = host + slash + "delete/provider/" + providerId + "/user/" + userId;
+
+    return HTTP.get(url, http_options);
   },
 
   'joinPersonAndConsumer': function(urlConsumerPerson, urlConsumers){
@@ -169,9 +177,11 @@ Meteor.methods({
 
   'joinPersonAndSphere': function(urlSpherePerson, urlSpheres){
     var urlSpheresString = '';
+    console.log('joinPersonAndSphere');
     for ( url in urlSpheres){
       urlSpheresString += urlSpheres[url] + '\n'
     }
+    console.log(urlSpheresString);
     return HTTP.put(urlSpherePerson, {
       headers: {
         "Content-Type":       "text/uri-list"
@@ -390,6 +400,34 @@ Meteor.methods({
       auth: basic_auth
     });
     return response;
+  },
+
+  'findTokenByproviderNameAndUserEmail': function(providerName, email){
+    console.log('in findTokenByproviderNameAndUserEmail');
+
+    var url = host + slash + providerTokens + slash + search + slash + findByproviderNameAndUserEmail
+      + questionMark + providerNameParameter + providerName + ampersand + emailParameter + email;
+
+    try {
+      var response = HTTP.get(url, http_options);
+      var content = JSON.parse(response.content);
+      var token = content.token;
+      return token;
+    } catch(error) {
+      return null;
+    }
+  },
+
+  'createNewToken': function(providerName, email){
+    var url = host + slash + createNewToken + questionMark + providerParameter + providerName 
+      + ampersand + emailParameter + email;
+
+    try {
+      return url;
+    } catch(error) {
+      console.log(error);
+      return null;
+    }
   }
 });
 
@@ -438,14 +476,15 @@ Meteor.publish('getSpheres', function(){
 });
 
 Meteor.publish('getProviders', function(){
+  console.log('getProviders');
   var self = this;
   var url = host + slash + providers;
   try{
     var response = HTTP.get(url, http_options);
     var content = JSON.parse(response.content);
     var providersList = content._embedded.providers;
-
     for (p in providersList){
+
       var provider = {
         name:         providersList[p].name,
         description:  providersList[p].description,
@@ -453,7 +492,9 @@ Meteor.publish('getProviders', function(){
         url:          providersList[p].url,
         enabled:      providersList[p].enabled,
         deleted:      providersList[p].deleted,
-        link:         providersList[p]._links.provider.href
+        link:         providersList[p]._links.provider.href,
+        oAuth:        providersList[p].oAuth,
+        oAuthUrl:     providersList[p].oAuthUrl
       }
       self.added('providers', Random.id(), provider);
     }
@@ -470,11 +511,15 @@ Meteor.publish('getProvidersByUser', function(providersUrl){
   if(providersUrl != null) {
     try{
       var response = HTTP.get(providersUrl, http_options);
+      console.log(response);
+      console.log(providersUrl);
       var content = JSON.parse(response.content);
       var providersList = content._embedded.providers;
+      console.log(providersList);
 
       for ( p in providersList){
         var provider = {
+          id:               providersList[p].id,
           name:             providersList[p].name,
           description:      providersList[p].description,
           type:             providersList[p].type,
