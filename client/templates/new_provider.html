@@ -11,12 +11,15 @@
 
 			{{> providersList}}
 
-			{{> buttons}}
+			<!-- {{> buttons}} -->
+
+			{{> cancelButton}}
+
 		</form>
 	</div>
 </template>
 
-<template name="providersList">
+<!-- <template name="providersList">
 
 	{{#if Providers.length}}
 		<ul class="list-group">
@@ -28,6 +31,26 @@
 				<li class="list-group-item">
 					<div class="checkbox">
 						<label><input type="checkbox" {{checkedProviders}} name="provider" id ="{{link}}" value="{{name}}">{{name}}</label>
+					</div>
+				</li>
+			{{/each}}
+		</ul>
+	{{/if}}
+</template> -->
+
+<template name="providersList">
+
+	{{#if Providers.length}}
+		<ul class="list-group">
+			{{#each arrayDifference Providers ProvidersByUser}}
+				<li class="list-group-item">
+					<div class="row">
+						<div class="col-md-5">
+							{{name}}
+						</div>
+						<div class="col-md-2 col-md-offset-5">
+							<input type="button" name="{{name}}" id="{{link}}" class="btn btn-success add-provider" value="Add Provider">
+						</div>
 					</div>
 				</li>
 			{{/each}}

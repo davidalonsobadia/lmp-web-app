@@ -23,6 +23,11 @@ Template.register.onRendered(function(){
         number: true
       },
 
+      personal_id: {
+        required: true,
+        personalIdUnique: true
+      },
+
       password: {
         required: true,
         minlength: 6
@@ -42,6 +47,9 @@ Template.register.onRendered(function(){
       phone: {
         number: 'This is not a valid Phone Number. Please introduce your phone number only with digits, without any spaces.'
       },
+      personal_id: {
+        personalIdUnique: 'This personal Id already exists!'
+      },
       'password-confirm': {
         equalTo: 'Both password fields must have the same value.'
       }
@@ -53,12 +61,9 @@ Template.register.onRendered(function(){
       var email = $('[name=email]').val();
       var password = $('[name=password]').val();
       var phone = $('[name=phone]').val();
+      var personal_id = $('[name=personal_id]').val();
 
       var identifier = email.hashCode();
-
-      console.log('test1');
-      Meteor.call('delayedEcho');
-      console.log('test2');
 
       var personObject = {
         identifier : identifier,
@@ -66,6 +71,7 @@ Template.register.onRendered(function(){
         surname : surname,
         phone: phone,
         email : email,
+        personal_id: personal_id,
         password: password
       };
 
@@ -78,5 +84,10 @@ Template.register.onRendered(function(){
 
 $.validator.addMethod( 'emailUnique', function(email){
   let exists = RegisteredEmails.findOne({ email: email}, {fields: { email: 1}});
+  return exists ? false : true;
+});
+
+$.validator.addMethod( 'personalIdUnique', function(personal_id){
+  let exists = RegisteredIds.findOne({ personal_id: personal_id}, {fields: { personal_id: 1}});
   return exists ? false : true;
 });

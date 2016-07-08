@@ -50,11 +50,12 @@ Template.entity_form.events({
 	'click .cancel': function(event){
 		event.preventDefault();
 		Router.go('/home');
-	},
+	}
+});
 
+Template.delete_entity.events({
 	'click .delete-entity' : function(event){
 		event.preventDefault();
-		console.log('in click .delete-entity');
 		var entity = Session.get('user');
 
 		var entityLink = entity._links.self.href;
@@ -67,4 +68,4 @@ Template.entity_form.events({
 		Session.setPersistent('user', Session.get('person'));
 		Router.go('home');
 	}
-});
+})

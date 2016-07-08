@@ -13,14 +13,6 @@ providers = 'providers';
 entities = 'entities';
 providerTokens = 'providerTokens';
 
-/*entitiesToVerify = 'entitiesToVerify';
-adminEntities = 'adminEntities';
-verifiedEntities = 'verifiedEntities';
-
-verifiedUsers = 'verifiedUsers';
-usersToVerify = 'usersToVerify';
-adminUsers = 'adminUsers';*/
-
 emailParameter = "email=";
 providerNameParameter = 'providerName=';
 providerParameter = 'provider=';
@@ -32,18 +24,19 @@ search = 'search';
 findByIdentifier = 'findByIdentifier?identifier=';
 findByEmail = 'findFirstByEmail?email=';
 findCategoriesByProviderNamesList = 'findCategoriesByProviderNamesList?providerNames='
-findAttributesByProviderNamesList = 'findAttributesByProviderNamesList?providerNames='
+findAttributesByProviderNamesList = 'findAttributesByProviderNamesList?names='
+findAttributesByProviderName = 'findAttributesByProviderName?name='
 findByproviderNameAndUserEmail = 'findByproviderNameAndUserEmail'
 
 
-findOrganizationsByPersonMailAndState = 'findOrganizationsByPersonMailAndState'
-findPeopleByEntityMailAndState = 'findPeopleByEntityMailAndState'
-findPersonOrganizationRelationshipByEntityEmailAndPersonEmail = 'findPersonOrganizationRelationshipByEntityEmailAndPersonEmail'
-findPersonOrganizationRelationshipsByEntityEmail = 'findPersonOrganizationRelationshipsByEntityEmail'
-findOrganizationsByPersonEmail = 'findOrganizationsByPersonEmail'
+findEntitiesByPersonEmailAndState = 'findEntitiesByPersonEmailAndState'
+findPeopleByEntityEmailAndState = 'findPeopleByEntityEmailAndState'
+findPersonEntityRelationshipByEntityEmailAndPersonEmail = 'findPersonEntityRelationshipByEntityEmailAndPersonEmail'
+findPersonEntityRelationshipsByEntityEmail = 'findPersonEntityRelationshipsByEntityEmail'
+findEntitiesByPersonEmail = 'findEntitiesByPersonEmail'
 findPeopleByEntityEmail = 'findPeopleByEntityEmail'
 
-personOrganizationRelationships = 'personOrganizationRelationships'
+personEntityRelationships = 'personEntityRelationships'
 
 createNewToken = 'createNewToken'
 

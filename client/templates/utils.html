@@ -20,7 +20,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="#" class="deco-none"><strong>Welcome {{firstName}}</strong></a>
+            <a href="{{pathFor route='home'}}" class="deco-none"><strong>Welcome {{firstName}}</strong></a>
           </li>
         	<li>
         		<a href="#" class="logout deco-none"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
@@ -81,6 +81,17 @@
     </div>
   </div>
 </template>
+
+<template name="cancelButton">
+  <div class="form-set">
+    <div class="row">
+      <div class="col-md-2 col-md-offset-3">
+        <input type="button" class="btn btn-danger cancel" value="Cancel" />
+      </div>
+    </div>
+  </div>
+</template>
+
 
 
 <template name="loading">

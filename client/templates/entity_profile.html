@@ -5,6 +5,8 @@
 		{{> JumbotronTitle title="Entity Profile"}}
 
 		{{> entity_form}}
+
+		{{> delete_entity}}
 	</div>
 
 </template>
@@ -44,7 +46,12 @@
 			</div>
 		</div>
 	</form>
+</template>
 
-
-	<input type="button" class="delete-entity" value="Delete Entity">
+<template name="delete_entity">
+	<div class="row">
+		<div class="col-md-1 col-md-offset-3">
+			<input type="button" class="btn btn-secondary active delete-entity form-top" value="Delete Entity">
+		</div>
+	</div>
 </template>

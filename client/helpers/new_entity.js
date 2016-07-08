@@ -9,18 +9,26 @@ Template.new_entity.onRendered(function(){
 				required: true,
 				email: true,
 				notExistingEmail: true
+			},
+
+			identifier: {
+				required: true,
+				notExistingIdentifier: true
 			}
 		},
 		messages: {
 			email:{
 				notExistingEmail: 'This email already exists as an Entity email.'
+			},
+			identifier:{
+				notExistingIdentifier: 'This identifier already exists for another entity.'
 			}
 		},
 		submitHandler: function(event){
 			var name = $('[name=name]').val();
+			var identifier =$('[name=identifier]').val();
 			var description = $('[name=description]').val();
 			var email = $('[name=email]').val();
-			var identifier = name.hashCode() + email.hashCode();
 			var entityObject = {
 				identifier: identifier,
 				name: name,
@@ -30,7 +38,6 @@ Template.new_entity.onRendered(function(){
 			var userUrl = Session.get('user')._links.self.href;
 			Meteor.call('upsertEntity', entityObject, userUrl, function(error, response){
 				if (!error){
-					console.log(response);
 					Meteor.call('insertPersonOrganizationRelationship', userUrl, response, 'ADMINISTRATOR');
 				} else {
 					console.log('error');
@@ -85,12 +92,17 @@ Template.new_entity.onRendered(function(){
 
 
 $.validator.addMethod('existingEntity', function(email){
-  let exists = Entities.findOne({ email: email}, {fields: { email: 1}});
+  let exists = Entities.findOne({ email: {$regex: new RegExp(email, 'i') } }, {fields: { email: 1}});
   return exists ? true : false;
 });
 
 $.validator.addMethod('notExistingEmail', function(email){
-  let exists = Entities.findOne({ email: email}, {fields: { email: 1}});
+  let exists = Entities.findOne({ email: {$regex: new RegExp(email, 'i') } }, {fields: { email: 1}});
+  return exists ? false : true;
+});
+
+$.validator.addMethod('notExistingIdentifier', function(identifier){
+  let exists = Entities.findOne({ identifier: {$regex: new RegExp(identifier, 'i') } }, {fields: { identifier: 1}});
   return exists ? false : true;
 });
 

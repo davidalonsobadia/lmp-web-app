@@ -236,7 +236,8 @@ Meteor.methods({
         surname :     personObject.surname,
         phone:        personObject.phone,
         email :       personObject.email,
-        password :    personObject.password
+        password :    personObject.password,
+        personal_id:  personObject.personal_id
       },
       auth: basic_auth
     }, function(error, response){
@@ -333,14 +334,14 @@ Meteor.methods({
   },
 
   'getAndDeletePersonOrganizationRelationshipsByEntityEmail': function(entityEmail){
-    var url = host + slash + personOrganizationRelationships + slash + search + slash +  
-      findPersonOrganizationRelationshipsByEntityEmail + questionMark +
+    var url = host + slash + personEntityRelationships + slash + search + slash +  
+      findPersonEntityRelationshipsByEntityEmail + questionMark +
       'email=' + entityEmail;
 
     var response = HTTP.get(url,
       http_options);
     var content = JSON.parse(response.content);
-    var associations = content._embedded.personOrganizationRelationships;
+    var associations = content._embedded.personEntityRelationships;
 
     _.each(associations, function(association){
       var associationLink = association._links.self.href;
@@ -363,8 +364,8 @@ Meteor.methods({
   },
 
   'getPersonOrganizationRelationshipByEntityEmailAndPersonEmail': function(userEmail, entityEmail){
-    var url = host + slash + personOrganizationRelationships + slash + search + slash +  
-      findPersonOrganizationRelationshipByEntityEmailAndPersonEmail + questionMark +
+    var url = host + slash + personEntityRelationships + slash + search + slash +  
+      findPersonEntityRelationshipByEntityEmailAndPersonEmail + questionMark +
       'entityEmail=' + entityEmail + ampersand + 'personEmail=' + userEmail; 
     var response = HTTP.get(url, http_options);
     var content = JSON.parse(response.content);
@@ -389,9 +390,9 @@ Meteor.methods({
   'insertPersonOrganizationRelationship': function(userUrl, entityUrl, state){
     console.log('insertPersonOrganizationRelationship');
 
-    var personOrganizationRelationshipsUrl = host + slash + personOrganizationRelationships
+    var personEntityRelationshipsUrl = host + slash + personEntityRelationships
 
-    var response = HTTP.post(personOrganizationRelationshipsUrl, {
+    var response = HTTP.post(personEntityRelationshipsUrl, {
       data: {
         state: state,
         organization: entityUrl,
@@ -511,11 +512,8 @@ Meteor.publish('getProvidersByUser', function(providersUrl){
   if(providersUrl != null) {
     try{
       var response = HTTP.get(providersUrl, http_options);
-      console.log(response);
-      console.log(providersUrl);
       var content = JSON.parse(response.content);
       var providersList = content._embedded.providers;
-      console.log(providersList);
 
       for ( p in providersList){
         var provider = {
@@ -527,7 +525,7 @@ Meteor.publish('getProvidersByUser', function(providersUrl){
           enabled:          providersList[p].enabled,
           deleted:          providersList[p].deleted,
           link:             providersList[p]._links.provider.href,
-          attributesLink:   providersList[p]._links.attributes.href
+          attributesLink:   providersList[p]._links.attributeMaps.href
         }
         self.added('providersByUser', Random.id(), provider); 
       }
@@ -597,7 +595,7 @@ Meteor.publish('getAttributes', function(){
         name:           attributes[a].name,
         category:       attributes[a].subcategory.category.name,
         subcategory:    attributes[a].subcategory.name,
-        providerLink:   attributes[a]._links.provider.href
+        //providerLink:   attributes[a]._links.provider.href
       }
       self.added('attributes', Random.id(), attribute);
     }
@@ -618,6 +616,7 @@ Meteor.publish('getAttributesBySphere', function(sphereAttributesUrl){
       var content = JSON.parse(response.content);
       var attributes = content._embedded.attributes;
       for (a in attributes){
+        console.log(attributes[a])
         var attribute = {
           name: attributes[a].name,
           attributesLink: attributes[a]._links.self.href
@@ -660,27 +659,27 @@ Meteor.publish('getSpheresByUser', function(spheresUrl){
   self.ready();
 });
 
-Meteor.publish('getAttributesByProviders', function(providerLinks){
+Meteor.publish('getAttributesByProviders', function(providerNames){
   var self = this;
   console.log('getAttributesByProviders');
-  if (providerLinks.length > 0){
+  if (providerNames.length > 0){
     try{
-      for (p in providerLinks){
-        var response = HTTP.get(providerLinks[p], http_options);
-        var content = JSON.parse(response.content);
-        var attributes = content._embedded.attributes;
-        for (a in attributes){
-          var attribute = {
-            name:           attributes[a].name,
-            category:       attributes[a].categoryName,
-            subcategory:    attributes[a].subcategoryName,
-            providerLink:   attributes[a]._links.provider.href,
-            enabled:        attributes[a].enabled,
-            link:           attributes[a]._links.self.href
-          }
-          self.added('attributesByProviders', Random.id(), attribute);
+      var url = host + slash + attrs + slash + search + slash + findAttributesByProviderNamesList + providerNames.toString();
+      var response = HTTP.get(url, http_options);
+      var content = JSON.parse(response.content);
+      var attributes = content._embedded.attributes;
+      for (a in attributes){
+        var attribute = {
+          name:           attributes[a].name,
+          category:       attributes[a].categoryName,
+          subcategory:    attributes[a].subcategoryName,
+          enabled:        attributes[a].enabled,
+          link:           attributes[a]._links.self.href
         }
+        self.added('attributesByProviders', Random.id(), attribute);
       }
+
+
     } catch (error){
       console.log('error in getAttributesByProviders');
       console.log(error);   
@@ -718,8 +717,8 @@ Meteor.publish('getConsumersByUser', function(consumersUrl){
   self.ready();
 });
 
-Meteor.publish('getRegisteredEmails', function(){
-  console.log('getRegisteredEmails');
+Meteor.publish('getRegisteredEmailsandRegisteredIds', function(){
+  console.log('getRegisteredEmailsandRegisteredIds');
   var self = this;
   try {
     var url = host + slash + people;
@@ -730,9 +729,11 @@ Meteor.publish('getRegisteredEmails', function(){
     _.each(users, function(user){
       var email = { email: user.email};
       self.added('registeredEmails', Random.id(), email);
+      var personal_id = {personal_id: user.personal_id};
+      self.added('registeredIds', Random.id(), personal_id);
     });
   } catch (error){
-    console.log('Error in getRegisteredEmails');
+    console.log('Error in getRegisteredEmailsandRegisteredIds');
     console.log(error);
   }
   self.ready();
@@ -753,7 +754,8 @@ Meteor.publish('getEntities', function(){
         name: entity.name,
         description: entity.description,
         email: entity.email,
-        link: entity._links.self.href
+        link: entity._links.self.href,
+        identifier: entity.identifier
       }
       self.added('entities', Random.id(), entityObject);
     });
@@ -769,11 +771,9 @@ Meteor.publish('getEntities', function(){
 // FOR USERS SCREENS
 Meteor.publish('getEntitiesRequestedFromEntities', function(userEmail){
   console.log('getEntitiesRequestedFromEntities');
-
-  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
-          findOrganizationsByPersonMailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + REQUESTED_FROM_ENTITY; 
-
   var self = this;
+  var url = host + slash + entities + slash + search + slash +  
+          findEntitiesByPersonEmailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + REQUESTED_FROM_ENTITY; 
   try {
     var response = HTTP.get(url, http_options);
     var content = JSON.parse(response.content);
@@ -797,8 +797,8 @@ Meteor.publish('getEntitiesRequestedFromEntities', function(userEmail){
 
 Meteor.publish('getEntitiesRequestedFromUsers', function(userEmail){
   console.log('getEntitiesRequestedFromUsers');
-  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
-          findOrganizationsByPersonMailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + REQUESTED_FROM_USER; 
+  var url = host + slash + entities + slash + search + slash +  
+          findEntitiesByPersonEmailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + REQUESTED_FROM_USER; 
 
   var self = this;
   try {
@@ -826,8 +826,8 @@ Meteor.publish('getAdminEntities', function(userEmail){
   console.log('getAdminEntities');
   var self = this;
 
-  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
-    findOrganizationsByPersonMailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + ADMINISTRATOR; 
+  var url = host + slash + entities + slash + search + slash +  
+    findEntitiesByPersonEmailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + ADMINISTRATOR; 
 
   try {
     var response = HTTP.get(url, http_options);
@@ -854,8 +854,8 @@ Meteor.publish('getEntitiesAssociated', function(userEmail){
   console.log('getEntitiesAssociated');
   var self = this;
 
-  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
-    findOrganizationsByPersonMailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + ASSOCIATED; 
+  var url = host + slash + entities + slash + search + slash +  
+    findEntitiesByPersonEmailAndState + questionMark + 'email=' + userEmail + ampersand + 'state=' + ASSOCIATED; 
 
   try {
     var response = HTTP.get(url, http_options);
@@ -886,8 +886,8 @@ Meteor.publish('getUsersRequestedFromEntities', function(entityEmail){
   console.log('getUsersRequestedFromEntities');
   var self = this;
 
- var url = host + slash + personOrganizationRelationships + slash + search + slash +  
-    findPeopleByEntityMailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + REQUESTED_FROM_ENTITY; 
+ var url = host + slash + people + slash + search + slash +  
+    findPeopleByEntityEmailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + REQUESTED_FROM_ENTITY; 
 
   try {
     var response = HTTP.get(url, http_options);
@@ -914,8 +914,8 @@ Meteor.publish('getUsersRequestedFromUsers', function(entityEmail){
   console.log('getUsersRequestedFromUsers');
   var self = this;
 
- var url = host + slash + personOrganizationRelationships + slash + search + slash +  
-    findPeopleByEntityMailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + REQUESTED_FROM_USER; 
+ var url = host + slash + people + slash + search + slash +  
+    findPeopleByEntityEmailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + REQUESTED_FROM_USER; 
 
   try {
     var response = HTTP.get(url, http_options);
@@ -942,8 +942,8 @@ Meteor.publish('getAdminUsers', function(entityEmail){
   console.log('getAdminUsers');
   var self = this;
 
-  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
-    findPeopleByEntityMailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + ADMINISTRATOR; 
+  var url = host + slash + people + slash + search + slash +  
+    findPeopleByEntityEmailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + ADMINISTRATOR; 
 
   try {
     var response = HTTP.get(url, http_options);
@@ -970,8 +970,8 @@ Meteor.publish('getUsersAssociated', function(entityEmail){
   console.log('getUsersAssociated');
   var self = this;
 
-  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
-    findPeopleByEntityMailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + ASSOCIATED;
+  var url = host + slash + people + slash + search + slash +  
+    findPeopleByEntityEmailAndState + questionMark + 'email=' + entityEmail + ampersand + 'state=' + ASSOCIATED;
 
   try {
     var response = HTTP.get(url, http_options);
@@ -998,9 +998,8 @@ Meteor.publish('getEntitiesWithRelationship', function(userEmail){
   console.log('getEntitiesWithRelationship');
   var self = this;
 
-  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
-    findOrganizationsByPersonEmail + questionMark + 'email=' + userEmail;
-
+  var url = host + slash + entities + slash + search + slash +  
+    findEntitiesByPersonEmail + questionMark + 'email=' + userEmail;
   try {
     var response = HTTP.get(url, http_options);
     var content = JSON.parse(response.content);
@@ -1052,7 +1051,7 @@ Meteor.publish('getPeopleWithRelationship', function(entityEmail){
   console.log('getPeopleWithRelationship');
   var self = this;
 
-  var url = host + slash + personOrganizationRelationships + slash + search + slash +  
+  var url = host + slash + people + slash + search + slash +  
     findPeopleByEntityEmail + questionMark + 'email=' + entityEmail;
 
   try {
