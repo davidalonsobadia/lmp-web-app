@@ -55,7 +55,7 @@ Template.my_spheres.events({
 
 Template.spheresTable.helpers({
   'Spheres' : function(){
-    return SpheresByUser.find().fetch();
+    return SpheresByUser.find({}, {sort: {name: 1}}).fetch();
   },
   'checkedObject' : function(){
     var isEnabled = this.enabled;
