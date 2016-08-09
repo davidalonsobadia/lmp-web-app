@@ -92,11 +92,11 @@ Template.new_consumer.events({
 
 Template.consumersList.helpers({
   'Consumers' : function(){
-    return Consumers.find().fetch();
+    return Consumers.find({}, {sort: {name: 1}}).fetch();
   },
 
   'ConsumersByUser' : function(){
-    return ConsumersByUser.find().fetch();
+    return ConsumersByUser.find({}, {sort: {name: 1}}).fetch();
   },
 
   'checkedConsumers': function(){

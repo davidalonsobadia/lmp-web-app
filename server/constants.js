@@ -3,7 +3,7 @@
 */
 
 host = 'http://localhost:8080';
-/*host = 'https://bd-vm-d-wso2as:9443/LmpApi'*/
+/*host = 'http://172.20.10.216:9763/LmpApi/'*/
 slash = '/';
 people = 'people';
 person = 'person';
