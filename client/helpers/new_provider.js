@@ -102,7 +102,9 @@ Template.new_provider.events({
               } else {
 
                 var encodedUrl = encodeURIComponent(response);
-                Router.go('newToken?url=' + encodedUrl);
+
+                window.location.protocol = "http";
+                window.location = response;
               }
 
             });

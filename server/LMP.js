@@ -616,7 +616,6 @@ Meteor.publish('getAttributesBySphere', function(sphereAttributesUrl){
       var content = JSON.parse(response.content);
       var attributes = content._embedded.attributes;
       for (a in attributes){
-        console.log(attributes[a])
         var attribute = {
           name: attributes[a].name,
           attributesLink: attributes[a]._links.self.href
