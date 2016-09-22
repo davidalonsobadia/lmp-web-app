@@ -15,15 +15,10 @@ Template.login.onRendered(function(){
         } else {
           console.log('An error happens...');
           console.log(error);
-          if (error.reason == 'User not found'){
-            validator.showErrors({
-                email: "Email not found."
-              });
-          } else if (error.reason == 'Incorrect password') {
-            validator.showErrors({
-              password: "Incorrect password!!"
-            });
-          }
+
+          validator.showErrors({
+            password: "Your email or password is incorrect."
+          });
         }
       });
     }

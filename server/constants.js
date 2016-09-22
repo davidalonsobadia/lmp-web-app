@@ -2,8 +2,8 @@
 * CONSTANTS
 */
 
-host = 'http://localhost:8080';
-/*host = 'http://172.20.10.216:9763/LmpApi/'*/
+/*host = 'http://localhost:8080';*/
+host = 'http://172.20.49.20:9763/LmpApi'
 slash = '/';
 people = 'people';
 person = 'person';
@@ -16,7 +16,8 @@ providerTokens = 'providerTokens';
 emailParameter = "email=";
 providerNameParameter = 'providerName=';
 providerParameter = 'provider=';
-userParameter = 'user='
+userParameter = 'user=';
+passwordParameter = 'password=';
 
 attrs = 'attributes';
 search = 'search';
@@ -37,6 +38,8 @@ findEntitiesByPersonEmail = 'findEntitiesByPersonEmail'
 findPeopleByEntityEmail = 'findPeopleByEntityEmail'
 
 personEntityRelationships = 'personEntityRelationships'
+
+loginWithPassword = 'loginWithPassword'
 
 createNewToken = 'createNewToken'
 

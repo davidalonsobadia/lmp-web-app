@@ -237,7 +237,7 @@ Meteor.methods({
         phone:        personObject.phone,
         email :       personObject.email,
         password :    personObject.password,
-        personal_id:  personObject.personal_id
+        identifier:  personObject.personal_id
       },
       auth: basic_auth
     }, function(error, response){
@@ -252,10 +252,26 @@ Meteor.methods({
   },
 
   'loginWithPassword' : function(loginObject){ 
-    var url = host + slash + people + slash + search + slash + findByEmail + loginObject.email;
+    var url = host + slash + loginWithPassword + questionMark + userParameter
+      + loginObject.email + ampersand + passwordParameter + loginObject.password
+    console.log(url);
     try{
-      var response = HTTP.get(url, 
-        http_options);
+      var response = HTTP.get(url, http_options);
+      console.log(response);
+
+      var code = JSON.parse(response.statusCode);      
+      if ( code == undefined || code == null ){
+        throw new Meteor.Error('400', 'User not found', 'Bad request. Please check with your administrator.');
+        return;
+      } else if (code == 401) {
+        throw new Meteor.Error('401', 'Unauthorized access', 'Wrogn authentication');
+        return;
+      }
+
+      var getUserUrl = host + slash + people + slash + search 
+        + slash + findByEmail + loginObject.email
+      console.log(getUserUrl);
+      var response = HTTP.get(getUserUrl, http_options);
       var user = JSON.parse(response.content);
       if ( user == undefined || user == null ){
         throw new Meteor.Error('404', 'User not found', 'User not found in the Database');
