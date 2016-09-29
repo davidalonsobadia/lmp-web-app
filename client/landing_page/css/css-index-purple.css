@@ -1077,3 +1077,12 @@ label.error {
 	color: #fff;
 	font-size: 110%;
 }
+
+.register-img {
+	margin-top: 50px;
+}
+
+.register h3 {
+	margin-top: 0px;
+	color: #fff;
+}

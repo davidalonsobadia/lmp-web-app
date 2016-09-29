@@ -1,72 +1,82 @@
 <template name="register">
-  <div class="container sign-in-container">
-    <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-        <img src="/eurecat2.gif" alt="Eurecat Logo" width="450" height="150" class="img-responsive center-block">
-        <form method="post" class="form-horizontal form-signin register">
-          <h2 class="text-center">Register</h2>
-          <hr/>
 
-          <div class="form-group">
-            <label class="col-md-4 control-label">First Name:</label>
-            <div class="col-md-6">
-              <input type="text" name="firstName" class="form-control">
+  <head>
+
+    <!-- /.website title -->
+    <title>LMP - Life Management Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic" />
+
+  </head>
+
+  <body>
+
+    <script type="text/javascript">
+      new WOW().init();
+    </script>
+
+    <div class="img-background" style="background-image:url('laptop-glasses-coffe-background.jpg'); background-attachment: fixed; background-size: 100%">
+
+    <div class="container sign-in-container overlay">
+    
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <img src="LMP-logo-logomakr-center.png" alt="LMP Logo" width="450" height="150" class="img-responsive center-block register-img wow fadeInDown">
+          <form method="post" class="form-horizontal form-header form-signin register">
+            <h1 class="wow fadeInLeft text-center">
+              Register Form
+            </h1>
+            <hr class="wow fadeInRight"/>
+
+            <div class="form-group wow fadeInRight">
+                <h3>First Name:</h3>
+                <input class="form-control input-lg" name="firstName" type="text" required>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-md-4 control-label">Last Name:</label>
-            <div class="col-md-6">
-              <input type="text" name="lastName" class="form-control">
+            <div class="form-group wow fadeInLeft">
+                <h3>Last Name:</h3>
+                <input class="form-control input-lg" name="lastName" type="text" required>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-md-4 control-label">Email:</label>
-            <div class="col-md-6">
-              <input type="email" name="email" class="form-control">
+            <div class="form-group wow fadeInRight">
+                <h3>Email:</h3>
+                <input class="form-control input-lg" name="email" type="email" required>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-md-4 control-label">Phone Number:</label>
-            <div class="col-md-6">
-              <input type="text" name="phone" class="form-control">
+            <div class="form-group wow fadeInLeft">
+                <h3>Phone Number:</h3>
+                <input class="form-control input-lg" name="phone" type="text" required>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-md-4 control-label">Personal Identification:</label>
-            <div class="col-md-6">
-              <input type="text" name="personal_id" class="form-control">
+            <div class="form-group wow fadeInRight">
+                <h3>Personal Identification:</h3>
+                <input class="form-control input-lg" name="personal_id" type="text" required>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-md-4 control-label">Password:</label>
-            <div class="col-md-6">
-              <input type="password" name="password" class="form-control">
+            <div class="form-group wow fadeInLeft">
+                <h3>Password:</h3>
+                <input class="form-control input-lg" name="password" type="password" required>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-md-4 control-label">Repeat Password:</label>
-            <div class="col-md-6">
-              <input type="password" name="password-confirm" class="form-control">
+            <div class="form-group wow fadeInRight">
+                <h3>Repeat Password:</h3>
+                <input class="form-control input-lg" name="password-confirm" type="password" required>
             </div>
-          </div>
 
-          <div class="col-md-offset-4">
-            <div class="form-group">
-              <input type="submit" value="Register" class="btn btn-default">
+            <div class="form-group last zero-margin-bottom wow fadeInLeft">
+              <input type="submit" value="SIGN UP" class="btn btn-warning btn-block btn-lg">
             </div>
-          </div>
-        </form>
+          </form>
 
-          <ul>
-            <li><a href="{{pathFor route='login'}}">Back to Login</a></li>
-          </ul>
+          <h6><a href="{{pathFor route='login'}}">Back to Main Page</a></h6>
+
+        </div>
+      </div>
+
       </div>
     </div>
-  </div>
+
+  </body>
 </template>
