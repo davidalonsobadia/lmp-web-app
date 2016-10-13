@@ -1,0 +1,106 @@
+<template name="providers">
+    <div id="dashboard-style">
+        <div class="wrapper">
+            {{> dashboard_sidebar}}
+            <div class="main-panel">
+                {{> dashboard_navbar}}
+                {{> content_providers}}
+                {{> dashboard_footer}}
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="content_providers">
+    {{#if clicked}}
+        {{> new_providers_table}}
+    {{else}}
+        {{> my_providers_table}}
+    {{/if}}
+</template>
+
+<template name="my_providers_table">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                            <div class="header">
+                                <div class="col-md-10 titles">
+                                    <h4 class="title">Providers Selected By The User</h4>
+                                    <p class="category">Here is a subtitle for this table</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <a class="add-new-element" href="#">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>Add new provider</a>
+                                </div>
+                            </div>
+                            <div class="content table-responsive table-full-width table-margin">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <th class="col-name">Name</th>
+                                        <th class="col-description">Description</th>
+                                        <th></th>
+                                    </thead>
+                                    <tbody>
+                                    {{#each ProvidersByUser}}
+                                        <tr>
+                                            <td>{{name}}</td>
+                                            <td>{{description}}</td>
+                                            <td>
+                                                <input type="button" name="{{id}}" class="btn btn-danger provider-padding delete-provider" id="{{link}}" value="Delete"/>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="new_providers_table">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="col-md-9 titles">
+                                <h4 class="title">Add New Provider</h4>
+                                <p class="category">Here is a subtitle for this table</p>
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <a class="back-to-my-providers" href="#">
+                                <i class="fa fa-angle-double-left" aria-hidden="true"></i>Back to My Providers</a>
+                            </div>
+                        </div>
+                        <div class="content table-responsive table-full-width table-margin">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <th class="col-name">Name</th>
+                                    <th class="col-description">Description</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                {{#each arrayDifference Providers ProvidersByUser}}
+                                    <tr>
+                                        <td>{{name}}</td>
+                                        <td>{{description}}</td>
+                                        <td>
+                                            <input type="button" name="{{name}}" id="{{link}}" class="btn btn-success provider-padding add-provider" value="Add Provider">
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

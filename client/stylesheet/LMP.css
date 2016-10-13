@@ -1,5 +1,5 @@
 /* CSS declarations go here */
-@font-face {
+/*@font-face {
   font-family: 'Glyphicons Halflings';
   src: url('packages/bootswatch_readable/bootstrap/dist/fonts/glyphicons-halflings-regular.eot');
   src: url('packages/bootswatch_readable/bootstrap/dist/fonts/glyphicons-halflings-regular.eot?') format('embedded-opentype'),
@@ -7,7 +7,7 @@
     url('packages/bootswatch_readable/bootstrap/dist/fonts/glyphicons-halflings-regular.woff') format('woff'),
     url('packages/bootswatch_readable/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
     url('packages/bootswatch_readable/bootstrap/dist/fonts/glyphicons-halflings-regular.svg') format('svg');
-}
+}*/
 
 .thumbnail img{
     height: 175px;
@@ -89,11 +89,7 @@ input.error{
     margin-top: 45px;
 }
 
-.alert-success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-}
+
 
 .close {
     color: #000
@@ -103,7 +99,13 @@ a.close:hover {
     color: black !important;
 }
 
-.alert{
+/*.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}*/
+
+/*.alert{
     display: none;
 }
 
@@ -114,4 +116,4 @@ a.close:hover {
     border-right-color: rgb(250, 242, 204);
     border-top-color: rgb(250, 242, 204);
     color: rgb(138, 109, 59);
-}
+}*/

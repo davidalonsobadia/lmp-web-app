@@ -42,6 +42,9 @@ Template.registerHelper('arrayDifference', function(array1, array2){
   return arrayDiff;
 });
 
+Template.registerHelper('currentRouteIs', function (route) { 
+  return Router.current().route.getName() === route; 
+});
 
 // Some utility functions...
 

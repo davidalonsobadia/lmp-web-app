@@ -13,7 +13,7 @@ Template.new_entity.onRendered(function(){
 
 			identifier: {
 				required: true,
-				notExistingIdentifier: true
+				notExistingIdentifier: true	
 			}
 		},
 		messages: {
@@ -47,8 +47,7 @@ Template.new_entity.onRendered(function(){
 			});
 			
 		}
-	}
-	);
+	});
 
 	$('.check-entity-form').validate({
 		rules: {

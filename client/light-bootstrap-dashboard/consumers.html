@@ -1,0 +1,106 @@
+<template name="consumers">
+    <div id="dashboard-style">
+        <div class="wrapper">
+            {{> dashboard_sidebar}}
+            <div class="main-panel">
+                {{> dashboard_navbar}}
+                {{> content_consumers}}
+                {{> dashboard_footer}}
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="content_consumers">
+    {{#if clicked}}
+        {{> new_consumers_table}}
+    {{else}}
+        {{> my_consumers_table}}
+    {{/if}}
+</template>
+
+<template name="new_consumers_table">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="col-md-9 titles">
+                                <h4 class="title">Add New Consumer</h4>
+                                <p class="category">Here is a subtitle for this table</p>
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <a class="back-to-my-providers" href="#">
+                                <i class="fa fa-angle-double-left" aria-hidden="true"></i>Back to My Consumers</a>
+                            </div>
+                        </div>
+                        <div class="content table-responsive table-full-width table-margin">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <th class="col-name">Name</th>
+                                    <th class="col-description">Description</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                {{#each arrayDifference Consumers ConsumersByUser}}
+                                    <tr>
+                                        <td>{{name}}</td>
+                                        <td>{{description}}</td>
+                                        <td>
+                                            <input type="button" name="{{identifier}}" id="{{link}}" class="btn btn-success provider-padding add-consumer" value="Add Provider">
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="my_consumers_table">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="col-md-9 titles">
+                                <h4 class="title">Consumers Selected By The User</h4>
+                                <p class="category">Here is a subtitle for this table</p>
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <a class="add-new-element" href="#">
+                                <i class="fa fa-plus" aria-hidden="true"></i>Add new Consumer</a>
+                            </div>
+                        </div>
+                        <div class="content table-responsive table-full-width table-margin">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <th class="col-name">Name</th>
+                                    <th class="col-description">Description</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                {{#each ConsumersByUser}}
+                                    <tr>
+                                        <td>{{name}}</td>
+                                        <td>{{description}}</td>
+                                        <td>
+                                            <input type="button" name="{{identifier}}" class="btn btn-danger provider-padding delete-consumer" id="{{link}}" value="Delete"/>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

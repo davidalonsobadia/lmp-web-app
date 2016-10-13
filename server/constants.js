@@ -2,8 +2,8 @@
 * CONSTANTS
 */
 
-/*host = 'http://localhost:8080';*/
-host = 'http://172.20.49.20:9763/LmpApi'
+host = 'http://localhost:8080';
+/*host = 'http://172.20.49.20:9763/LmpApi'*/
 slash = '/';
 people = 'people';
 person = 'person';

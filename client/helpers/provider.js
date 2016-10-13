@@ -6,29 +6,8 @@ Template.my_providers.events({
   'click .delete-provider' : function(event){
     event.preventDefault();
 
-/*  var user = Session.get('user');
-    var urlPersonProvider = user._links.providers.href;
-
-    providerUrlToDelete = event.currentTarget.id;
-
-    var providersUrl = $("[name=delete-button]").map(
-      function(){
-        return $(this).attr('id');
-    })
-    .get();
-
-    for(p in providersUrl){
-      if(providersUrl[p] == providerUrlToDelete){
-        providersUrl.splice(p, 1);
-      }
-    }
-*/
-
     var personId = Session.get('user').id;
     var providerIdToDelete = event.currentTarget.name;
-
-    console.log(providerIdToDelete);
-    console.log(personId);
 
     Meteor.call('deletePersonAndProviderRelation', providerIdToDelete, personId);
     window.location.reload(true);

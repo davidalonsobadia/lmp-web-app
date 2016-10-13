@@ -107,7 +107,8 @@
 <template name="sphere_attributes">
 	{{#each attributes}}
 		<div class="checkbox">
-			<label><input type="checkbox" {{checkedAttributeSphere}} name="attr" id="{{link}}" value="{{name}}">{{name}}</label>
+			<label>
+				<input type="checkbox" {{checkedAttributeSphere}} name="attr" id="{{link}}" value="{{name}}">{{name}}</label>
 		</div>		
 	{{/each}}
 </template>

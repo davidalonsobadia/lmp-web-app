@@ -45,7 +45,8 @@ Meteor.methods({
 
   'upsertEntity': function(entityObject, userUrl){
     var url = host + slash + entities;
-
+    console.log('in upsertEntity')
+    console.log(url)
     var response = HTTP.post(url, {
       data : {
         identifier: entityObject.identifier,
@@ -55,7 +56,9 @@ Meteor.methods({
       },
       auth: basic_auth
     });
+    console.log(response)
     var location = response.headers.location;
+    console.log(location)
     return location;
   },
 
@@ -81,7 +84,8 @@ Meteor.methods({
       data: {
         name: entityObject.name,
         description: entityObject.description,
-        email: entityObject.email
+        email: entityObject.email,  
+        identifier: entityObject.identifier
       },
       auth: basic_auth
     });
@@ -283,7 +287,21 @@ Meteor.methods({
     }
   },
 
+  //Old
   'getSpheresByPerson': function(spheresUrl){
+    try{
+      var response = HTTP.get(spheresUrl,
+        http_options);
+      var content = JSON.parse(response.content);
+      var spheresList = content._embedded.spheres;
+      return spheresList;
+    } catch (error){
+      console.log(error);
+    }
+    return [];
+  },
+
+    'getSpheresByUser': function(spheresUrl){
     try{
       var response = HTTP.get(spheresUrl,
         http_options);
@@ -316,7 +334,14 @@ Meteor.methods({
         phone:        user.phone,
         email:        user.email,
         password:     user.password,
-        personal_id:  user.personal_id
+        personal_id:  user.personal_id,
+
+        identifier:   user.identifier,
+        address:      user.address,
+        postalCode:   user.postalCode,
+        city:         user.city,
+        country:      user.country,
+        description:  user.description
       },
       auth: basic_auth
     });
@@ -329,6 +354,19 @@ Meteor.methods({
       var content = JSON.parse(response.content);
       var consumersList = content._embedded.consumers;
       return consumersList;
+    } catch (error){
+      console.log(error);
+    }
+    return [];
+  },
+
+  'getProvidersByUser': function(providersUrl) {
+    try{
+      var response = HTTP.get(providersUrl,
+        http_options);
+      var content = JSON.parse(response.content);
+      var providersList = content._embedded.providers;
+      return providersList;
     } catch (error){
       console.log(error);
     }
@@ -382,8 +420,10 @@ Meteor.methods({
   'getPersonOrganizationRelationshipByEntityEmailAndPersonEmail': function(userEmail, entityEmail){
     var url = host + slash + personEntityRelationships + slash + search + slash +  
       findPersonEntityRelationshipByEntityEmailAndPersonEmail + questionMark +
-      'entityEmail=' + entityEmail + ampersand + 'personEmail=' + userEmail; 
+      'entityEmail=' + entityEmail + ampersand + 'personEmail=' + userEmail;
+    console.log(url);
     var response = HTTP.get(url, http_options);
+    console.log(response);
     var content = JSON.parse(response.content);
     var associationLink = content._links.self.href;
     return associationLink;
@@ -445,8 +485,28 @@ Meteor.methods({
       console.log(error);
       return null;
     }
+  },
+
+  'getEntitiesWithRelationship': function(userEmail){
+    console.log('in getEntitiesWithRelationship');
+    var url = host + slash + entities + slash + search + slash +  
+      findEntitiesByPersonEmail + questionMark + 'email=' + userEmail;
+
+    try {
+      var response = HTTP.get(url, http_options);
+      var content = JSON.parse(response.content);
+      var entitiesList = content._embedded.entities;
+
+      return entitiesList;
+    } catch(error) {
+      console.log('error in getEntitiesWithRelationship');
+      console.log(error);
+      return null;
+    }
   }
 });
+
+
 
 Meteor.publish('getConsumers', function(){
   var self = this;
@@ -457,11 +517,14 @@ Meteor.publish('getConsumers', function(){
     var consumersList = content._embedded.consumers;
     for( c in consumersList){
       var consumer = {
+        identifier: consumersList[c].identifier,
         name: consumersList[c].name,
         description : consumersList[c].description,
         link: consumersList[c]._links.consumer.href
+
       }
-      self.added('consumers', Random.id(), consumer);
+      //TODO: CHANGE ID FROM CONSUMER.IDENTIFIER TO CONSUMER.ID
+      self.added('consumers', consumer.identifier, consumer);
     }
     self.ready();
   } catch (error){
@@ -470,7 +533,7 @@ Meteor.publish('getConsumers', function(){
   }
 });
 
-Meteor.publish('getSpheres', function(){
+/*Meteor.publish('getSpheres', function(){
   var self = this;
   var url = host + slash + spheres;
   try{
@@ -490,7 +553,7 @@ Meteor.publish('getSpheres', function(){
     console.log('Error in getSpheres');
     console.log(error);
   }
-});
+});*/
 
 Meteor.publish('getProviders', function(){
   console.log('getProviders');
@@ -503,6 +566,7 @@ Meteor.publish('getProviders', function(){
     for (p in providersList){
 
       var provider = {
+        id:           providersList[p].id,
         name:         providersList[p].name,
         description:  providersList[p].description,
         type:         providersList[p].type,
@@ -513,7 +577,8 @@ Meteor.publish('getProviders', function(){
         oAuth:        providersList[p].oAuth,
         oAuthUrl:     providersList[p].oAuthUrl
       }
-      self.added('providers', Random.id(), provider);
+      /*self.added('providers', Random.id(), provider);*/
+      self.added('providers', provider.id, provider);
     }
     self.ready();
   } catch (error){
@@ -525,6 +590,7 @@ Meteor.publish('getProviders', function(){
 Meteor.publish('getProvidersByUser', function(providersUrl){
   console.log('getProvidersByUser');
   var self = this;
+
   if(providersUrl != null) {
     try{
       var response = HTTP.get(providersUrl, http_options);
@@ -543,7 +609,7 @@ Meteor.publish('getProvidersByUser', function(providersUrl){
           link:             providersList[p]._links.provider.href,
           attributesLink:   providersList[p]._links.attributeMaps.href
         }
-        self.added('providersByUser', Random.id(), provider); 
+        self.added('providersByUser', provider.id, provider); 
       }
     } catch (error){
       console.log('Error in getProvidersByUser');
@@ -563,10 +629,11 @@ Meteor.publish('getConsumersInSphere', function(sphereConsumersUrl){
       var consumers = content._embedded.consumers;
       for (c in consumers){
         var consumer = {
-          name:     consumers[c].name,
-          link:     consumers[c]._links.self.href
+          name:       consumers[c].name,
+          link:       consumers[c]._links.self.href,
+          identifier: consumer[c].identifer
         }
-        self.added('consumersInSphere', Random.id(), consumer);
+        self.added('consumersInSphere', consumer.identifier, consumer);
       }
     } catch(error) {
       console.log('Error in getConsumersInSphere');
@@ -657,6 +724,7 @@ Meteor.publish('getSpheresByUser', function(spheresUrl){
     var spheresList = content._embedded.spheres;
     for (s in spheresList){
       var sphere = {
+        id:             spheresList[s].id,
         name:           spheresList[s].name,
         description:    spheresList[s].description,
         type:           spheresList[s].type,
@@ -664,7 +732,7 @@ Meteor.publish('getSpheresByUser', function(spheresUrl){
         enabled:        spheresList[s].enabled,
         dataextracted:  spheresList[s].dataextracted
       }
-      self.added('spheresByUser', Random.id(), sphere);
+      self.added('spheresByUser', sphere.id, sphere);
     }
   } catch (error){
     console.log('Error in getSpheresByUser')
@@ -772,7 +840,7 @@ Meteor.publish('getEntities', function(){
         link: entity._links.self.href,
         identifier: entity.identifier
       }
-      self.added('entities', Random.id(), entityObject);
+      self.added('entities', entityObject.identifier, entityObject);
     });
 
   } catch (error) {
@@ -796,12 +864,13 @@ Meteor.publish('getEntitiesRequestedFromEntities', function(userEmail){
 
     _.each(entitiesAPI, function(entity){
         var entityObject = {
-          name: entity.name,
-          description: entity.description,
-          email: entity.email,
-          link: entity._links.self.href
+          name:         entity.name,
+          description:  entity.description,
+          email:        entity.email,
+          link:         entity._links.self.href,
+          identifier:   entity.identifier
         }
-        self.added('entitiesRequestedFromEntities', Random.id(), entityObject);
+        self.added('entitiesRequestedFromEntities', entityObject.identifier, entityObject);
     });
   } catch (error) {
     console.log('Error in getEntitiesRequestedFromEntities');
@@ -826,9 +895,10 @@ Meteor.publish('getEntitiesRequestedFromUsers', function(userEmail){
           name: entity.name,
           description: entity.description,
           email: entity.email,
-          link: entity._links.self.href
+          link: entity._links.self.href,
+          identifier:   entity.identifier
         }
-        self.added('entitiesRequestedFromUsers', Random.id(), entityObject);
+        self.added('entitiesRequestedFromUsers', entityObject.identifier, entityObject);
     });
   } catch (error) {
     console.log('Error in getEntitiesRequestedFromUsers');
@@ -851,12 +921,13 @@ Meteor.publish('getAdminEntities', function(userEmail){
 
     _.each(entitiesAPI, function(entity){
         var entityObject = {
-          name: entity.name,
-          description: entity.description,
-          email: entity.email,
-          link: entity._links.self.href
+          name:         entity.name,
+          description:  entity.description,
+          email:        entity.email,
+          link:         entity._links.self.href,
+          identifier:   entity.identifier
         }
-        self.added('adminEntities', Random.id(), entityObject);
+        self.added('adminEntities', entityObject.identifier, entityObject);
     });
   } catch (error) {
     console.log('Error in getAdminEntities');
@@ -879,12 +950,13 @@ Meteor.publish('getEntitiesAssociated', function(userEmail){
 
     _.each(entitiesAPI, function(entity){
         var entityObject = {
-          name: entity.name,
-          description: entity.description,
-          email: entity.email,
-          link: entity._links.self.href
+          name:           entity.name,
+          description:    entity.description,
+          email:          entity.email,
+          link:           entity._links.self.href,
+          identifier:     entity.identifier
         }
-        self.added('entitiesAssociated', Random.id(), entityObject);
+        self.added('entitiesAssociated', entityObject.identifier, entityObject);
     });
   } catch (error) {
     console.log('Error in getEntitiesAssociated');
@@ -914,9 +986,11 @@ Meteor.publish('getUsersRequestedFromEntities', function(entityEmail){
           name: person.name,
           surname: person.surname,
           email: person.email,
-          link: person._links.self.href
+          link: person._links.self.href,
+          id:   person.id
+
         }
-        self.added('usersRequestedFromEntities', Random.id(), personObject);
+        self.added('usersRequestedFromEntities', personObject.id, personObject);
     });
   } catch (error) {
     console.log('Error in getUsersRequestedFromEntities');
@@ -942,9 +1016,10 @@ Meteor.publish('getUsersRequestedFromUsers', function(entityEmail){
           name: person.name,
           surname: person.surname,
           email: person.email,
-          link: person._links.self.href
+          link: person._links.self.href,
+          id:   person.id
         }
-        self.added('usersRequestedFromUsers', Random.id(), personObject);
+        self.added('usersRequestedFromUsers', personObject.id, personObject);
     });
   } catch (error) {
     console.log('Error in getUsersRequestedFromUsers');
@@ -967,12 +1042,13 @@ Meteor.publish('getAdminUsers', function(entityEmail){
 
     _.each(peopleAPI, function(person){
         var personObject = {
-          name: person.name,
-          surname: person.surname,
-          email: person.email,
-          link: person._links.self.href
+          id:       person.id,
+          name:     person.name,
+          surname:  person.surname,
+          email:  person.email,
+          link:   person._links.self.href
         }
-        self.added('adminUsers', Random.id(), personObject);
+        self.added('adminUsers', personObject.id, personObject);
     });
   } catch (error) {
     console.log('Error in getAdminUsers');
@@ -998,9 +1074,10 @@ Meteor.publish('getUsersAssociated', function(entityEmail){
           name: person.name,
           description: person.description,
           email: person.email,
-          link: person._links.self.href
+          link: person._links.self.href,
+          id:   person.id
         }
-        self.added('usersAssociated', Random.id(), personObject);
+        self.added('usersAssociated', personObject.id, personObject);
     });
   } catch (error) {
     console.log('Error in getUsersAssociated');
@@ -1022,12 +1099,13 @@ Meteor.publish('getEntitiesWithRelationship', function(userEmail){
 
     _.each(entitiesAPI, function(entity){
         var entityObject = {
-          name: entity.name,
-          description: entity.description,
-          email: entity.email,
-          link: entity._links.self.href
+          name:         entity.name,
+          description:  entity.description,
+          email:        entity.email,
+          link:         entity._links.self.href,
+          identifier:   entity.identifier
         }
-        self.added('entitiesWithRelationship', Random.id(), entityObject);
+        self.added('entitiesWithRelationship', entity.identifier, entityObject);
     });
   } catch (error) {
     console.log('Error in getEntitiesWithRelationship');
@@ -1050,9 +1128,10 @@ Meteor.publish('getPeople', function(){
       var personObject = {
         name: person.name,
         email: person.email,
-        link: person._links.self.href
+        link: person._links.self.href,
+        id:   person.id
       }
-      self.added('people', Random.id(), personObject);
+      self.added('people', personObject.id, personObject);
     });
 
   } catch (error) {
@@ -1079,9 +1158,10 @@ Meteor.publish('getPeopleWithRelationship', function(entityEmail){
           name: person.name,
           description: person.description,
           email: person.email,
-          link: person._links.self.href
+          link: person._links.self.href,
+          id:   person.id
         }
-        self.added('peopleWithRelationship', Random.id(), personObject);
+        self.added('peopleWithRelationship', personObject.id, personObject);
     });
   } catch (error) {
     console.log('Error in getPeopleWithRelationship');

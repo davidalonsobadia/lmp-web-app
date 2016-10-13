@@ -1,0 +1,120 @@
+<template name="user">
+    <div id="dashboard-style">
+        <div class="wrapper">
+            {{> dashboard_sidebar}}
+            <div class="main-panel">
+                {{> dashboard_navbar}}
+                {{> content_user_profile}}
+                {{> dashboard_footer}}
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="content_user_profile">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Edit Profile</h4>
+                        </div>
+                        <div class="content">
+                            <form class="profile">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label>Company (disabled)</label>
+                                            <input type="text" class="form-control" disabled placeholder="Company" value="Eurecat Org.">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Username</label>
+                                            <input type="text" class="form-control" value={{name}} placeholder="Username">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Email address</label>
+                                            <input type="email" class="form-control" value="{{email}}" disabled name="email" placeholder="Email">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>First Name</label>
+                                            <input type="text" class="form-control" placeholder="First Name" name="firstName" value="{{name}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Last Name</label>
+                                            <input type="text" class="form-control" placeholder="Last Name"  name="lastName" value="{{surname}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Identifier</label>
+                                            <input type="text" class="form-control" placeholder="User Identifier" name="identifier" disabled value="{{identifier}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                            <input type="text" class="form-control" placeholder="Home Address" name="address" value="{{address}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Postal Code</label>
+                                            <input type="number" class="form-control" placeholder="ZIP Code" name="postalCode" value="{{postalCode}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>City</label>
+                                            <input type="text" class="form-control" placeholder="City" name="city" value={{city}}>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Country</label>
+                                            <input type="text" class="form-control" placeholder="Country" name="country" value="{{country}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input type="number" class="form-control" placeholder="Phone Number" name="phone" value="{{phone}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>About Me</label>
+                                            <textarea class="form-control rows-5" placeholder="Here can be your description" name="description" value="{{description}}"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-info btn-fill pull-right">Update Profile</button>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

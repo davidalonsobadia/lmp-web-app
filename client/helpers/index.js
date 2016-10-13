@@ -11,7 +11,7 @@ Template.index.onRendered(function(){
           //success
           Session.setPersistent('person', response);
           Session.setPersistent('user', response);
-          Router.go('home');
+          Router.go('user');
         } else {
           console.log('An error happens...');
           console.log(error);

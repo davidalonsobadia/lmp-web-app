@@ -32,11 +32,8 @@
 			</thead>
 
 			{{> EntitiesAssociatedTemplate}}
-
 			{{> AdminEntitiesTemplate}}
-
 			{{> EntitiesRequestedFromEntitiesTemplate}}
-
 			{{> EntitiesRequestedFromUsersTemplate}}
 
 		</table>
@@ -46,7 +43,6 @@
 <template name="EntitiesAssociatedTemplate">
 	{{#if ready}}
 		{{#if EntitiesAssociated.length}}
-
 				{{#each EntitiesAssociated}}
 				<tbody>
 					<tr>
@@ -76,7 +72,6 @@
 <template name="AdminEntitiesTemplate">
 	{{#if ready}}
 		{{#if AdminEntities.length}}
-
 				{{#each AdminEntities}}
 				<tbody>
 					<tr>
@@ -106,7 +101,6 @@
 <template name="EntitiesRequestedFromEntitiesTemplate">
 	{{#if ready}}
 		{{#if EntitiesRequestedFromEntities.length}}
-
 				{{#each EntitiesRequestedFromEntities}}
 				<tbody>
 					<tr>
@@ -127,7 +121,6 @@
 					</tr>
 				</tbody>
 				{{/each}}
-
 		{{/if}}
 	{{else}}
 	    {{> loading}}

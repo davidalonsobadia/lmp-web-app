@@ -1,0 +1,248 @@
+<template name="users_entity">
+    <div id="dashboard-style">
+        <div class="wrapper">
+            {{> dashboard_sidebar}}
+            <div class="main-panel">
+                {{> dashboard_navbar}}
+                {{> content_users_entity}}
+                {{> dashboard_footer}}
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="content_users_entity">
+	{{#if clicked}}
+        {{> new_users_entity_form}}
+    {{else}}
+        {{> my_users_entity_table}}
+    {{/if}}
+</template>
+
+<template name="new_users_entity_form">
+	<div class="content">
+	    <div class="row">
+	        <div class="col-md-12">
+	            <div class="card">
+
+	                <div class="header">
+	                    <div class="row">
+	                        <div class="col-md-9 titles">
+	                            <h4 class="title">New User</h4>
+	                            <p class="category">Here is a subtitle for this table</p>
+	                        </div>
+                            <div class="col-md-3 text-right">
+                                <a class="back-to-my-users" href="#">
+                                <i class="fa fa-angle-double-left" aria-hidden="true"></i>Back to My Users</a>
+                            </div>
+	                    </div>
+	                </div>
+	                <div class="content table-responsive table-full-width">
+	                    <form class="check-user-form">
+	                        <div class="row">
+	                            <div class="col-md-5">
+	                                <div class="form-group padding-left_form">
+	                                    <label>User's email</label>
+	                                    <input type="text" class="form-control" name="email">
+	                                </div>
+	                            </div>
+	                            <div class="col-md-2">
+	                                <input type="submit" class="btn btn-danger" value="Send request" style="margin-top: 24px;">
+	                            </div>
+	                        </div>
+
+	                        <div class="alert alert-success alert-padding">
+								<button type="button" class="close" aria-label="Close">
+							    	<span aria-hidden="true">&times;</span>
+							    </button>
+							    <strong>User found!</strong>  An access request was sent to the User.
+							</div>
+
+							<div class="alert alert-warning alert-padding">
+							   	<button type="button" class="close" aria-label="Close">
+							    	<span aria-hidden="true">&times;</span>
+							    </button>
+							    <strong>Oh wait!</strong> This user has already some association with this entity. Please check your people management dashboard or wait for an answer from the user itself.
+							 </div>
+
+	                        <div class="row">	
+	                        </div>
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</template>
+
+<template name="my_users_entity_table">
+    <div class="content">
+        {{> users_entity_admin}}
+        {{> users_entity_associated}}
+        {{> users_entity_requested}}
+    </div>
+</template>
+
+<template name="users_entity_admin">
+   <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <div class="col-md-9 titles">
+                        <h4 class="title">Admin Users</h4>
+                        <p class="category">Here is a subtitle for this table</p>
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <a class="add-new-element" href="#">
+                        <i class="fa fa-plus" aria-hidden="true"></i>Add new User</a>
+                    </div>
+                </div>
+                <div class="content table-responsive table-full-width table-margin">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <th class="col-name">Name</th>
+                            <th class="col-description">Description</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            {{#if ready}}
+                                {{#if AdminUsers.length}}
+                                    {{#each AdminUsers}}
+                                        <tr>
+                                            <td>
+                                                {{name}}
+                                            </td>
+                                            <td>
+                                                {{description}}
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{/if}}
+                            {{else}}
+                                {{> loader}}
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="users_entity_associated">
+   <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <div class="col-md-9 titles">
+                        <h4 class="title">Associated Users</h4>
+                        <p class="category">Here is a subtitle for this table</p>
+                    </div>
+                </div>
+                <div class="content table-responsive table-full-width table-margin">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <th class="col-name">Name</th>
+                            <th class="col-description">Description</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            {{#if ready}}
+                                {{#if UsersAssociated.length}}
+                                    {{#each UsersAssociated}}
+                                        <tr>
+                                            <td>
+                                                {{name}}
+                                            </td>
+                                            <td>
+                                                {{description}}
+                                            </td>
+                                            <td>
+                                                <input type="button" class="btn btn-danger dissassociate" 	name="{{email}}" id="{{link}}" value="Dissassociate"/>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{/if}}
+                            {{else}}
+                                {{> loader}}
+                            {{/if}} 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="users_entity_requested">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <div class="col-md-9 titles">
+                        <h4 class="title">Requested Users</h4>
+                        <p class="category">Here is a subtitle for this table</p>
+                    </div>
+                </div>
+                <div class="content table-responsive table-full-width table-margin">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <th class="col-name">Name</th>
+                            <th class="col-description">Description</th>
+                            <th></th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            {{#if ready}}
+                                {{#if UsersRequestedFromEntities.length}}
+                                    {{#each UsersRequestedFromEntities}}
+                                        <tr>
+                                            <td>
+                                                {{name}}
+                                            </td>
+                                            <td>
+                                                {{description}}
+                                            </td>
+                                            <td>
+                                                <input type="button" class="btn btn-danger cancel-association-entity" name="{{email}}" id="{{link}}" value="Cancel"/>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    {{/each}}
+                                {{/if}}
+                            {{else}}
+                                {{> loader}}
+                            {{/if}}
+
+                            {{#if ready}}
+                                {{#if UsersRequestedFromUsers.length}}
+                                    {{#each UsersRequestedFromUsers}}
+                                        <tr>
+                                            <td>
+                                                {{name}}
+                                            </td>
+                                            <td>
+                                                {{description}}
+                                            </td>
+                                            <td>
+                                                <input type="button" class="btn btn-success associate-user" name="{{email}}" id="{{link}}" value="Associate"/>
+                                            </td>
+                                            <td>
+                                                <input type="button" class="btn btn-danger cancel-association-entity" name="{{email}}" id="{{link}}" value="Cancel Request"/>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{/if}}
+                            {{else}}
+                                {{> loader}}
+                            {{/if}}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

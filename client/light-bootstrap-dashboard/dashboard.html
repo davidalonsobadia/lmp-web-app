@@ -1,0 +1,228 @@
+
+<template name="dashboard_sidebar">
+
+    <div class="sidebar" data-color="purple" data-image="/sidebar-forest.jpg">
+
+    <div class="sidebar-background" style="background-image: url(/sidebar-forest.jpg)"></div>
+
+        <div class="sidebar-wrapper">
+            {{#if isEntity}}
+                {{> dashboard_entity_sidebar}}
+            {{else}}
+                {{>dashboard_user_sidebar}}
+            {{/if}}
+
+        </div>
+    </div>    
+</template>
+
+<template name="dashboard_entity_sidebar">
+
+    <div class="dashboard-logo">
+        <a href="{{pathFor route='entity'}}" class="simple-text">
+            {{entity.name}}
+        </a>        
+    </div>
+
+    <div class="back-to-user-account">
+        <p>
+        You are connected to Entity: <strong>{{entity.name}}</strong>
+        </p>
+        <a href="#" class="back_to_user">
+            <i class="pe-7s-angle-left-circle"></i>
+            Back to User Account
+        </a>
+    </div>
+    <ul class="nav">
+        <li class="{{#if currentRouteIs 'user'}}active{{/if}}">
+            <a href="{{pathFor route='entity'}}">
+                <i class="pe-7s-user"></i>
+                <p>Entity Profile</p>
+            </a>
+        </li>
+        <li class="{{#if currentRouteIs 'providers'}}active{{/if}}">
+            <a href="{{pathFor route='providers'}}">
+                <i class="pe-7s-note2"></i>
+                <p>Providers</p>
+            </a>
+        </li>
+        <li class="{{#if currentRouteIs 'consumers'}}active{{/if}}">
+            <a href="{{pathFor route='consumers'}}">
+                <i class="pe-7s-news-paper"></i>
+                <p>Consumers</p>
+            </a>
+        </li>
+        <li class="{{#if currentRouteIs 'spheres'}}active{{/if}}">
+            <a href="{{pathFor route='spheres'}}">
+                <i class="pe-7s-science"></i>
+                <p>Spheres</p>
+            </a>
+        </li>
+        <li class="{{#if currentRouteIs 'entities'}}active{{/if}}">
+            <a href="{{pathFor route='users_entity'}}">
+                <i class="pe-7s-map-marker"></i>
+                <p>Users</p>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="pe-7s-bell"></i>
+                <p>Notifications</p>
+            </a>
+        </li>
+    </ul>
+</template>
+
+<template name="dashboard_user_sidebar">
+
+    <div class="dashboard-logo">
+        <a href="http://www.creative-tim.com" class="simple-text">
+            LMP
+        </a>
+    </div>
+
+    <ul class="nav">
+        <li class="{{#if currentRouteIs 'user'}}active{{/if}}">
+            <a href="{{pathFor route='user'}}">
+                <i class="pe-7s-user"></i>
+                <p>User Profile</p>
+            </a>
+        </li>
+        <li class="{{#if currentRouteIs 'providers'}}active{{/if}}">
+            <a href="{{pathFor route='providers'}}">
+                <i class="pe-7s-note2"></i>
+                <p>Providers</p>
+            </a>
+        </li>
+        <li class="{{#if currentRouteIs 'consumers'}}active{{/if}}">
+            <a href="{{pathFor route='consumers'}}">
+                <i class="pe-7s-news-paper"></i>
+                <p>Consumers</p>
+            </a>
+        </li>
+        <li class="{{#if currentRouteIs 'spheres'}}active{{/if}}">
+            <a href="{{pathFor route='spheres'}}">
+                <i class="pe-7s-science"></i>
+                <p>Spheres</p>
+            </a>
+        </li>
+        <li class="{{#if currentRouteIs 'entities'}}active{{/if}}">
+            <a href="{{pathFor route='entities'}}">
+                <i class="pe-7s-map-marker"></i>
+                <p>Entities</p>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="pe-7s-bell"></i>
+                <p>Notifications</p>
+            </a>
+        </li>
+    </ul>
+</template>
+
+
+<template name="dashboard_navbar">
+
+    <nav class="navbar navbar-default navbar-fixed">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{pathFor route='user'}}">Hello {{user.name}} {{Surname}}</a>
+            </div>
+            <div class="collapse navbar-collapse">
+
+                <!-- Space for notifications TODO: solve it later -->
+<!--                 <ul class="nav navbar-nav navbar-left">
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-dashboard"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-globe"></i>
+                                <b class="caret"></b>
+                                <span class="notification">5</span>
+                          </a>
+                          <ul class="dropdown-menu">
+                            <li><a href="#">Notification 1</a></li>
+                            <li><a href="#">Notification 2</a></li>
+                            <li><a href="#">Notification 3</a></li>
+                            <li><a href="#">Notification 4</a></li>
+                            <li><a href="#">Another notification</a></li>
+                          </ul>
+                    </li>
+                    <li>
+                       <a href="">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </li>
+                </ul> -->
+
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- <li>
+                       <a href="">
+                           Account
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Dropdown
+                                <b class="caret"></b>
+                          </a>
+                          <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                          </ul>
+                    </li> -->
+                    <li class="logout">
+                        <a>
+                            Log out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</template>
+
+<template name="dashboard_footer">
+    <footer class="footer">
+        <div class="container-fluid">
+            <nav class="pull-left">
+                <ul>
+                    <li>
+                        <a href="{{pathFor route='/'}}">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://www.eurecat.org">
+                            Company
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                           Blog
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <p class="copyright pull-right">
+                &copy; 2016 <a href="http://www.eurecat.org">Eurecat Sec</a>, made with love for a safety web
+            </p>
+        </div>
+    </footer>
+</template>
+

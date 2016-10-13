@@ -1,0 +1,302 @@
+<template name="entities">
+    <div id="dashboard-style">
+        <div class="wrapper">
+            {{> dashboard_sidebar}}
+            <div class="main-panel">
+                {{> dashboard_navbar}}
+                {{> content_entities}}
+                {{> dashboard_footer}}
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="content_entities">
+    {{#if clicked}}
+        {{> new_entity_forms}}
+    {{else}}
+        {{> my_entities_table}}
+    {{/if}}
+</template>
+
+<template name="my_entities_table">
+    <div class="content">
+        {{> entities_admin}}
+        {{> entities_associated}}
+        {{> entities_requested}}
+    </div>
+</template>
+
+<template name="entities_admin">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <div class="col-md-9 titles">
+                        <h4 class="title">Admin Entities</h4>
+                        <p class="category">Here is a subtitle for this table</p>
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <a class="add-new-element" href="#">
+                        <i class="fa fa-plus" aria-hidden="true"></i>Add new Entity</a>
+                    </div>
+                </div>
+                <div class="content table-responsive table-full-width table-margin">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <th class="col-name">Name</th>
+                            <th class="col-description">Description</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            {{#if ready}}
+                                {{#if AdminEntities.length}}
+                                    {{#each AdminEntities}}
+                                        <tr>
+                                            <td>
+                                                {{name}}
+                                            </td>
+                                            <td>
+                                                {{description}}
+                                            </td>
+                                            <td>
+                                                <input type="button" class="btn btn-success use-entity" name="use-button" id="{{link}}" value="Use this entity"/>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{/if}}
+                            {{else}}
+                                {{> loader}}
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="entities_associated">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <div class="col-md-9 titles">
+                        <h4 class="title">Associated Entities</h4>
+                        <p class="category">Here is a subtitle for this table</p>
+                    </div>
+                </div>
+                <div class="content table-responsive table-full-width table-margin">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <th class="col-name">Name</th>
+                            <th class="col-description">Description</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            {{#if ready}}
+                                {{#if EntitiesAssociated.length}}
+                                    {{#each EntitiesAssociated}}
+                                        <tr>
+                                            <td>
+                                                {{name}}
+                                            </td>
+                                            <td>
+                                                {{description}}
+                                            </td>
+                                            <td>
+                                                <input type="button" class="btn btn-danger dissassociate" name="{{email}}" id="{{link}}" value="Dissassociate"/>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{/if}}
+                            {{else}}
+                                {{> loader}}
+                            {{/if}} 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="entities_requested">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <div class="col-md-9 titles">
+                        <h4 class="title">Requested Entities</h4>
+                        <p class="category">Here is a subtitle for this table</p>
+                    </div>
+                </div>
+                <div class="content table-responsive table-full-width table-margin">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <th class="col-name">Name</th>
+                            <th class="col-description">Description</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            {{#if ready}}
+                                {{#if EntitiesRequestedFromEntities.length}}
+                                    {{#each EntitiesRequestedFromEntities}}
+                                        <tr>
+                                            <td>
+                                                {{name}}
+                                            </td>
+                                            <td>
+                                                {{description}}
+                                            </td>
+                                            <td>
+                                                <input type="button" class="btn btn-success associate-entity" name="{{email}}" id="{{link}}" value="Associate"/>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{/if}}
+                            {{else}}
+                                {{> loader}}
+                            {{/if}}
+
+                            {{#if ready}}
+                                {{#if EntitiesRequestedFromUsers.length}}
+                                    {{#each EntitiesRequestedFromUsers}}
+                                        <tr>
+                                            <td>
+                                                {{name}}
+                                            </td>
+                                            <td>
+                                                {{description}}
+                                            </td>
+                                            <td>
+                                                <input type="button" class="btn btn-danger cancel-association-entity" name="{{email}}" id="{{link}}" value="Cancel"/>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{/if}}
+                            {{else}}
+                                {{> loader}}
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+
+<template name="new_entity_forms">
+    <div class="content">
+        {{> existing_entity}}
+        {{> form_new_entity}}
+    </div>
+</template>
+
+<template name="existing_entity">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="row">
+                                <div class="col-md-9 titles">
+                                    <h4 class="title">Existing Entity</h4>
+                                    <p class="category">Here is a subtitle for this table</p>
+                                </div>
+                                <div class="col-md-3 text-right">
+                                    <a class="back-to-my-entities" href="#">
+                                    <i class="fa fa-angle-double-left" aria-hidden="true"></i>Back to My Entities</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content table-responsive table-full-width">
+                            <form class="check-entity-form">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group padding-left_form">
+                                            <label>Entity email</label>
+                                            <input type="text" class="form-control" name="entityEmail">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="submit" class="btn btn-danger" value="Send request" style="margin-top: 24px;">
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-success alert-padding">
+                                    <button type="button" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <strong>Entity found!</strong>  An access request was sent to the Entity Administrator.
+                                </div>
+
+                                <div class="alert alert-warning alert-padding">
+                                    <button type="button" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <strong>Oh wait!</strong>  This entity has already some association with you. Please check your entities management dashboard or wait for an answer from the entity itself.
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</template>
+
+
+<template name="form_new_entity">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="row">
+                    <div class="header">
+                        <div class="col-md-12 titles">
+                            <h4 class="title">New Entity</h4>
+                            <p class="category">Here is a subtitle for this table</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="form-new-entity">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group padding-left_form">
+                                <label>Name</label>
+                                <input type="text" class="form-control" name="name">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group padding-left_form">
+                                <label>Entity Identifier</label>
+                                <input type="text" class="form-control" name="identifier">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group padding-left_form padding-right_form">
+                                <label>Email</label>
+                                <input type="text" class="form-control" name="email">
+                                </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group padding-left_form padding-right_form">
+                                <label>Description</label>
+                                <textarea class="form-control rows-5" name="description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-set">
+                        <div class="row">
+                            <div class="col-md-2 col-md-offset-5">
+                                <input type="submit" class="btn btn-success save-changes" value="Save changes" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>

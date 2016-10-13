@@ -1,0 +1,219 @@
+<template name="spheres">
+    <div id="dashboard-style">
+        <div class="wrapper">
+            {{> dashboard_sidebar}}
+            <div class="main-panel">
+                {{> dashboard_navbar}}
+                {{> content_spheres}}
+                {{> dashboard_footer}}
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="content_spheres">
+   {{#if clicked}}
+        {{> new_spheres_form}}
+    {{else}}
+        {{> my_spheres_table}}
+    {{/if}}
+</template>
+
+<template name="new_spheres_form">
+	<div class="content">
+		<form class="newsphere">
+	        <div class="container-fluid">
+	            <div class="row">
+	                <div class="col-md-12">
+	                    <div class="card">
+	                        <div class="header">
+	                            <h4 class="title">Sphere Form</h4>
+	                        </div>
+	                        <div class="content">
+								{{> new_sphere_basicinfo}}
+
+								{{> new_sphere_multiselect_consumers}}
+
+								{{> new_sphere_category}}
+
+								{{> buttons}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</template>
+
+<template name="new_sphere_basicinfo">
+
+	<div class="row">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" class="form-control" name="name" placeholder="Sphere Name" value="{{SphereDetails.name}}">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+    	<div class="col-md-5">
+	    	<div class="form-group">
+				<label>Description: </label>
+				<input class="form-control" type="text" name="description" value='{{SphereDetails.description}}' placeholder='Description'>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-5">
+	    	<div class="form-group">
+				<label>Type: </label>	
+				<input class="form-control" type="text" name="type" value='{{SphereDetails.type}}' placeholder='Type'>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group radio-group">
+			<div class="radio {{isDataExtracted 'read'}}">
+				<label>
+					<span class="icons">
+						<span class="first-icon fa fa-circle-o"></span>
+						<span class="second-icon fa fa-dot-circle-o"></span>
+					</span>
+					<input type="radio" name="isDataExtracted" id="read" {{isDataExtracted "read"}} value="false">
+				</label>
+				Check only whether providers have the attributes
+			</div>
+			<div class="radio {{isDataExtracted 'write'}}">
+				<label>
+					<span class="icons">
+						<span class="first-icon fa fa-circle-o"></span>
+						<span class="second-icon fa fa-dot-circle-o"></span>
+					</span>
+					<input type="radio" name="isDataExtracted" id="write" {{isDataExtracted "write"}} value="true">
+				</label>
+				Consumers will get attribute's values.
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="new_sphere_multiselect_consumers">
+	<div class="row form-set">
+		<div class="form-group">
+			<div class="col-md-3 col-md-offset-2">
+				<div class="text-center"><h4>Available Consumers</h4></div>
+			    <select name="from" id="multiselect" class="form-control" size="8" multiple="multiple">
+			    	{{#each arrayDifference consumersByUser consumersInSphere}}
+			      		<option value="{{name}}" id="{{link}}">{{name}}</option>
+			      	{{/each}}
+			    </select>
+			</div>
+			<div class="col-md-2 select-box-buttons">
+			    <button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+			    <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+			    <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+			    <button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+			</div>
+			<div class="col-md-3">
+			  	<div class="text-center"><h4>Selected Consumers</h4></div>
+			    <select name="to" id="multiselect_to" class="form-control" size="8" multiple="multiple">
+			    	{{#each consumersInSphere}}
+						<option value="{{name}}" id="{{link}}">{{name}}</option>
+					{{/each}}
+			    </select>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="new_sphere_category">
+ 	{{#each Categories}}
+		<div class="row">
+			<div class="header">
+				<h3 class="title">{{name}}</h3>
+			</div>
+		</div>
+		{{> new_sphere_subcategories this}}
+
+	{{/each}}
+</template>
+
+<template name="new_sphere_subcategories">
+	<div class="form-set">
+		<div class="row">
+			{{#each subcategories}}
+			<div class="col-md-5">
+				<h4>{{name}}</h4>
+				{{> new_sphere_attributes this}}
+			</div>
+			{{/each}}
+		</div>
+	</div>
+</template>
+
+<template name="new_sphere_attributes">
+	{{#each attributes}}
+		<div class="checkbox {{checkedAttributeSphere}}">
+			<label>
+				<span class="icons">
+					<span class="first-icon fa fa-square-o"></span>
+					<span class="second-icon fa fa-check-square-o"></span>
+				</span>
+				<input type="checkbox" {{checkedAttributeSphere}} name="attr" id="{{link}}" value="{{name}}"/>
+			</label>
+			<p>{{name}}</p>
+		</div>		
+	{{/each}}
+</template>
+
+
+<!-- MY SPHERES TABLE -->
+<template name="my_spheres_table">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="col-md-9 titles">
+                                <h4 class="title">User Spheres</h4>
+                                <p class="category">Here is a subtitle for this table</p>
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <a class="add-new-element" href="#">
+                                	<i class="fa fa-plus" aria-hidden="true"></i>Add new Sphere
+                                </a>
+                            </div>
+                        </div>
+                        <div class="content table-responsive table-full-width table-margin">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <th class="col-name">Name</th>
+                                    <th class="col-description">Description</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                {{#each SpheresByUser}}
+                                    <tr>
+                                        <td>{{name}}</td>
+                                        <td>{{description}}</td>
+                                        <td>
+                                        <input type="button" name="{{identifier}}" class="btn btn-success provider-padding edit-sphere" id="{{link}}" value="Edit"/>
+
+                                            <input type="button" name="{{identifier}}" class="btn btn-danger provider-padding delete-sphere" id="{{link}}" value="Delete"/>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

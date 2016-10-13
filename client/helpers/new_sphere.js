@@ -65,13 +65,11 @@ Template.sphere_category.helpers({
       var category = attribute.category;
       var subcategory = attribute.subcategory;
 
-
       var attributeObject = {
         name:       attribute.name,
         enabled:    attribute.enabled,
         link:       attribute.link
       };
-
 
       var isCategoryInAttributesArray = false;
 
@@ -140,6 +138,8 @@ Template.sphere_category.helpers({
       attributesArray[cat]['subcategories'].sort(compare);
     }
     attributesArray.sort(compare);
+
+    console.log(attributesArray);
 
     return attributesArray;
   },

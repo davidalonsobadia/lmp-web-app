@@ -1,0 +1,1086 @@
+#landing-page-style {
+  /**
+  * Backyard
+  * Landing Page Template
+  **/
+  /* iPads (portrait) ----------- */
+  /* iPads (landscape) ----------- */
+  /* smart-phone ----------- */
+  /* iPhone 6Plus (landscape) ----------- */
+  /* iPhone 6 (landscape) ----------- */
+  /* iPhone 5 (landscape) ----------- */
+  /* iPhone 4 (landscape) ----------- */
+  /* smart phone width: 360px ----------- */
+  /* iPhone 4/5 (portrait) ----------- */
+  /*
+  ** David modifications 
+  */
+}
+
+#landing-page-style html, #landing-page-style body {
+  width: 100%;
+  overflow-x: hidden;
+}
+#landing-page-style {
+  height: 100%;
+  font-family: "Lato", "Serif";
+  font-weight: 300;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  line-height: 28px;
+  color: #777;
+  background: #fff;
+  overflow-x: hidden;
+  position: relative;
+}
+#landing-page-style h1 {
+  font-size: 3em;
+  line-height: 1.2em;
+  margin: 0 0 .3em;
+}
+#landing-page-style h2 {
+  font-size: 1.8em;
+  line-height: 1.4em;
+  margin: 0 0 .3em;
+}
+#landing-page-style h3 {
+  font-size: 1.4em;
+  line-height: 1.4em;
+}
+#landing-page-style h4 {
+  font-size: 1.25em;
+  line-height: 1.4em;
+}
+#landing-page-style h5 {
+  font-size: 1.1em;
+  line-height: 1.4em;
+}
+#landing-page-style h6 {
+  font-size: 1em;
+  line-height: 1.2em;
+}
+#landing-page-style h1 a, #landing-page-style h2 a, #landing-page-style h3 a, #landing-page-style h4 a, #landing-page-style h5 a, #landing-page-style h6 a {
+  text-decoration: none;
+}
+#landing-page-style p {
+  padding: 0 0 1em;
+  margin: 0;
+}
+#landing-page-style a {
+  color: #7c378a;
+  outline: 0;
+  font-weight: bold;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+#landing-page-style a:hover {
+  text-decoration: none;
+  color: #1f2222;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+#landing-page-style .highlight {
+  color: #7c378a;
+}
+#landing-page-style #preloader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  background: #fff url(../images/loading-purple.gif) no-repeat center center;
+}
+#landing-page-style .fullscreen {
+  width: 100%;
+  min-height: 100%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-position: 50% 50% \9  !important;
+}
+#landing-page-style .overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#landing-page-style #menu {
+  z-index: 99;
+}
+#landing-page-style .navbar-default {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0px 0.5px 2px #cecece;
+}
+#landing-page-style .navbar-default .navbar-brand {
+  padding: 7px;
+}
+#landing-page-style .navbar-default .navbar-nav > li > a {
+  color: #777;
+  font-weight: 500;
+}
+#landing-page-style .navbar-default .navbar-nav > li > a:hover,
+#landing-page-style .navbar-default .navbar-nav > li > a:focus {
+  color: #7c378a;
+}
+#landing-page-style .navbar-default .navbar-nav > .active > a,
+#landing-page-style .navbar-default .navbar-nav > .active > a:hover,
+#landing-page-style .navbar-default .navbar-nav > .active > a:focus {
+  background: transparent;
+  color: #7c378a;
+}
+#landing-page-style .btn-default {
+  font-size: 17px;
+  margin: 30px 0 10px;
+  margin-right: 10px;
+  line-height: 20px;
+  padding: 15px 35px;
+  height: 50px;
+  border: 2px solid #7c378a;
+  background: transparent;
+  transition: all 0.4s;
+  color: #7c378a;
+  border-radius: 100px;
+}
+#landing-page-style .btn-default:hover, #landing-page-style .btn-default:focus, #landing-page-style .btn-default:active, #landing-page-style .btn-default.active, #landing-page-style .open > .dropdown-toggle.btn-default {
+  border: 2px solid #7c378a;
+  background: #7c378a;
+  color: white;
+}
+#landing-page-style .btn-primary {
+  font-size: 17px;
+  margin: 30px 0 10px;
+  margin-right: 10px;
+  line-height: 20px;
+  padding: 15px 35px;
+  height: 50px;
+  border: 2px solid #7c378a;
+  background: #7c378a;
+  transition: all 0.4s;
+  color: white;
+  border-radius: 100px;
+}
+#landing-page-style .btn-primary:hover, #landing-page-style .btn-primary:focus, #landing-page-style .btn-primary:active, #landing-page-style .btn-primary.active, #landing-page-style .open > .dropdown-toggle.btn-primary {
+  border: 2px solid #7c378a;
+  background: transparent;
+  color: #7c378a;
+}
+#landing-page-style .btn-secondary {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 20px;
+  padding: 20px 50px;
+  height: 65px;
+  border: none;
+  background: #7c378a;
+  transition: all 0.4s;
+  color: white;
+  border-radius: 4px;
+}
+#landing-page-style .btn-secondary:hover, #landing-page-style .btn-secondary:focus, #landing-page-style .btn-secondary:active, #landing-page-style .btn-secondary.active, #landing-page-style .open > .dropdown-toggle.btn-secondary {
+  background: #6d277b;
+  color: white;
+}
+#landing-page-style .site-name img {
+  width: 150px;
+  height: 37px;
+}
+#landing-page-style .logo {
+  margin: 100px 0 40px 0;
+}
+#landing-page-style .logo img {
+  width: 150px;
+  height: 37px;
+}
+#landing-page-style .landing h1 {
+  font-size: 56px;
+  font-weight: 300;
+  color: #fff;
+  margin: 30px 0 30px 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+#landing-page-style .landing p, #landing-page-style .landing h2 {
+  color: #fff;
+}
+#landing-page-style .landing-text {
+  margin-bottom: 20px;
+}
+#landing-page-style .landing-text p {
+  font-size: 17px !important;
+}
+#landing-page-style .head-btn {
+  margin-bottom: 150px;
+}
+#landing-page-style .option {
+  text-transform: uppercase;
+  padding: 5px;
+  min-width: 80px;
+  margin-right: 5px;
+  transition: all 0.4s;
+  font-size: 14px;
+  color: #fff;
+}
+#landing-page-style .signup-header {
+  margin: 150px 0 100px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+#landing-page-style .signup-header h3 {
+  padding: 20px 0 10px;
+  color: white;
+  font-weight: 300;
+}
+#landing-page-style .form-header input {
+  position: relative;
+  padding: 5px 15px;
+}
+#landing-page-style .form-header .form-control {
+  border-radius: 0;
+  border: solid 1px #dadada;
+  background-color: #fff;
+  color: #333;
+  height: 55px;
+}
+#landing-page-style .form-header .btn {
+  border-radius: 0;
+  height: 55px;
+  width: 100%;
+  background-color: #7c378a;
+  color: white;
+  font-size: 17px !important;
+  padding: 0 33px;
+  border: none;
+  margin: 0;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+#landing-page-style .form-header .btn:hover {
+  background-color: #6d277b;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+#landing-page-style .privacy {
+  padding-top: 0;
+  font-size: 13px;
+}
+#landing-page-style .signup-header p {
+  color: white;
+}
+#landing-page-style .privacy a {
+  text-decoration: underline;
+  color: white;
+  font-weight: 300;
+}
+#landing-page-style #policy {
+  padding: 100px 0 70px;
+}
+#landing-page-style #intro {
+  padding: 100px 0 70px;
+}
+#landing-page-style #intro h2 {
+  font-size: 40px;
+  font-weight: 300;
+  margin: 15px 0 15px 0;
+}
+#landing-page-style .intro-pic {
+  margin-top: 20px;
+}
+#landing-page-style .btn-section {
+  padding-top: 20px;
+}
+#landing-page-style #feature {
+  padding-top: 100px;
+  background: #f6f6f6;
+}
+#landing-page-style #feature h2 {
+  margin: 15px 0 15px 0;
+  font-size: 40px;
+  font-weight: 300;
+}
+#landing-page-style #feature .feature-title p {
+  font-size: 18px;
+}
+#landing-page-style .row-feat {
+  padding-top: 50px;
+}
+#landing-page-style .feat-list {
+  margin-top: 40px;
+}
+#landing-page-style .feat-list i {
+  font-size: 48px;
+  float: left;
+  width: 20%;
+  color: #555;
+  height: 100%;
+  position: relative;
+  opacity: 0.6;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+#landing-page-style .feat-list:hover i {
+  color: #7c378a;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+#landing-page-style #feature .inner {
+  float: left;
+  display: inline-block;
+  width: 80%;
+}
+#landing-page-style #feature-2 {
+  padding: 100px 0 100px;
+}
+#landing-page-style #feature-2 h2 {
+  font-size: 40px;
+  font-weight: 300;
+  margin: 15px 0 15px 0;
+}
+#landing-page-style .feature-2-pic {
+  margin-top: 20px;
+}
+#landing-page-style .subscribe {
+  color: #fff;
+}
+#landing-page-style .subscribe p {
+  margin: 30px auto 30px;
+}
+#landing-page-style .subscribe-form {
+  max-width: 400px;
+  margin: 50px auto 150px;
+  text-align: center;
+  overflow: hidden;
+}
+#landing-page-style .subscribe-form form {
+  position: relative;
+}
+#landing-page-style .subscribe-form input {
+  max-width: 85%;
+  position: relative;
+  padding: 5px 25px;
+}
+#landing-page-style .subscribe-form .form-control {
+  border-radius: 4px 0 0 4px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #333;
+  font-size: 1.2em;
+  height: 55px;
+}
+#landing-page-style .subscribe-form button {
+  border-radius: 0 4px 4px 0;
+  background-color: #7c378a;
+  color: #ffffff;
+  font-size: 1em;
+  line-height: 52px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 0 30px;
+  margin: 0;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+#landing-page-style .subscribe-form .btn {
+  height: 55px;
+}
+#landing-page-style .subscribe-form .btn:hover {
+  background-color: #6d277b;
+  color: #fff;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+#landing-page-style .subscribe-form .form-control::-webkit-input-placeholder {
+  color: #333;
+}
+#landing-page-style .subscribe-form .form-control:-moz-placeholder {
+  color: #333;
+}
+#landing-page-style .subscribe-form .form-control::-moz-placeholder {
+  color: #333;
+}
+#landing-page-style .subscribe-form .form-control:-ms-input-placeholder {
+  color: #333;
+}
+#landing-page-style #package {
+  padding-top: 100px;
+}
+#landing-page-style .title-line {
+  width: 100px;
+  height: 3px;
+  margin: 0 auto;
+  background: #7c378a;
+}
+#landing-page-style .price-box {
+  border: solid 1px #d1d1d1;
+}
+#landing-page-style .package-option {
+  padding: 50px 0 100px;
+}
+#landing-page-style .package-option ul {
+  padding: 0;
+}
+#landing-page-style .price-heading h3 {
+  margin-top: 0;
+}
+#landing-page-style .price-heading i {
+  color: #d1d1d1;
+  font-size: 75px;
+  margin-top: 20px;
+}
+#landing-page-style .price-group {
+  padding: 30px 0 10px;
+}
+#landing-page-style .price-group .dollar {
+  font-size: 20px;
+  position: relative;
+  bottom: 48px;
+}
+#landing-page-style .price-group .price {
+  color: #7c378a;
+  font-size: 90px;
+  font-weight: 500;
+}
+#landing-page-style .price-group .time {
+  font-size: 18px;
+}
+#landing-page-style .price-feature li {
+  margin-left: 30px;
+  margin-right: 30px;
+  list-style: none;
+  border-bottom: solid 1px #d1d1d1;
+  line-height: 40px;
+}
+#landing-page-style .btn-price {
+  margin: 5px 0 15px;
+  font-size: 17px;
+  padding: 7px 35px;
+  height: 40px;
+  background: #7c378a;
+  transition: all 0.4s;
+  color: white;
+  border-radius: 4px;
+}
+#landing-page-style .btn-price:hover {
+  background: #6d277b;
+  color: white;
+}
+#landing-page-style #providers {
+  background: #f6f6f6;
+  padding: 70px 0 70px;
+}
+#landing-page-style #providers img {
+  max-height: 50px;
+  max-width: 250px;
+  margin: 0 20px;
+  opacity: 1;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+}
+#landing-page-style #providers img:hover {
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+}
+#landing-page-style #testi {
+  padding: 100px 0 100px;
+}
+#landing-page-style .testi-item {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+  margin-top: 30px;
+}
+#landing-page-style .testi-item .box {
+  margin-right: 15px;
+  margin-left: 15px;
+}
+#landing-page-style .testi-item .box .message {
+  padding: 20px;
+  font-style: italic;
+  line-height: 30px;
+  font-weight: 300;
+  font-size: 20px;
+}
+#landing-page-style .testi-item .client-pic img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  max-width: 100%;
+}
+#landing-page-style .testi-item .client-info .client-name {
+  margin-top: 10px;
+  font-size: 16px;
+}
+#landing-page-style .testi-item .client-info .company {
+  font-style: italic;
+  color: #7c378a;
+}
+#landing-page-style .owl-theme .owl-controls .owl-page span {
+  background: #7c378a;
+}
+#landing-page-style .video-header {
+  margin: 40px 0 30px;
+}
+#landing-page-style .video-embed {
+  position: relative;
+  padding-top: 56.25%;
+  height: 0;
+  background-color: #000000;
+  -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+#landing-page-style .video-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+#landing-page-style .action {
+  color: #fff;
+}
+#landing-page-style .action h2 {
+  margin-top: 100px;
+  font-size: 40px;
+  font-weight: 300;
+}
+#landing-page-style .download-cta {
+  padding: 50px 0 160px;
+}
+#landing-page-style #contact {
+  width: 100%;
+  min-height: 100%;
+}
+#landing-page-style #contact h2 {
+  color: white;
+}
+#landing-page-style .ul-address a {
+  font-weight: normal;
+}
+#landing-page-style .ul-address a:hover {
+  color: white;
+}
+#landing-page-style .ul-address li {
+  padding-right: 20px;
+  margin-bottom: 8px;
+  list-style: none;
+  color: white;
+}
+#landing-page-style .ul-address i {
+  margin-left: 15px;
+  position: absolute;
+  left: 0;
+  color: #7c378a;
+  font-size: 25px;
+  line-height: 30px;
+}
+#landing-page-style .contact-row {
+  margin: 100px 0 100px;
+}
+#landing-page-style #contact-form {
+  margin: 0 auto;
+}
+#landing-page-style #contact-form input {
+  position: relative;
+  padding: 5px 25px;
+  width: 100%;
+}
+#landing-page-style #contact-form textarea {
+  position: relative;
+  padding: 10px 25px;
+  width: 100%;
+  height: 120px !important;
+}
+#landing-page-style #contact-form .form-control {
+  border-radius: 0;
+  border: solid 1px #dadada;
+  background-color: #fff;
+  color: #333;
+  font-size: 1.2em;
+  height: 55px;
+}
+#landing-page-style #contact-form .btn {
+  height: 55px;
+  width: 100%;
+  background-color: #7c378a;
+  color: #ffffff;
+  font-size: 17px !important;
+  line-height: 18px;
+  padding: 0 33px;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+#landing-page-style #contact-form .btn:hover {
+  background-color: #6d277b;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+#landing-page-style #footer {
+  background: #fff;
+  padding: 50px 0 50px;
+}
+#landing-page-style .social ul {
+  padding: 0;
+  list-style: none;
+}
+#landing-page-style .social li {
+  display: inline-block;
+  padding-right: .3em;
+  padding-bottom: .3em;
+}
+#landing-page-style .social li a {
+  display: block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  color: #7c378a;
+  border-radius: 50%;
+  background: #fff;
+  border: solid 1px #7c378a;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+#landing-page-style .social li a:hover {
+  color: #fff;
+  background: #7c378a;
+}
+#landing-page-style #shortcode-basic {
+  padding: 70px 0 10px;
+}
+#landing-page-style #shortcode-button {
+  padding: 50px 0 10px;
+  width: 100%;
+  min-height: 100%;
+}
+#landing-page-style #shortcode-button .form-horizontal {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+#landing-page-style #shortcode-icon {
+  padding: 70px 0 10px;
+}
+#landing-page-style #shortcode-alert {
+  padding: 70px 0 10px;
+}
+#landing-page-style #shortcode-table {
+  padding: 70px 0 10px;
+}
+#landing-page-style #shortcode-column {
+  padding: 50px 0 10px;
+}
+#landing-page-style .social-icons i {
+  color: #7c378a;
+  font-size: 30px;
+  line-height: 40px;
+}
+#landing-page-style #shortcode-alert {
+  padding: 70px 0 30px;
+}
+#landing-page-style .alert {
+  border: none;
+  border-radius: 0;
+  position: relative;
+  font-size: 17px;
+  line-height: 22px;
+  padding: 16px;
+  padding-left: 60px;
+}
+#landing-page-style .alert i {
+  font-size: 28px;
+  position: absolute;
+  left: 15px;
+  top: 13px;
+}
+#landing-page-style .icon-demo i {
+  font-size: 70px;
+  margin-right: 20px;
+}
+#landing-page-style .table > thead > tr > th {
+  background: #7c378a;
+  color: #fff;
+  border-bottom: 0;
+  text-transform: uppercase;
+}
+#landing-page-style .table > thead > tr > th,
+#landing-page-style .table > tbody > tr > td {
+  font-size: 15px;
+  font-weight: 300;
+  padding: 20px 20px;
+}
+#landing-page-style .table-bg > tbody > tr:nth-child(odd) > td,
+#landing-page-style .table-bg > tbody > tr:nth-child(odd) > th {
+  background: #fff;
+}
+#landing-page-style .table-bg > tbody > tr:nth-child(even) > td,
+#landing-page-style .table-bg > tbody > tr:nth-child(even) > th {
+  background: #f6f6f6;
+}
+#landing-page-style .scrollToTop {
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+  font-size: 30px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.2);
+  color: white;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 50%;
+  display: none;
+}
+#landing-page-style .scrollToTop:hover {
+  color: #7c378a;
+}
+#landing-page-style .control-group .controls {
+  overflow-x: hidden;
+}
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  #landing-page-style .head-btn {
+    margin: 50px 0 100px;
+  }
+  #landing-page-style .signup-header {
+    margin: 50px 0 100px;
+  }
+  #landing-page-style .price-feature li {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  #landing-page-style .btn-price {
+    padding: 7px 25px;
+  }
+  #landing-page-style #intro {
+    padding: 30px 0 50px;
+  }
+  #landing-page-style #policy {
+    padding: 30px 0 50px;
+  }
+  #landing-page-style #intro h2, #landing-page-style #feature-2 h2 {
+    text-align: center;
+  }
+  #landing-page-style #intro p, #landing-page-style #feature-2 p {
+    text-align: center;
+  }
+  #landing-page-style .btn-section {
+    text-align: center;
+  }
+  #landing-page-style #feature {
+    padding-top: 75px;
+  }
+  #landing-page-style .feature-img {
+    margin-top: 0;
+  }
+  #landing-page-style .row-feat {
+    padding-top: 10px;
+    padding-bottom: 40px;
+  }
+  #landing-page-style #feature-2 {
+    padding: 80px 0 80px;
+  }
+  #landing-page-style .feature-2-pic {
+    margin-top: 40px;
+  }
+  #landing-page-style #client img {
+    margin: 10px 0 10px;
+    max-height: 40px;
+  }
+  #landing-page-style .video-header {
+    margin: 50px 0 30px;
+  }
+  #landing-page-style #bottom-action {
+    text-align: center;
+  }
+  #landing-page-style .button-demo li {
+    padding-bottom: 50px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  #landing-page-style .logo {
+    margin: 100px 0 30px 0;
+  }
+  #landing-page-style .landing h1 {
+    margin: 60px 0 60px 0;
+  }
+  #landing-page-style .landing-text {
+    margin: 60px 0 40px 0;
+  }
+  #landing-page-style .signup-header {
+    margin-top: 250px;
+  }
+  #landing-page-style .intro-pic {
+    margin-top: 100px;
+  }
+  #landing-page-style .feature-img {
+    margin-top: 30px;
+  }
+  #landing-page-style .feat-list {
+    margin-top: 10px;
+  }
+  #landing-page-style .feat-list p {
+    font-size: 15px;
+  }
+  #landing-page-style .feature-2-pic {
+    margin-top: 50px;
+  }
+  #landing-page-style #client img {
+    max-height: 45px;
+  }
+  #landing-page-style .video-header {
+    margin: 50px 0 30px;
+  }
+}
+@media (max-width: 767px) {
+  #landing-page-style .logo {
+    margin: 40px 0 30px 0;
+  }
+  #landing-page-style .head-btn {
+    margin: 30px 0 80px;
+  }
+  #landing-page-style .signup-header {
+    margin: 70px 0 80px;
+  }
+  #landing-page-style #intro {
+    padding: 70px 0 70px;
+  }
+  #landing-page-style #policy {
+    padding: 70px 0 70px;
+  }
+  #landing-page-style #intro h2, #landing-page-style #feature-2 h2 {
+    font-weight: 150;
+    text-align: center;
+  }
+  #landing-page-style #intro p, #landing-page-style #feature-2 p {
+    text-align: center;
+  }
+  #landing-page-style .btn-section {
+    text-align: center;
+  }
+  #landing-page-style #feature {
+    padding-top: 50px;
+  }
+  #landing-page-style .row-feat {
+    padding-top: 10px;
+    padding-bottom: 40px;
+  }
+  #landing-page-style .feat-list i {
+    padding-left: 40px;
+  }
+  #landing-page-style #feature-2 {
+    padding: 40px 0 50px;
+  }
+  #landing-page-style .feature-2-pic {
+    margin-top: 50px;
+  }
+  #landing-page-style #package {
+    padding-top: 80px;
+  }
+  #landing-page-style .package-option {
+    padding: 50px 0 50px;
+  }
+  #landing-page-style .price-box {
+    margin-bottom: 30px;
+  }
+  #landing-page-style #client img {
+    margin: 10px 0 10px;
+  }
+  #landing-page-style .contact-left {
+    margin-bottom: 50px;
+  }
+  #landing-page-style .video-header {
+    margin: 50px 0 30px;
+  }
+  #landing-page-style #bottom-action {
+    text-align: center;
+  }
+}
+@media (max-width: 736px) {
+  #landing-page-style .feature-img {
+    margin-top: 0;
+  }
+}
+@media (max-width: 667px) {
+  #landing-page-style .logo {
+    margin: 30px 0 30px 0;
+  }
+  #landing-page-style .landing h1 {
+    font-size: 50px;
+    margin: 10px 0 25px 0;
+  }
+  #landing-page-style .landing-text {
+    margin-top: 20px;
+  }
+  #landing-page-style .subscribe p {
+    margin: 25px auto 15px;
+  }
+  #landing-page-style .subscribe-form {
+    margin: 20px auto 100px;
+  }
+  #landing-page-style .action h2 {
+    margin-top: 70px;
+  }
+  #landing-page-style .download-cta {
+    padding: 50px 0 100px;
+  }
+}
+@media (max-width: 568px) {
+  #landing-page-style .logo {
+    margin: 15px 0 15px 0;
+  }
+  #landing-page-style .landing h1 {
+    font-size: 40px;
+    margin: 20px 0 10px 0;
+  }
+  #landing-page-style .landing-text p {
+    font-size: 16px !important;
+  }
+  #landing-page-style #intro {
+    padding-top: 50px;
+  }
+  #landing-page-style #policy {
+    padding-top: 50px;
+  }
+  #landing-page-style #feature {
+    padding-top: 50px;
+  }
+  #landing-page-style .feat-list i {
+    padding-left: 20px;
+  }
+  #landing-page-style #feature-2 {
+    padding: 50px 0 70px;
+  }
+  #landing-page-style #screenshot {
+    padding-top: 70px;
+  }
+  #landing-page-style .screenshots {
+    padding-top: 30px;
+    padding-bottom: 70px;
+  }
+  #landing-page-style #testi {
+    padding: 70px 0 70px;
+  }
+  #landing-page-style .testi-item .box .message {
+    line-height: 25px;
+    font-size: 18px;
+  }
+  #landing-page-style .action h2 {
+    margin: 50px 0 20px;
+  }
+  #landing-page-style .download-text p {
+    line-height: 1.5;
+  }
+}
+@media (max-width: 480px) {
+  #landing-page-style .feat-list i {
+    padding-left: 5px;
+  }
+  #landing-page-style .action h2 {
+    font-size: 30px;
+  }
+  #landing-page-style .button-demo li {
+    padding-bottom: 50px;
+  }
+}
+@media (max-width: 360px) {
+  #landing-page-style #intro h2, #landing-page-style #feature h2, #landing-page-style #feature-2 h2 {
+    font-size: 30px;
+  }
+  #landing-page-style .feat-list i {
+    padding-left: 0;
+  }
+  #landing-page-style #feature .inner {
+    padding-left: 15px;
+  }
+  #landing-page-style .video-header {
+    margin: 30px 0 30px;
+  }
+}
+@media (max-width: 320px) {
+  #landing-page-style .logo {
+    margin: 30px 0 20px 0;
+  }
+  #landing-page-style .landing h1 {
+    margin: 20px 0 35px 0;
+  }
+  #landing-page-style .btn-default {
+    font-size: 16px;
+    margin: 30px 0 10px;
+    padding: 15px 30px;
+    height: 35px;
+    border-radius: 80px;
+  }
+  #landing-page-style .btn-primary {
+    font-size: 16px;
+    margin: 30px 0 10px;
+    margin-right: 15px;
+    padding: 15px 30px;
+    height: 35px;
+    border-radius: 80px;
+  }
+  #landing-page-style .subscribe-form {
+    margin: 50px auto 110px;
+  }
+  #landing-page-style .subscribe-form input {
+    padding: 5px 15px;
+  }
+  #landing-page-style .subscribe-form button {
+    padding: 0 15px;
+  }
+  #landing-page-style .action h2 {
+    margin: 70px 0 20px;
+  }
+  #landing-page-style .table > thead > tr > th,
+  #landing-page-style .table > tbody > tr > td {
+    padding: 20px 10px;
+  }
+}
+#landing-page-style .zero-margin-bottom {
+  margin-bottom: 0px;
+}
+#landing-page-style .form-header-links {
+  color: #fff;
+}
+#landing-page-style .form-header-links:hover {
+  color: #7c378a;
+}
+#landing-page-style .providers-section {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+  margin-top: 60px;
+}
+#landing-page-style .contact-left a {
+  color: #fff;
+}
+#landing-page-style .contact-left [class^="pe-7s-"] {
+  color: #fff;
+}
+#landing-page-style .navbar-nav.navbar-landing-page > li > a {
+  margin: 0px;
+  border: 0px;
+}
+#landing-page-style label.error {
+  color: #fff;
+  font-size: 110%;
+}
+#landing-page-style .register-img {
+  margin-top: 50px;
+}
+#landing-page-style .register h3 {
+  margin-top: 0px;
+  color: #fff;
+}
+#landing-page-style .loading-purple {
+  display: block;
+  margin: 0 auto;
+}
