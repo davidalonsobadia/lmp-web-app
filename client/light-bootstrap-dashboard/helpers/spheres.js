@@ -280,13 +280,15 @@ Template.new_sphere_attributes.helpers({
 Template.content_spheres.events({
   'submit form' : function(event, template){
     event.preventDefault();
+    console.log('HEY IN SUBMIT fadeOutRM');
     var valuesFrom = $("[name=from] option").map(
       function() { 
         return $(this).attr('id'); 
       })
       .get();
     var valuesTo = $("[name=to] option").map(
-      function() { 
+      function() {
+        console.log(this); 
         return $(this).attr('id'); 
       }).get();
     var attrs = $("[name=attr]").map(
@@ -300,8 +302,7 @@ Template.content_spheres.events({
     var dataExtracted = $('[name=isDataExtracted]:checked').val();
     var isDataExtracted = dataExtracted == 'true' ? true : false ;
 
-    console.log('isDataExtracted');
-    console.log(isDataExtracted);
+    console.log(valuesTo);
 
     var sphereObject = {
       identifier : 'xxxx',

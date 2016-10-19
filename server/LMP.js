@@ -490,7 +490,7 @@ Meteor.methods({
   'getEntitiesWithRelationship': function(userEmail){
     console.log('in getEntitiesWithRelationship');
     var url = host + slash + entities + slash + search + slash +  
-      findEntitiesByPersonEmail + questionMark + 'email=' + userEmail;
+      findEntitiesByPersonEmail + questionMark + emailParameter + userEmail;
 
     try {
       var response = HTTP.get(url, http_options);
@@ -502,6 +502,37 @@ Meteor.methods({
       console.log('error in getEntitiesWithRelationship');
       console.log(error);
       return null;
+    }
+  },
+
+  'sendEmailResetPassword': function(email){
+    console.log('in sendEmailResetPassword');
+    var url = host + slash + person + slash + resetPassword + questionMark +
+      emailParameter + email;
+    console.log(url);
+    try {
+      var response = HTTP.get(url, http_options);
+    } catch(error) {
+      console.log('error in sendEmailResetPassword');
+      console.log(error);
+    }
+  },
+
+  'resetAndSavePassword': function(objectResetPassword){
+    console.log('in resetAndSavePassword')
+    var url = host + slash + person + slash + savePassword; 
+    try {
+      var response = HTTP.post(url, {
+        data: {
+          email: objectResetPassword.email,
+          token: objectResetPassword.token,
+          password: objectResetPassword.password
+        },
+        auth: basic_auth
+      });
+    } catch (error) {
+      console.log('error in resetAndSavePassword');
+      console.log(error);
     }
   }
 });
@@ -622,19 +653,18 @@ Meteor.publish('getProvidersByUser', function(providersUrl){
 
 Meteor.publish('getConsumersInSphere', function(sphereConsumersUrl){
   var self = this;
+  console.log(sphereConsumersUrl)
   if(sphereConsumersUrl != null){
     try{
       var response = HTTP.get(sphereConsumersUrl, http_options);
       var content = JSON.parse(response.content);
       var consumers = content._embedded.consumers;
-      for (c in consumers){
-        var consumer = {
-          name:       consumers[c].name,
-          link:       consumers[c]._links.self.href,
-          identifier: consumer[c].identifer
-        }
+
+      _.each(consumers, function(consumer){
+        consumer.link = consumer._links.self.href;
         self.added('consumersInSphere', consumer.identifier, consumer);
-      }
+      });
+      
     } catch(error) {
       console.log('Error in getConsumersInSphere');
       console.log(error);

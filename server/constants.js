@@ -12,6 +12,8 @@ spheres = 'spheres';
 providers = 'providers';
 entities = 'entities';
 providerTokens = 'providerTokens';
+resetPassword = 'resetPassword';
+savePassword = 'savePassword'
 
 emailParameter = "email=";
 providerNameParameter = 'providerName=';

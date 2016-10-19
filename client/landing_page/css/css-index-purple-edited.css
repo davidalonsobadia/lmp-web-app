@@ -1084,3 +1084,7 @@
   display: block;
   margin: 0 auto;
 }
+
+#landing-page-style .padding-bottom {
+  padding-bottom: 15px;
+}
