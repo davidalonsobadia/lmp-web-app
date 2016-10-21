@@ -256,7 +256,7 @@ Meteor.methods({
   },
 
   'loginWithPassword' : function(loginObject){ 
-    var url = host + slash + loginWithPassword + questionMark + userParameter
+    var url = host + slash + loginWithPassword + questionMark + emailParameter
       + loginObject.email + ampersand + passwordParameter + loginObject.password
     console.log(url);
     try{
@@ -533,6 +533,7 @@ Meteor.methods({
     } catch (error) {
       console.log('error in resetAndSavePassword');
       console.log(error);
+      throw new Meteor.Error("save-password-failed", error);
     }
   }
 });
