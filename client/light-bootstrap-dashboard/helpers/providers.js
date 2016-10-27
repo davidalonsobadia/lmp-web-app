@@ -62,7 +62,6 @@ Template.content_providers.helpers({
 
 Template.content_providers.events({
 	'click .add-new-element':function(event,template){
-		console.log(' in .add-new-element');
     	var instance = Template.instance();
         instance.vars.set('clicked', true); //set to true.
   	},
@@ -96,12 +95,12 @@ Template.new_providers_table.events({
 				} else {
 				  console.log('token: ' + response);
 				  if(response == null || response == undefined) {
-				    Meteor.call('createNewToken', currentProvider.name, Session.get('user').email, function(error, response){
+				    Meteor.call('getAuthorizationUrl', currentProvider.name, Session.get('user').email, function(error, response){
 				      if(error){
-				        console.log('error in createNewToken');
+				        console.log('error in getAuthorizationUrl');
 				        console.log(error);
 				      } else {
-				        var encodedUrl = encodeURIComponent(response);
+				        Session.setPersistent('provider', currentProvider.name);
 				        window.location.protocol = "http";
 				        window.location = response;
 				      }

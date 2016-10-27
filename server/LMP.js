@@ -462,28 +462,51 @@ Meteor.methods({
   'findTokenByproviderNameAndUserEmail': function(providerName, email){
     console.log('in findTokenByproviderNameAndUserEmail');
 
-    var url = host + slash + providerTokens + slash + search + slash + findByproviderNameAndUserEmail
+    var url = host + slash + tokens + slash + search + slash + findTokensByProviderNameAndUserEmail
       + questionMark + providerNameParameter + providerName + ampersand + emailParameter + email;
-
     try {
       var response = HTTP.get(url, http_options);
       var content = JSON.parse(response.content);
-      var token = content.token;
-      return token;
+      if(content._embedded.tokens.length > 0)
+        return content._embedded.tokens[0].token;
+      else 
+        return null;
     } catch(error) {
+      console.log(error);
       return null;
     }
   },
 
-  'createNewToken': function(providerName, email){
-    var url = host + slash + createNewToken + questionMark + providerParameter + providerName 
-      + ampersand + emailParameter + email;
+  'getAuthorizationUrl': function(providerName, email){
+    console.log('in getAuthorizationUrl');
+    var url = host + slash + authorizationUrl + questionMark +
+      providerParameter + providerName + ampersand + 
+      emailParameter + email + ampersand + redirectUrlParameter + redirectUrl;
 
     try {
-      return url;
+      console.log(url);
+      var response = HTTP.get(url, http_options);
+      return response.data.authorizationUrl;
     } catch(error) {
       console.log(error);
       return null;
+    }
+  },
+
+  'getToken': function(authorizationData){
+    console.log('in getToken');
+    var url = host + slash + newToken + questionMark +
+      providerParameter + authorizationData.provider + ampersand +
+      emailParameter + authorizationData.email + ampersand +
+      codeParameter + authorizationData.code + ampersand +
+      redirectUrlParameter + redirectUrl;
+
+    try {
+      var response = HTTP.get(url, http_options);
+      console.log('token: ' + response.content);
+      return response.content;
+    } catch(error){
+      console.log(error);
     }
   },
 
@@ -508,7 +531,7 @@ Meteor.methods({
   'sendEmailResetPassword': function(email){
     console.log('in sendEmailResetPassword');
     var url = host + slash + person + slash + resetPassword + questionMark +
-      emailParameter + email;
+      emailParameter + email + ampersand + recoverUrlParameter + encodeURI(recoverUrl);
     console.log(url);
     try {
       var response = HTTP.get(url, http_options);

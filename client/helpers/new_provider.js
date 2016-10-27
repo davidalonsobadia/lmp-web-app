@@ -74,6 +74,7 @@ Template.new_provider.events({
 
   'click .add-provider': function(event){
     event.preventDefault();
+    console.og('.add-provider');
     var providers = [];
     providers.push(event.currentTarget.id);
 
@@ -92,9 +93,11 @@ Template.new_provider.events({
         } else {
           console.log('token: ' + response);
 
+          console.log('evebhovewvfebhvibververve');
+
           if(response == null || response == undefined) {
 
-            Meteor.call('createNewToken', currentProvider.name, Session.get('user').email, function(error, response){
+/*            Meteor.call('createNewToken', currentProvider.name, Session.get('user').email, function(error, response){
 
               if(error){
                 console.log('error in createNewToken');
@@ -103,11 +106,16 @@ Template.new_provider.events({
 
                 var encodedUrl = encodeURIComponent(response);
 
-                window.location.protocol = "http";
-                window.location = response;
+                console.log('currentProvider');
+                console.log(currentProvider.name);
+
+                Session.setPersistent('provider', currentProvider.name);
+
+                //window.location.protocol = "http";
+                //window.location = response;
               }
 
-            });
+            });*/
 
           }
         }
