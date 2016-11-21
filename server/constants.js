@@ -6,23 +6,23 @@
 * Backend Servers
 */
 // Localhost
-//host = 'http://localhost:8080';
+host = 'http://localhost:8080';
 // Developer Server
 //host = 'http://172.20.49.20:9763/LmpApi'
 //Production Server (Backend located in Eurecat)
-host = 'http://84.88.76.5:9763/LmpApi'
+//host = 'http://84.88.76.5:9763/LmpApi'
 
 /**
 * Frontend Servers
 */
 // Localhost
-//recoverUrl = 'http://localhost:3000/changePassword'
+recoverUrl = 'http://localhost:3000/changePassword'
 // Arsys web server - change Password ()
-recoverUrl = 'http://82.223.80.51:3000/changePassword'
-// Localhost
-//redirectUrl = 'http://localhost:3000/authorization'
+/*recoverUrl = 'http://82.223.80.51:3000/changePassword'
+*/// Localhost
+redirectUrl = 'http://localhost:3000/authorization'
 // Arsys web server - change Password ()
-redirectUrl = 'http://82.223.80.51:3000/authorization'
+//redirectUrl = 'http://82.223.80.51:3000/authorization'
 
 
 slash = '/';
